@@ -27,14 +27,21 @@ def weather():
     data = {
         "country_code": str(list_of_data['sys']['country']),
         "city_name": str(city),
+        "main": list_of_data['weather'][0]['main'],
+        "description": list_of_data['weather'][0]['description'],
         "coordinate": str(list_of_data['coord']['lon']) + ' '
                       + str(list_of_data['coord']['lat']),
-        "temp": round(1.8 * (list_of_data['main']['temp'] - 273) + 32, 2),
+        "temp": int(round(1.8 * (list_of_data['main']['temp'] - 273) + 32, 0)),
+        "temp_min": int(round(1.8 * (list_of_data['main']['temp_min'] - 273) + 32, 0)),
+        "temp_max": int(round(1.8 * (list_of_data['main']['temp_max'] - 273)+32, 0)),
         "pressure": str(list_of_data['main']['pressure']),
         "humidity": str(list_of_data['main']['humidity']),
+        "wind_speed": list_of_data['wind']['speed'],
+        'id': list_of_data['weather'][0]['id']
     }
 
-    #print(data)
+    print(list_of_data)
+
     return render_template('index.html', data=data)
 
 
