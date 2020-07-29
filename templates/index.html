@@ -16,12 +16,11 @@
 </head>
 
 <body>
-  <div class ="container-fluid">
-    <nav class="row" style="background: #337ab7; color: white;">
-      <h1 class="col">Weather App <h3>Program Explorers</h3></h1>
-    </nav>
-  </div>
-  <br />
+    <div class="container-fluid bg-primary">
+        <img src="{{url_for('static', filename='weather_icon.jpg')}}" alt="Weather App Logo" height="95" width="110">
+         <span class = "mt-5">Weather App</span>
+    </div>
+
   <br />
   <center class="row">
       <form method="post" class="col-md-6 col-md-offset-3">
@@ -37,10 +36,10 @@
   </center>
   <div class="row">
     {% if data.country_code and data.coordinate and data.temp and data.pressure and data.humidity %}
-    <div class="col-md-6 col-md-offset-3">
-        <h3>Location: {{data.city_name + ', ' + data.country_code}}</h3>
+    <div class="col-md-6 col-md-offset-3 text-center">
+        <h2>{{data.city_name + ', ' + data.country_code}}</h2>
         <h3>Coordinates: {{data.coordinate}}</h3>
-        <h3>Temperature: {{data.temp}}F</h3>
+        <h3>{{data.temp}}F</h3>
         <h3>Humidity: {{data.humidity + '%'}}</h3>
     </div>
     {% endif %}
