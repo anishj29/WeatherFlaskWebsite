@@ -2,48 +2,53 @@
 <html lang="en" dir="ltr">
 
 <head>
-  <meta charset="utf-8">
-  <title>weather</title>
-  <!-- Latest compiled and minified CSS -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <meta charset="utf-8">
+    <title>weather</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 
-  <!-- jQuery library -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-  <!-- Latest compiled JavaScript -->
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
 </head>
 
 <body>
-    <div class="bg-primary">
-         <img src="{{url_for('static', filename='weather_icon.jpg')}}" alt="Weather App Logo" height="95" width="110">
-         <span class = "mt-5" style = "font-size: 30px">Weather App</span>
-    </div>
+<div class="bg-primary">
+    <img src="{{url_for('static', filename='weather_icon.jpg')}}" alt="Weather App Logo" height="95" width="110">
+    <span class="mt-5" style="font-size: 30px">Weather App</span>
+</div>
 
-  <br />
-  <center class="row">
-      <form method="post" class="col-md-6 col-md-offset-3">
-          <div class="input-group">
+<br/>
+<center class="row">
+    <form method="post" class="col-md-6 col-md-offset-3">
+        <div class="input-group">
             <input type="text" class="form-control" name="city" placeholder="Search">
             <div class="input-group-btn">
-              <button class="btn btn-primary" type="submit">
-                <i class="glyphicon glyphicon-search"></i>
-              </button>
+                <button class="btn btn-primary" type="submit">
+                    <i class="glyphicon glyphicon-search"></i>
+                </button>
             </div>
-          </div>
-      </form>
-  </center>
-  <div class="row">
-    {% if data.country_code and data.coordinate and data.temp and data.pressure and data.humidity %}
+        </div>
+    </form>
+</center>
+<div class="row">
+    {% if data.country_code and data.coordinate and data.temp and data.pressure and data.humidity and data.temp_max and
+    data.temp_min and data.wind_speed%}
+    <div><img src="{{url_for('static', filename=image)}}"></div>
     <div class="col-md-6 col-md-offset-3 text-center">
+        <h1>{{data.main}}</h1>
         <h2>{{data.city_name + ', ' + data.country_code}}</h2>
         <h3>Coordinates: {{data.coordinate}}</h3>
-        <h3>{{data.temp}}F</h3>
-        <h3>Humidity: {{data.humidity + '%'}}</h3>
+        <h3>{{data.temp}}°F</h3>
+        <h4>{{data.temp_max}}°/{{data.temp_min}}°</h4>
+        <h4>Humidity: {{data.humidity + '%'}}</h4>
+        <h4>Wind: {{data.wind_speed}}mph</h4>
     </div>
     {% endif %}
-  </div>
+</div>
 </body>
 
 </html>

@@ -1,6 +1,7 @@
 import json
 import urllib.request
 from flask import Flask, render_template, request
+from PIL import Image
 
 app = Flask(__name__)
 
@@ -33,7 +34,7 @@ def weather():
                       + str(list_of_data['coord']['lat']),
         "temp": int(round(1.8 * (list_of_data['main']['temp'] - 273) + 32, 0)),
         "temp_min": int(round(1.8 * (list_of_data['main']['temp_min'] - 273) + 32, 0)),
-        "temp_max": int(round(1.8 * (list_of_data['main']['temp_max'] - 273)+32, 0)),
+        "temp_max": int(round(1.8 * (list_of_data['main']['temp_max'] - 273) + 32, 0)),
         "pressure": str(list_of_data['main']['pressure']),
         "humidity": str(list_of_data['main']['humidity']),
         "wind_speed": list_of_data['wind']['speed'],
@@ -42,7 +43,35 @@ def weather():
 
     print(list_of_data)
 
-    return render_template('index.html', data=data)
+    id_tag = data['id']
+    id_tag_str = str(id_tag)
+
+    if id_tag == 800:
+        image = 'dayclear.png'
+
+    elif id_tag_str[0] == '2':
+        image = 'static/lightning.png'
+
+    elif id_tag_str[0] == '3':
+        image = 'static/rain.png'
+
+    elif id_tag_str[0] == '5' and id_tag_str[1] == '0' or id_tag_str[1] == '1':
+        image = 'static/partlyrain.png'
+
+    elif id_tag_str[0] == '5' and id_tag_str[1] == '2':
+        image = 'static/rain.png'
+
+    elif id_tag == 531:
+        image = 'static/rain.png'
+
+    elif id_tag_str[0] == '6':
+        image = 'static/snow.png'
+
+    elif id_tag_str[0] == '7':
+        image = 'static/atmosphere.png'
+
+
+    return render_template('index.html', data=data, image=image)
 
 
 if __name__ == '__main__':
