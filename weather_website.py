@@ -1,13 +1,14 @@
 import json
 import urllib.request
 from flask import Flask, render_template, request
-from PIL import Image
+import time
 
 app = Flask(__name__)
 
 
 @app.route('/', methods=['POST', 'GET'])
 def weather():
+    global image
     if request.method == 'POST':
         city = request.form['city'].title()
     else:
@@ -38,7 +39,9 @@ def weather():
         "pressure": str(list_of_data['main']['pressure']),
         "humidity": str(list_of_data['main']['humidity']),
         "wind_speed": list_of_data['wind']['speed'],
-        'id': list_of_data['weather'][0]['id']
+        'id': list_of_data['weather'][0]['id'],
+        'sunrise': list_of_data['sys']['sunrise'],
+        'sunset': list_of_data['sys']['sunset']
     }
 
     print(list_of_data)
@@ -50,28 +53,41 @@ def weather():
         image = 'dayclear.png'
 
     elif id_tag_str[0] == '2':
-        image = 'static/lightning.png'
+        image = 'lightning.png'
 
     elif id_tag_str[0] == '3':
-        image = 'static/rain.png'
+        image = 'rain.png'
 
     elif id_tag_str[0] == '5' and id_tag_str[1] == '0' or id_tag_str[1] == '1':
-        image = 'static/partlyrain.png'
+        image = 'partlyrain.png'
 
     elif id_tag_str[0] == '5' and id_tag_str[1] == '2':
-        image = 'static/rain.png'
+        image = 'rain.png'
 
     elif id_tag == 531:
-        image = 'static/rain.png'
+        image = 'rain.png'
 
     elif id_tag_str[0] == '6':
-        image = 'static/snow.png'
+        image = 'snow.png'
 
     elif id_tag_str[0] == '7':
-        image = 'static/atmosphere.png'
+        image = 'atmosphere.png'
 
+    elif id_tag == 801:
+        image = 'dayclouds.png'
 
-    return render_template('index.html', data=data, image=image)
+    elif id_tag == 802:
+        image = 'scatteredclouds.png'
+
+    elif id_tag == 803 or 804:
+        image = 'brokenclouds.png'
+
+    sunrise = time.localtime(data['sunrise'])
+    sunset = time.localtime(data['sunset'])
+
+    # print(sunrise.tm_hour, sunrise.tm_min, sunrise.tm_sec)
+
+    return render_template('index.html', data=data, image=image, sunrise=sunrise, sunset=sunset)
 
 
 if __name__ == '__main__':
