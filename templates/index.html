@@ -16,13 +16,14 @@
 </head>
 
 <body>
-    <div class="bg-primary">
-        <img src="{{url_for('static', filename='weather_icon.jpg')}}" alt="Weather App Logo" height="95" width="110">
-        <span class="mt-5" style="font-size: 30px">Weather App</span>
+    <div style="color: white; background-color: #02455A">
+        <img src="{{url_for('static', filename='weather_icon.jpg')}}" alt="Weather App Logo" height="90" width="90">
+        <span class="ml-3" style="font-size: 30px">Weather App</span>
     </div>
-    <div class="container-fluid" style="background-color: #4ebf87">
+    <div class="container-fluid" style="background-color:#0099e4">
         <center class="row">
-            <form method="post" class="col-md-6 col-md-offset-3">
+            <br>
+            <form method="post" class="col-md-6 mt-3 col-md-offset-3">
                 <div class="input-group">
                     <input type="text" class="form-control" name="city" placeholder="Search">
                     <div class="input-group-btn">
@@ -35,22 +36,23 @@
         </center>
         {% if data.country_code and data.coordinate and data.temp and data.pressure and data.humidity and data.temp_max and
         data.temp_min and data.wind_speed%}
-            <div class="row">
-                <div class = "col">
-                    <div><img src="{{url_for('static', filename=image)}}"></div>
-                    <h1>{{data.main}}</h1>
-                    <h2>{{data.city_name + ', ' + data.country_code}}</h2>
-                </div>
-            </div>
-            <div class = "row">
-                <h2>{{data.temp}}°F</h2>
-                <!--                <h3>Coordinates: {{data.coordinate}}</h3>-->
-                <h3>Sunrise: {{sunrise.tm_hour}}:{{sunrise.tm_min}} A.M.</h3>
-                <h3>Sunset: {{sunset.tm_hour-12}}:{{sunset.tm_min}} P.M.</h3>
-                <h4>Max/Min Temp: {{data.temp_max}}°/{{data.temp_min}}°</h4>
-                <h4>Feels Like: {{data.feels_like}}°F</h4>
-                <h4>Humidity: {{data.humidity + '%'}}</h4>
-                <h4>Wind: {{data.wind_speed}}mph</h4>
+            <div class="container" style="color: white">
+                    <div class ="row">
+                        <img src="{{url_for('static', filename=image)}}" style="">
+                        <h4>{{data.temp_max}}°/{{data.temp_min}}°</h4>
+                        <h1>{{data.main}}</h1>
+                        <h2>{{data.city_name + ', ' + data.country_code}}</h2>
+                        <h2>{{data.temp}}°F</h2>
+                    </div>
+                    <br><br>
+                    <div class="row">
+                        <!--                <h3>Coordinates: {{data.coordinate}}</h3>-->
+                        <h3>Sunrise: {{sunrise.tm_hour}}:{{sunrise.tm_min}} A.M.</h3>
+                        <h3>Sunset: {{sunset.tm_hour-12}}:{{sunset.tm_min}} P.M.</h3>
+                        <h4>Feels Like: {{data.feels_like}}°F</h4>
+                        <h4>Humidity: {{data.humidity + '%'}}</h4>
+                        <h4>Wind: {{data.wind_speed}}mph</h4>
+                    </div>
             </div>
         {% endif %}
     </div>
