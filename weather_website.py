@@ -1,14 +1,15 @@
+# Import Statements
 import json
+import time
 import urllib.request
 from flask import Flask, render_template, request
-import time
 
+# App
 app = Flask(__name__)
 
 
 @app.route('/', methods=['POST', 'GET'])
 def weather():
-    global image
     if request.method == 'POST':
         city = request.form['city'].title()
     else:
@@ -42,7 +43,7 @@ def weather():
         "temp": int(round(1.8 * (list_of_data['main']['temp'] - 273) + 32, 0)),
         "temp_min": int(round(1.8 * (list_of_data['main']['temp_min'] - 273) + 32, 0)),
         "temp_max": int(round(1.8 * (list_of_data['main']['temp_max'] - 273) + 32, 0)),
-        "feels_like": int(round(1.8 * (list_of_data['main']['feels_like'] -273) + 32, 0)),
+        "feels_like": int(round(1.8 * (list_of_data['main']['feels_like'] - 273) + 32, 0)),
         "pressure": str(list_of_data['main']['pressure']),
         "humidity": str(list_of_data['main']['humidity']),
         "wind_speed": list_of_data['wind']['speed'],
@@ -92,8 +93,8 @@ def weather():
     sunrise = time.localtime(data['sunrise'])
     sunset = time.localtime(data['sunset'])
 
-    print('sunrise', sunrise.tm_hour, sunrise.tm_min)
-    print('sunset', sunset.tm_hour, sunset.tm_min)
+    # print('sunrise', sunrise.tm_hour, sunrise.tm_min)
+    # print('sunset', sunset.tm_hour, sunset.tm_min)
     sunset_min = sunset.tm_min
 
     if len(str(sunset_min)) == 1:
