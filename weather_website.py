@@ -15,12 +15,18 @@ def weather():
         # for default name mathura 
         city = 'Plainsboro'
 
+    new_city = city
+
+    if ' ' in city:
+        print('space')
+        new_city = city.replace(' ', '+')
+
     # your API key will come here 
     api = '8a5edfd4d0e0f8953dbe82364cfc0b10'
 
     # source contain json data from api 
     source = urllib.request.urlopen(
-        'http://api.openweathermap.org/data/2.5/weather?q=' + city + '&appid=' + api).read()
+        'http://api.openweathermap.org/data/2.5/weather?q=' + new_city + '&appid=' + api).read()
 
     # converting JSON data to a dictionary 
     list_of_data = json.loads(source)
@@ -86,9 +92,14 @@ def weather():
     sunrise = time.localtime(data['sunrise'])
     sunset = time.localtime(data['sunset'])
 
-    print(sunrise.tm_hour, sunrise.tm_min, sunrise.tm_sec)
+    print('sunrise', sunrise.tm_hour, sunrise.tm_min)
+    print('sunset', sunset.tm_hour, sunset.tm_min)
+    sunset_min = sunset.tm_min
 
-    return render_template('index.html', data=data, image=image, sunrise=sunrise, sunset=sunset)
+    if len(str(sunset_min)) == 1:
+        sunset_min = str(0) + str(sunset_min)
+
+    return render_template('index.html', data=data, image=image, sunrise=sunrise, sunset=sunset, sunset_min=sunset_min)
 
 
 if __name__ == '__main__':
