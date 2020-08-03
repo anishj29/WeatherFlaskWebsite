@@ -13,6 +13,9 @@
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
+
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap"
+    type="text/javascript"></script>
 </head>
 
 <body>
@@ -37,13 +40,22 @@
         {% if data.country_code and data.coordinate and data.temp and data.pressure and data.humidity and data.temp_max and
         data.temp_min and data.wind_speed%}
             <div class="container" style="color: white">
-                    <div class ="row">
-                        <img src="{{url_for('static', filename=image)}}" style="">
-                        <h4>{{data.temp_max}}°/{{data.temp_min}}°</h4>
-                        <h1>{{data.main}}</h1>
-                        <h2>{{data.city_name + ', ' + data.country_code}}</h2>
-                        <h2>{{data.temp}}°F</h2>
-                    </div>
+                        <div>
+                            <img src="{{url_for('static', filename=image)}}" style="">
+                            <h4>{{data.temp_max}}°/{{data.temp_min}}°</h4>
+                            <h1>{{data.main}}</h1>
+                            <h2>{{data.city_name + ', ' + data.country_code}}</h2>
+                            <h2>{{data.temp}}°F</h2>
+                        </div>
+                        <div>
+                           <iframe
+                              width="600"
+                              height="450"
+                              frameborder="0" style="border:0"
+                              src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCcNwGm6OIClebIx_K824lIfJkPeDssA54
+                                &q={{data.city_name}}}+{{data.country_code}}}" allowfullscreen>
+                           </iframe>
+                        </div>
                     <br><br>
                     <div class="row">
                         <!--<h3>Coordinates: {{data.coordinate}}</h3>-->
