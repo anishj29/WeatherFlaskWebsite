@@ -3,9 +3,11 @@ import json
 import time
 import urllib.request
 from flask import Flask, render_template, request
+from flask_googlemaps import GoogleMaps
 
 # App
 app = Flask(__name__)
+GoogleMaps(app)
 
 
 @app.route('/', methods=['POST', 'GET'])
