@@ -15,26 +15,25 @@ def weather():
     if request.method == 'POST':
         city = request.form['city'].title()
     else:
-        # for default name mathura 
+        # for default name mathura
         city = 'Plainsboro'
 
     new_city = city
 
     if ' ' in city:
-        print('space')
         new_city = city.replace(' ', '+')
 
-    # your API key will come here 
+    # your API key will come here
     api = '8a5edfd4d0e0f8953dbe82364cfc0b10'
 
-    # source contain json data from api 
+    # source contain json data from api
     source = urllib.request.urlopen(
         'http://api.openweathermap.org/data/2.5/weather?q=' + new_city + '&appid=' + api).read()
 
-    # converting JSON data to a dictionary 
+    # converting JSON data to a dictionary
     list_of_data = json.loads(source)
 
-    # data for variable list_of_data 
+    # data for variable list_of_data
     data = {
         "country_code": str(list_of_data['sys']['country']),
         "city_name": str(city),
@@ -54,7 +53,20 @@ def weather():
         'sunset': list_of_data['sys']['sunset']
     }
 
-    print(list_of_data)
+    lat = str(list_of_data['coord']['lat'])
+    lon = str(list_of_data['coord']['lon'])
+
+    hourly_source = urllib.request.urlopen('https://api.openweathermap.org/data/2.5/onecall?lat='+lat+'&lon='+lon+
+                                           '&exclude=minutely,daily&appid=' + api).read()
+    hourly_data = json.loads(hourly_source)
+    print(hourly_data)
+
+    data_hourly = {
+        'hour_1': hourly_data['hourly'][0]['dt'],
+        'hour_2': hourly_data['hourly'][1]['dt']
+    }
+    hour_1 = time.localtime(data_hourly['hour_1'])
+    hour_2 = time.localtime(data_hourly['hour_2'])
 
     id_tag = data['id']
     id_tag_str = str(id_tag)
@@ -95,8 +107,6 @@ def weather():
     sunrise = time.localtime(data['sunrise'])
     sunset = time.localtime(data['sunset'])
 
-    # print('sunrise', sunrise.tm_hour, sunrise.tm_min)
-    # print('sunset', sunset.tm_hour, sunset.tm_min)
     sunset_min = sunset.tm_min
 
     if len(str(sunset_min)) == 1:
