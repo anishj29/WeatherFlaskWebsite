@@ -2,6 +2,7 @@
 import json
 import time
 import urllib.request
+
 from flask import Flask, render_template, request
 from flask_googlemaps import GoogleMaps
 
@@ -12,6 +13,7 @@ GoogleMaps(app)
 
 @app.route('/', methods=['POST', 'GET'])
 def weather():
+    global image
     if request.method == 'POST':
         city = request.form['city'].title()
     else:
@@ -56,40 +58,53 @@ def weather():
     lat = str(list_of_data['coord']['lat'])
     lon = str(list_of_data['coord']['lon'])
 
-    hourly_source = urllib.request.urlopen('https://api.openweathermap.org/data/2.5/onecall?lat='+lat+'&lon='+lon+
-                                           '&exclude=minutely,daily&appid=' + api).read()
+    hourly_source = urllib.request.urlopen(
+        'https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon +
+        '&exclude=minutely,daily&appid=' + api).read()
     hourly_data = json.loads(hourly_source)
     print(hourly_data)
 
     data_hourly = {
         'hour_1': hourly_data['hourly'][0]['dt'],
-        'hour_1_temp': hourly_data['hourly'][0]['temp'],
+        'hour_1_temp': int(round(1.8 * (hourly_data['hourly'][0]['temp'] - 273) + 32, 0)),
         'hour_2': hourly_data['hourly'][1]['dt'],
-        'hour_2_temp': hourly_data['hourly'][1]['temp'],
-        'hour_3': hourly_data['hourly'][1]['dt'],
-        'hour_3_temp': hourly_data['hourly'][2]['temp'],
-        'hour_4': hourly_data['hourly'][1]['dt'],
-        'hour_4_temp': hourly_data['hourly'][3]['temp'],
-        'hour_5': hourly_data['hourly'][1]['dt'],
-        'hour_5_temp': hourly_data['hourly'][4]['temp'],
-        'hour_6': hourly_data['hourly'][1]['dt'],
-        'hour_6_temp': hourly_data['hourly'][5]['temp'],
-        'hour_7': hourly_data['hourly'][1]['dt'],
-        'hour_7_temp': hourly_data['hourly'][6]['temp'],
-        'hour_8': hourly_data['hourly'][1]['dt'],
-        'hour_8_temp': hourly_data['hourly'][7]['temp'],
-        'hour_9': hourly_data['hourly'][1]['dt'],
-        'hour_9_temp': hourly_data['hourly'][8]['temp'],
-        'hour_10': hourly_data['hourly'][1]['dt'],
-        'hour_10_temp': hourly_data['hourly'][9]['temp'],
-        'hour_11': hourly_data['hourly'][1]['dt'],
-        'hour_11_temp': hourly_data['hourly'][10]['temp'],
-        'hour_12': hourly_data['hourly'][1]['dt'],
-        'hour_12_temp': hourly_data['hourly'][11]['temp'],
+        'hour_2_temp': int(round(1.8 * (hourly_data['hourly'][1]['temp'] - 273) + 32, 0)),
+        'hour_3': hourly_data['hourly'][2]['dt'],
+        'hour_3_temp': int(round(1.8 * (hourly_data['hourly'][2]['temp'] - 273) + 32, 0)),
+        'hour_4': hourly_data['hourly'][3]['dt'],
+        'hour_4_temp': int(round(1.8 * (hourly_data['hourly'][3]['temp'] - 273) + 32, 0)),
+        'hour_5': hourly_data['hourly'][4]['dt'],
+        'hour_5_temp': int(round(1.8 * (hourly_data['hourly'][4]['temp'] - 273) + 32, 0)),
+        'hour_6': hourly_data['hourly'][5]['dt'],
+        'hour_6_temp': int(round(1.8 * (hourly_data['hourly'][5]['temp'] - 273) + 32, 0)),
+        'hour_7': hourly_data['hourly'][6]['dt'],
+        'hour_7_temp': int(round(1.8 * (hourly_data['hourly'][6]['temp'] - 273) + 32, 0)),
+        'hour_8': hourly_data['hourly'][7]['dt'],
+        'hour_8_temp': int(round(1.8 * (hourly_data['hourly'][7]['temp'] - 273) + 32, 0)),
+        'hour_9': hourly_data['hourly'][8]['dt'],
+        'hour_9_temp': int(round(1.8 * (hourly_data['hourly'][8]['temp'] - 273) + 32, 0)),
+        'hour_10': hourly_data['hourly'][9]['dt'],
+        'hour_10_temp': int(round(1.8 * (hourly_data['hourly'][9]['temp'] - 273) + 32, 0)),
+        'hour_11': hourly_data['hourly'][10]['dt'],
+        'hour_11_temp': int(round(1.8 * (hourly_data['hourly'][10]['temp'] - 273) + 32, 0)),
+        'hour_12': hourly_data['hourly'][11]['dt'],
+        'hour_12_temp': int(round(1.8 * (hourly_data['hourly'][11]['temp'] - 273) + 32, 0)),
     }
-    hour_1 = time.localtime(data_hourly['hour_1'])
-    hour_2 = time.localtime(data_hourly['hour_2'])
-    hour_3 = time.localtime(data_hourly['hour_3'])
+
+    hour_1 = time.localtime(data_hourly['hour_1']).tm_hour
+    hour_2 = time.localtime(data_hourly['hour_2']).tm_hour
+    hour_3 = time.localtime(data_hourly['hour_3']).tm_hour
+    hour_4 = time.localtime(data_hourly['hour_4']).tm_hour
+    hour_5 = time.localtime(data_hourly['hour_5']).tm_hour
+    hour_6 = time.localtime(data_hourly['hour_6']).tm_hour
+    hour_7 = time.localtime(data_hourly['hour_7']).tm_hour
+    hour_8 = time.localtime(data_hourly['hour_8']).tm_hour
+    hour_9 = time.localtime(data_hourly['hour_9']).tm_hour
+    hour_10 = time.localtime(data_hourly['hour_10']).tm_hour
+    hour_11 = time.localtime(data_hourly['hour_11']).tm_hour
+    hour_12 = time.localtime(data_hourly['hour_12']).tm_hour
+
+    hour_times = [hour_1, hour_2, hour_3, hour_4, hour_5, hour_6, hour_7, hour_8, hour_9, hour_10, hour_11, hour_12]
 
     id_tag = data['id']
     id_tag_str = str(id_tag)
@@ -135,7 +150,8 @@ def weather():
     if len(str(sunset_min)) == 1:
         sunset_min = str(0) + str(sunset_min)
 
-    return render_template('index.html', data=data, image=image, sunrise=sunrise, sunset=sunset, sunset_min=sunset_min)
+    return render_template('index.html', data=data, image=image, sunrise=sunrise, sunset=sunset, sunset_min=sunset_min,
+                           hour_times=hour_times)
 
 
 if __name__ == '__main__':
