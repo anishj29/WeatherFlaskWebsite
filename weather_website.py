@@ -63,10 +63,33 @@ def weather():
 
     data_hourly = {
         'hour_1': hourly_data['hourly'][0]['dt'],
-        'hour_2': hourly_data['hourly'][1]['dt']
+        'hour_1_temp': hourly_data['hourly'][0]['temp'],
+        'hour_2': hourly_data['hourly'][1]['dt'],
+        'hour_2_temp': hourly_data['hourly'][1]['temp'],
+        'hour_3': hourly_data['hourly'][1]['dt'],
+        'hour_3_temp': hourly_data['hourly'][2]['temp'],
+        'hour_4': hourly_data['hourly'][1]['dt'],
+        'hour_4_temp': hourly_data['hourly'][3]['temp'],
+        'hour_5': hourly_data['hourly'][1]['dt'],
+        'hour_5_temp': hourly_data['hourly'][4]['temp'],
+        'hour_6': hourly_data['hourly'][1]['dt'],
+        'hour_6_temp': hourly_data['hourly'][5]['temp'],
+        'hour_7': hourly_data['hourly'][1]['dt'],
+        'hour_7_temp': hourly_data['hourly'][6]['temp'],
+        'hour_8': hourly_data['hourly'][1]['dt'],
+        'hour_8_temp': hourly_data['hourly'][7]['temp'],
+        'hour_9': hourly_data['hourly'][1]['dt'],
+        'hour_9_temp': hourly_data['hourly'][8]['temp'],
+        'hour_10': hourly_data['hourly'][1]['dt'],
+        'hour_10_temp': hourly_data['hourly'][9]['temp'],
+        'hour_11': hourly_data['hourly'][1]['dt'],
+        'hour_11_temp': hourly_data['hourly'][10]['temp'],
+        'hour_12': hourly_data['hourly'][1]['dt'],
+        'hour_12_temp': hourly_data['hourly'][11]['temp'],
     }
     hour_1 = time.localtime(data_hourly['hour_1'])
     hour_2 = time.localtime(data_hourly['hour_2'])
+    hour_3 = time.localtime(data_hourly['hour_3'])
 
     id_tag = data['id']
     id_tag_str = str(id_tag)
