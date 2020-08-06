@@ -2,7 +2,8 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
+    <meta http-equiv='Content-Type' content='text/html; charset=utf-8'/>
+
     <title>weather</title>
     <!-- Latest compiled and minified CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css" rel="stylesheet">
@@ -13,9 +14,12 @@
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
+    <style type='text/css'>body{margin:0;padding:0;overflow:hidden;font-family:'Segoe UI',Helvetica,Arial,Sans-Serif}</style>
 
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap"
             type="text/javascript"></script>
+    <script type='text/javascript' src='https://www.bing.com/api/maps/mapcontrol?key=Auc5h9YG7WqHQNqRU7_bpGVE1Q8VlqOCTZkZdy9Jdnas7gJBK0ICSvwOTRHg8NDM&callback=loadMapScenario'
+            async defer></script>
 </head>
 
 <body>
@@ -48,6 +52,8 @@
             <h4>{{data.temp_max}}°/{{data.temp_min}}°</h4>
         </div>
         <div>
+            <div id='printoutPanel'></div>
+             <div id='myMap' style='width: 50; height: 50;'></div>
             <iframe
                     allowfullscreen
                     frameborder="0"
@@ -78,6 +84,29 @@
         </div>
     </div>
     {% endif %}
+
 </div>
 </body>
 </html>
+<script type='text/javascript'>
+            function loadMapScenario() {
+                var map = new Microsoft.Maps.Map(document.getElementById('myMap'), {
+                    /* No need to set credentials if already passed in URL */
+                    center: new Microsoft.Maps.Location(39.1887643719098, -92.8261546188403),
+                    zoom: 5
+                });
+                // tile url from Iowa Environmental Mesonet of Iowa State University
+                var urlTemplate = 'https://mesonet.agron.iastate.edu/cache/tile.py/1.0.0/nexrad-n0q-{timestamp}/{zoom}/{x}/{y}.png';
+                var timestamps = ['900913-m50m', '900913-m45m', '900913-m40m', '900913-m35m', '900913-m30m', '900913-m25m', '900913-m20m', '900913-m15m', '900913-m10m', '900913-m05m', '900913'];
+                var tileSources = [];
+                for (var i = 0; i < timestamps.length; i++) {
+                    var tileSource = new Microsoft.Maps.TileSource({
+                        uriConstructor: urlTemplate.replace('{timestamp}', timestamps[i])
+                    });
+                    tileSources.push(tileSource);
+                }
+                var animatedLayer = new Microsoft.Maps.AnimatedTileLayer({ mercator: tileSources, frameRate: 500 });
+                map.layers.insert(animatedLayer);
+
+            }
+</script>
