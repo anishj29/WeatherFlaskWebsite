@@ -62,7 +62,7 @@ def weather():
         'https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon +
         '&exclude=minutely,daily&appid=' + api).read()
     hourly_data = json.loads(hourly_source)
-    print(hourly_data)
+    # print(hourly_data)
 
     data_hourly = {
         'hour_1': hourly_data['hourly'][0]['dt'],
@@ -106,6 +106,22 @@ def weather():
 
     hour_times = [hour_1, hour_2, hour_3, hour_4, hour_5, hour_6, hour_7, hour_8, hour_9, hour_10, hour_11, hour_12]
 
+    for i in range(12):
+        if hour_times[i] > 12:
+            hour_times[i] -= 12
+            hour_times[i] = str(hour_times[i]) + ' pm'
+
+        elif hour_times[i] == 0:
+            hour_times[i] = 12
+            hour_times[i] = str(hour_times[i]) + ' pm'
+
+        else:
+            hour_times[i] = str(hour_times[i]) + ' am'
+
+    # for i in range(0, 12):
+    #     key = 'hour_' + str(i + 1) + '_temp'
+    #     print(hour_times[i], ':', data_hourly[key])
+
     id_tag = data['id']
     id_tag_str = str(id_tag)
 
@@ -145,13 +161,18 @@ def weather():
     sunrise = time.localtime(data['sunrise'])
     sunset = time.localtime(data['sunset'])
 
+    sunrise_min = sunrise.tm_min
     sunset_min = sunset.tm_min
 
     if len(str(sunset_min)) == 1:
         sunset_min = str(0) + str(sunset_min)
 
+    if len(str(sunrise_min)) == 1:
+        sunrise_min = str(0) + str(sunrise_min)
+
     return render_template('index.html', data=data, image=image, sunrise=sunrise, sunset=sunset, sunset_min=sunset_min,
-                           hour_times=hour_times)
+                           sunrise_min=sunrise_min,
+                           hour_times=hour_times, data_hourly=data_hourly)
 
 
 if __name__ == '__main__':
