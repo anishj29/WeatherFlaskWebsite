@@ -28,12 +28,17 @@ def weather():
     # your API key will come here
     api = '8a5edfd4d0e0f8953dbe82364cfc0b10'
 
+    api2 = 'AIzaSyDgH7WHb3xkzF2h1AKZpdUrt2EhRB2ru04'
+
     # source contain json data from api
     source = urllib.request.urlopen(
         'http://api.openweathermap.org/data/2.5/weather?q=' + new_city + '&appid=' + api).read()
 
+    # timezone = urllib.request.urlopen('http://api.timezonedb.com/v2.1/get-time-zone?key=XVYFMJ9VRW9E&format=json&by=position&lat=40.689247&lng=-74.044502').read()
+
     # converting JSON data to a dictionary
     list_of_data = json.loads(source)
+    # timezone = json.loads(timezone)
 
     # data for variable list_of_data
     data = {
@@ -54,7 +59,6 @@ def weather():
         'sunrise': list_of_data['sys']['sunrise'],
         'sunset': list_of_data['sys']['sunset']
     }
-
     lat = str(list_of_data['coord']['lat'])
     lon = str(list_of_data['coord']['lon'])
 
@@ -62,7 +66,8 @@ def weather():
         'https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon +
         '&exclude=minutely,daily&appid=' + api).read()
     hourly_data = json.loads(hourly_source)
-    # print(hourly_data)
+
+    timezone_offset = hourly_data['timezone_offset']
 
     data_hourly = {
         'hour_1': hourly_data['hourly'][0]['dt'],
