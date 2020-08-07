@@ -192,7 +192,6 @@ def weather():
     id_tag = data['id']
     id_tag_str = str(id_tag)
 
-
     if id_tag == 800:
         image = 'dayclear.png'
 
