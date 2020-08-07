@@ -6,6 +6,49 @@ import urllib.request
 from flask import Flask, render_template, request
 from flask_googlemaps import GoogleMaps
 
+hourly_images = []
+id_list =[]
+
+
+def check_icon(id_tag):
+    global hourly_images
+    id_tag_str = str(id_tag)
+    id_list.append(id_tag)
+
+    if id_tag == 800:
+        hourly_images.append('dayclear.png')
+
+    elif id_tag_str[0] == '2':
+        hourly_images.append('lightning.png')
+
+    elif id_tag_str[0] == '3':
+        hourly_images.append('rain.png')
+
+    elif id_tag_str[0] == '5' and id_tag_str[1] == '0' or id_tag_str[1] == '1':
+        hourly_images.append('partlyrain.png')
+
+    elif id_tag_str[0] == '5' and id_tag_str[1] == '2':
+        hourly_images.append('rain.png')
+
+    elif id_tag == 531:
+        hourly_images.append('rain.png')
+
+    elif id_tag_str[0] == '6':
+        hourly_images.append('snow.png')
+
+    elif id_tag_str[0] == '7':
+        hourly_images.append('atmosphere.png')
+
+    elif id_tag == 801:
+        hourly_images.append('dayclouds.png')
+
+    elif id_tag == 802:
+        hourly_images.append('scatteredclouds.png')
+
+    elif id_tag == 803 or 804:
+        hourly_images.append('brokenclouds.png')
+
+
 # App
 app = Flask(__name__)
 GoogleMaps(app)
@@ -68,32 +111,45 @@ def weather():
     hourly_data = json.loads(hourly_source)
 
     timezone_offset = hourly_data['timezone_offset']
+    # print(hourly_data)
 
     data_hourly = {
         'hour_1': hourly_data['hourly'][0]['dt'],
         'hour_1_temp': int(round(1.8 * (hourly_data['hourly'][0]['temp'] - 273) + 32, 0)),
+        'hour_1_id': hourly_data['hourly'][0]['weather'][0]['id'],
         'hour_2': hourly_data['hourly'][1]['dt'],
         'hour_2_temp': int(round(1.8 * (hourly_data['hourly'][1]['temp'] - 273) + 32, 0)),
+        'hour_2_id': hourly_data['hourly'][1]['weather'][0]['id'],
         'hour_3': hourly_data['hourly'][2]['dt'],
         'hour_3_temp': int(round(1.8 * (hourly_data['hourly'][2]['temp'] - 273) + 32, 0)),
+        'hour_3_id': hourly_data['hourly'][2]['weather'][0]['id'],
         'hour_4': hourly_data['hourly'][3]['dt'],
         'hour_4_temp': int(round(1.8 * (hourly_data['hourly'][3]['temp'] - 273) + 32, 0)),
+        'hour_4_id': hourly_data['hourly'][3]['weather'][0]['id'],
         'hour_5': hourly_data['hourly'][4]['dt'],
         'hour_5_temp': int(round(1.8 * (hourly_data['hourly'][4]['temp'] - 273) + 32, 0)),
+        'hour_5_id': hourly_data['hourly'][4]['weather'][0]['id'],
         'hour_6': hourly_data['hourly'][5]['dt'],
         'hour_6_temp': int(round(1.8 * (hourly_data['hourly'][5]['temp'] - 273) + 32, 0)),
+        'hour_6_id': hourly_data['hourly'][5]['weather'][0]['id'],
         'hour_7': hourly_data['hourly'][6]['dt'],
         'hour_7_temp': int(round(1.8 * (hourly_data['hourly'][6]['temp'] - 273) + 32, 0)),
+        'hour_7_id': hourly_data['hourly'][6]['weather'][0]['id'],
         'hour_8': hourly_data['hourly'][7]['dt'],
         'hour_8_temp': int(round(1.8 * (hourly_data['hourly'][7]['temp'] - 273) + 32, 0)),
+        'hour_8_id': hourly_data['hourly'][7]['weather'][0]['id'],
         'hour_9': hourly_data['hourly'][8]['dt'],
         'hour_9_temp': int(round(1.8 * (hourly_data['hourly'][8]['temp'] - 273) + 32, 0)),
+        'hour_9_id': hourly_data['hourly'][8]['weather'][0]['id'],
         'hour_10': hourly_data['hourly'][9]['dt'],
         'hour_10_temp': int(round(1.8 * (hourly_data['hourly'][9]['temp'] - 273) + 32, 0)),
+        'hour_10_id': hourly_data['hourly'][9]['weather'][0]['id'],
         'hour_11': hourly_data['hourly'][10]['dt'],
         'hour_11_temp': int(round(1.8 * (hourly_data['hourly'][10]['temp'] - 273) + 32, 0)),
+        'hour_11_id': hourly_data['hourly'][10]['weather'][0]['id'],
         'hour_12': hourly_data['hourly'][11]['dt'],
         'hour_12_temp': int(round(1.8 * (hourly_data['hourly'][11]['temp'] - 273) + 32, 0)),
+        'hour_12_id': hourly_data['hourly'][11]['weather'][0]['id'],
     }
 
     hour_1 = time.localtime(data_hourly['hour_1']).tm_hour
@@ -110,6 +166,12 @@ def weather():
     hour_12 = time.localtime(data_hourly['hour_12']).tm_hour
 
     hour_times = [hour_1, hour_2, hour_3, hour_4, hour_5, hour_6, hour_7, hour_8, hour_9, hour_10, hour_11, hour_12]
+
+    for i in range(1, 13):
+        check_icon(data_hourly['hour_'+str(i)+'_id'])
+
+    # print(hourly_images)
+    # print(id_list)
 
     for i in range(12):
         if hour_times[i] > 12:
@@ -129,6 +191,7 @@ def weather():
 
     id_tag = data['id']
     id_tag_str = str(id_tag)
+
 
     if id_tag == 800:
         image = 'dayclear.png'
