@@ -28,8 +28,8 @@
         <div class="container">
             <img alt="" class="logo" src="images/logo.png">
             <div class="logo-type">
-                <h1 class="site-title">Program Explorers</h1>
-                <small class="site-description">tagline goes here</small>
+                <h1 class="site-title">Weather</h1>
+                <small class="site-description">Program Explorers</small>
             </div>
 
             <!-- Default snippet for navigation -->
@@ -37,7 +37,7 @@
         </div>
     </div> <!-- .site-header -->
 
-    <div class="hero" data-bg-image="searchBG.jpg">
+    <div class="hero" data-bg-image="landscape.jpg" height ="300px" style="background-image: url('static/landscape.jpg');">
         <div class="container">
             <form action="#" class="find-location">
                 <input placeholder="Find your location..." type="text">
@@ -62,7 +62,8 @@
                                 <img alt="" src={{image}} width=90>
                             </div>
                         </div>
-                        <span><img alt="" src="static/icons/icon-umberella.png">{{data.humidity}}%</span>
+                        <!--<span><img alt="" src="static/icons/icon-umberella.png">{{data.humidity}}%</span>-->
+                        <span><img alt="" src="static/icons/humiditywater.png" height="9%" width="9%">{{data.humidity}}%</span>
                         <span><img alt="" src="static/icons/icon-wind.png">{{data.wind_speed}}mph</span>
                         <span><img alt="" src="static/icons/icon-compass.png">East</span>
                     </div>
