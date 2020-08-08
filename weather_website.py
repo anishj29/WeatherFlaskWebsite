@@ -1,8 +1,8 @@
 # Import Statements
 import json
 import time
-from datetime import datetime
 import urllib.request
+from datetime import datetime
 
 from flask import Flask, render_template, request
 from flask_googlemaps import GoogleMaps
@@ -10,7 +10,8 @@ from flask_googlemaps import GoogleMaps
 hourly_images = []
 id_list = []
 
-month_to_short = {1: 'Jan', 2: 'Feb', 3: 'Mar', 4: 'Apr', 5:'May', 6: 'Jun', 7:'Jul', 8:'Aug', 9:'Sep', 10:'Oct', 11:'Nov', 12: 'Dec'}
+month_to_short = {1: 'Jan', 2: 'Feb', 3: 'Mar', 4: 'Apr', 5: 'May', 6: 'Jun', 7: 'Jul', 8: 'Aug', 9: 'Sep', 10: 'Oct',
+                  11: 'Nov', 12: 'Dec'}
 date = datetime.today()
 
 month = month_to_short[date.month]
@@ -24,35 +25,41 @@ def check_icon(id_tag):
     if id_tag == 800:
         hourly_images.append('static/icons/icon-2.svg')
 
-    elif all(x == id_tag for x in (200, 201, 202, 230, 231, 232)):
-        image = 'static/icons/icon-11.svg'
+    elif id_tag == 200 or id_tag == 201 or id_tag == 202 or id_tag == 230 or id_tag == 231 or id_tag == 232:
+        hourly_images.append('static/icons/icon-11.svg')
 
-    elif all(x == id_tag for x in (210, 211, 212, 221)):
-        image = 'static/icons/icon-12.svg'
+    elif id_tag == 210 or id_tag == 211 or id_tag == 212 or id_tag == 221:
+        hourly_images.append('static/icons/icon-12.svg')
 
     elif id_tag_str[0] == '3':
-        image = 'static/icons/icon-9.svg'
+        hourly_images.append('static/icons/icon-9.svg')
 
-    elif all(x == id_tag for x in (500, 501, 502, 503, 504)):
-        image = 'static/icons/icon-4.svg'
+    elif id_tag == 500 or id_tag == 501 or id_tag == 502 or id_tag == 503 or id_tag == 504:
+        hourly_images.append('static/icons/icon-4.svg')
 
-    elif all(x == id_tag for x in (511, 520, 521, 522, 531)):
-        image = 'static/icons/icon-10.svg'
+    elif id_tag == 511 or id_tag == 520 or id_tag == 521 or id_tag == 522 or id_tag == 531:
+        hourly_images.append('static/icons/icon-10.svg')
 
     elif id_tag_str[0] == '6':
-        image = 'static/icons/icon-13.svg '
+        hourly_images.append('static/icons/icon-13.svg ')
 
     elif id_tag_str[0] == '7':
-        image = 'static/icons/icon-8.svg'
+        hourly_images.append('static/icons/icon-8.svg')
 
     elif id_tag == 801:
-        image = 'static/icons/icon-3.svg'
+        hourly_images.append('static/icons/icon-3.svg')
 
     elif id_tag == 802:
-        image = 'static/icons/icon-5.svg'
+        hourly_images.append('static/icons/icon-5.svg')
 
-    elif id_tag == 803 or 804:
-        image = 'static/icons/icon-6.svg'
+    elif id_tag == 803:
+        hourly_images.append('static/icons/icon-6.svg')
+
+    elif id_tag == 803 or id_tag == 804:
+        hourly_images.append('static/icons/icon-6.svg')
+
+    else:
+        hourly_images.append('error')
 
 
 # App
@@ -82,8 +89,6 @@ def weather():
     # source contain json data from api
     source = urllib.request.urlopen(
         'http://api.openweathermap.org/data/2.5/weather?q=' + new_city + '&appid=' + api).read()
-
-    # timezone = urllib.request.urlopen('http://api.timezonedb.com/v2.1/get-time-zone?key=XVYFMJ9VRW9E&format=json&by=position&lat=40.689247&lng=-74.044502').read()
 
     # converting JSON data to a dictionary
     list_of_data = json.loads(source)
@@ -174,7 +179,7 @@ def weather():
     hour_times = [hour_1, hour_2, hour_3, hour_4, hour_5, hour_6, hour_7, hour_8, hour_9, hour_10, hour_11, hour_12]
 
     for i in range(1, 13):
-        check_icon(data_hourly['hour_'+str(i)+'_id'])
+        check_icon(data_hourly['hour_' + str(i) + '_id'])
 
     # print(hourly_images)
     # print(id_list)
@@ -246,7 +251,8 @@ def weather():
 
     return render_template('home.html', data=data, image=image, sunrise=sunrise, sunset=sunset, sunset_min=sunset_min,
                            sunrise_min=sunrise_min,
-                           hour_times=hour_times, data_hourly=data_hourly, month=month, day=date.day)
+                           hour_times=hour_times, hourly_images=hourly_images, data_hourly=data_hourly, month=month,
+                           day=date.day)
 
 
 if __name__ == '__main__':
