@@ -1,13 +1,19 @@
 # Import Statements
 import json
 import time
+from datetime import datetime
 import urllib.request
 
 from flask import Flask, render_template, request
 from flask_googlemaps import GoogleMaps
 
 hourly_images = []
-id_list =[]
+id_list = []
+
+month_to_short = {1: 'Jan', 2: 'Feb', 3: 'Mar', 4: 'Apr', 5:'May', 6: 'Jun', 7:'Jul', 8:'Aug', 9:'Sep', 10:'Oct', 11:'Nov', 12: 'Dec'}
+date = datetime.today()
+
+month = month_to_short[date.month]
 
 
 def check_icon(id_tag):
@@ -16,37 +22,37 @@ def check_icon(id_tag):
     id_list.append(id_tag)
 
     if id_tag == 800:
-        hourly_images.append('dayclear.png')
+        hourly_images.append('static/icons/icon-2.svg')
 
-    elif id_tag_str[0] == '2':
-        hourly_images.append('lightning.png')
+    elif all(x == id_tag for x in (200, 201, 202, 230, 231, 232)):
+        image = 'static/icons/icon-11.svg'
+
+    elif all(x == id_tag for x in (210, 211, 212, 221)):
+        image = 'static/icons/icon-12.svg'
 
     elif id_tag_str[0] == '3':
-        hourly_images.append('rain.png')
+        image = 'static/icons/icon-9.svg'
 
-    elif id_tag_str[0] == '5' and id_tag_str[1] == '0' or id_tag_str[1] == '1':
-        hourly_images.append('partlyrain.png')
+    elif all(x == id_tag for x in (500, 501, 502, 503, 504)):
+        image = 'static/icons/icon-4.svg'
 
-    elif id_tag_str[0] == '5' and id_tag_str[1] == '2':
-        hourly_images.append('rain.png')
-
-    elif id_tag == 531:
-        hourly_images.append('rain.png')
+    elif all(x == id_tag for x in (511, 520, 521, 522, 531)):
+        image = 'static/icons/icon-10.svg'
 
     elif id_tag_str[0] == '6':
-        hourly_images.append('snow.png')
+        image = 'static/icons/icon-13.svg '
 
     elif id_tag_str[0] == '7':
-        hourly_images.append('atmosphere.png')
+        image = 'static/icons/icon-8.svg'
 
     elif id_tag == 801:
-        hourly_images.append('dayclouds.png')
+        image = 'static/icons/icon-3.svg'
 
     elif id_tag == 802:
-        hourly_images.append('scatteredclouds.png')
+        image = 'static/icons/icon-5.svg'
 
     elif id_tag == 803 or 804:
-        hourly_images.append('brokenclouds.png')
+        image = 'static/icons/icon-6.svg'
 
 
 # App
@@ -193,45 +199,45 @@ def weather():
     id_tag_str = str(id_tag)
 
     if id_tag == 800:
-        image = 'dayclear.png'
+        image = 'static/icons/icon-2.svg'
 
-    elif id_tag_str[0] == '2':
-        image = 'lightning.png'
+    elif all(x == id_tag for x in (200, 201, 202, 230, 231, 232)):
+        image = 'static/icons/icon-11.svg'
+
+    elif all(x == id_tag for x in (210, 211, 212, 221)):
+        image = 'static/icons/icon-12.svg'
 
     elif id_tag_str[0] == '3':
-        image = 'rain.png'
+        image = 'static/icons/icon-9.svg'
 
-    elif id_tag_str[0] == '5' and id_tag_str[1] == '0' or id_tag_str[1] == '1':
-        image = 'partlyrain.png'
+    elif all(x == id_tag for x in (500, 501, 502, 503, 504)):
+        image = 'static/icons/icon-4.svg'
 
-    elif id_tag_str[0] == '5' and id_tag_str[1] == '2':
-        image = 'rain.png'
-
-    elif id_tag == 531:
-        image = 'rain.png'
+    elif all(x == id_tag for x in (511, 520, 521, 522, 531)):
+        image = 'static/icons/icon-10.svg'
 
     elif id_tag_str[0] == '6':
-        image = 'snow.png'
+        image = 'static/icons/icon-13.svg '
 
     elif id_tag_str[0] == '7':
-        image = 'atmosphere.png'
+        image = 'static/icons/icon-8.svg'
 
     elif id_tag == 801:
-        image = 'dayclouds.png'
+        image = 'static/icons/icon-3.svg'
 
     elif id_tag == 802:
-        image = 'scatteredclouds.png'
+        image = 'static/icons/icon-5.svg'
 
     elif id_tag == 803 or 804:
-        image = 'brokenclouds.png'
+        image = 'static/icons/icon-6.svg'
 
     sunrise = time.localtime(data['sunrise'])
     sunset = time.localtime(data['sunset'])
 
     sunrise_min = sunrise.tm_min
     sunset_min = sunset.tm_min
-    print(hourly_data)
-    print()
+    # print(hourly_data)
+
     if len(str(sunset_min)) == 1:
         sunset_min = str(0) + str(sunset_min)
 
@@ -240,7 +246,7 @@ def weather():
 
     return render_template('home.html', data=data, image=image, sunrise=sunrise, sunset=sunset, sunset_min=sunset_min,
                            sunrise_min=sunrise_min,
-                           hour_times=hour_times, data_hourly=data_hourly)
+                           hour_times=hour_times, data_hourly=data_hourly, month=month, day=date.day)
 
 
 if __name__ == '__main__':

@@ -28,7 +28,7 @@
 				<div class="container">
 						<img src="images/logo.png" alt="" class="logo">
 						<div class="logo-type">
-							<h1 class="site-title">Company name</h1>
+							<h1 class="site-title">Program Explorers</h1>
 							<small class="site-description">tagline goes here</small>
 						</div>
 
@@ -51,25 +51,25 @@
 					<div class="forecast-container">
 						<div class="today forecast">
 							<div class="forecast-header">
-								<div class="day">Monday</div>
-								<div class="date">6 Oct</div>
+								<div class="day">Current</div>
+								<div class="date">{{day}} {{month}}</div>
 							</div> <!-- .forecast-header -->
 							<div class="forecast-content">
-								<div class="location">New York</div>
+								<div class="location">{{data.city_name}}</div>
 								<div class="degree">
-									<div class="num">23<sup>o</sup>C</div>
+									<div class="num">{{data.temp}}<sup>o</sup>F</div>
 									<div class="forecast-icon">
-										<img src="images/icons/icon-1.svg" alt="" width=90>
+										<img src= {{image}} alt="" width=90>
 									</div>	
 								</div>
-								<span><img src="images/icon-umberella.png" alt="">20%</span>
-								<span><img src="images/icon-wind.png" alt="">18km/h</span>
-								<span><img src="images/icon-compass.png" alt="">East</span>
+								<span><img src="static/icons/icon-umberella.png" alt="">{{data.humidity}}%</span>
+								<span><img src="static/icons/icon-wind.png" alt="">{{data.wind_speed}}mph</span>
+								<span><img src="static/icons/icon-compass.png" alt="">East</span>
 							</div>
 						</div>
 						<div class="forecast">
 							<div class="forecast-header">
-								<div class="day">Tuesday</div>
+								<div class="day">{{hour_times[1]}}</div>
 							</div> <!-- .forecast-header -->
 							<div class="forecast-content">
 								<div class="forecast-icon">
@@ -81,7 +81,7 @@
 						</div>
 						<div class="forecast">
 							<div class="forecast-header">
-								<div class="day">Wednesday</div>
+								<div class="day">{{hour_times[2]}}</div>
 							</div> <!-- .forecast-header -->
 							<div class="forecast-content">
 								<div class="forecast-icon">
@@ -93,7 +93,7 @@
 						</div>
 						<div class="forecast">
 							<div class="forecast-header">
-								<div class="day">Thursday</div>
+								<div class="day">{{hour_times[3]}}</div>
 							</div> <!-- .forecast-header -->
 							<div class="forecast-content">
 								<div class="forecast-icon">
@@ -105,7 +105,7 @@
 						</div>
 						<div class="forecast">
 							<div class="forecast-header">
-								<div class="day">Friday</div>
+								<div class="day">{{hour_times[4]}}</div>
 							</div> <!-- .forecast-header -->
 							<div class="forecast-content">
 								<div class="forecast-icon">
@@ -117,7 +117,7 @@
 						</div>
 						<div class="forecast">
 							<div class="forecast-header">
-								<div class="day">Saturday</div>
+								<div class="day">{{hour_times[5]}}</div>
 							</div> <!-- .forecast-header -->
 							<div class="forecast-content">
 								<div class="forecast-icon">
@@ -129,7 +129,7 @@
 						</div>
 						<div class="forecast">
 							<div class="forecast-header">
-								<div class="day">Sunday</div>
+								<div class="day">{{hour_times[6]}}</div>
 							</div> <!-- .forecast-header -->
 							<div class="forecast-content">
 								<div class="forecast-icon">
@@ -277,7 +277,7 @@
 						</div>
 					</div>
 
-					<p class="colophon">Copyright 2014 Company name. Designed by Themezy. All rights reserved</p>
+					<p class="colophon">Copyright 2014 Program Explorers. Designed by Themezy. All rights reserved</p>
 				</div>
 			</footer> <!-- .site-footer -->
 		</div>
