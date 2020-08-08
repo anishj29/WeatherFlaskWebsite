@@ -230,14 +230,15 @@ def weather():
 
     sunrise_min = sunrise.tm_min
     sunset_min = sunset.tm_min
-
+    print(hourly_data)
+    print()
     if len(str(sunset_min)) == 1:
         sunset_min = str(0) + str(sunset_min)
 
     if len(str(sunrise_min)) == 1:
         sunrise_min = str(0) + str(sunrise_min)
 
-    return render_template('index.html', data=data, image=image, sunrise=sunrise, sunset=sunset, sunset_min=sunset_min,
+    return render_template('home.html', data=data, image=image, sunrise=sunrise, sunset=sunset, sunset_min=sunset_min,
                            sunrise_min=sunrise_min,
                            hour_times=hour_times, data_hourly=data_hourly)
 
