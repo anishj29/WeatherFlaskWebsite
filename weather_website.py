@@ -3,12 +3,17 @@ import json
 import time
 import urllib.request
 from datetime import datetime
+from time import localtime, strftime
 
+import requests
 from flask import Flask, render_template, request
 from flask_googlemaps import GoogleMaps
 
 hourly_images = []
 id_list = []
+
+sunr = ''
+suns = ''
 
 month_to_short = {1: 'Jan', 2: 'Feb', 3: 'Mar', 4: 'Apr', 5: 'May', 6: 'Jun', 7: 'Jul', 8: 'Aug', 9: 'Sep', 10: 'Oct',
                   11: 'Nov', 12: 'Dec'}
@@ -62,7 +67,17 @@ def check_icon(id_tag):
         hourly_images.append('error')
 
 
-# App
+def get_sunrise_sunset(lat, long):
+    global sunr, suns
+    link = "http://api.sunrise-sunset.org/json?lat=%f&lng=%f&formatted=0" % (lat, long)
+    f = requests.get(link)
+    data = f.text
+    sunrise = data[34:42]
+    sunset = data[71:79]
+    sunr = sunrise
+    suns = sunset
+
+
 app = Flask(__name__)
 GoogleMaps(app)
 
@@ -84,15 +99,12 @@ def weather():
     # your API key will come here
     api = '8a5edfd4d0e0f8953dbe82364cfc0b10'
 
-    api2 = 'AIzaSyDgH7WHb3xkzF2h1AKZpdUrt2EhRB2ru04'
-
     # source contain json data from api
     source = urllib.request.urlopen(
         'http://api.openweathermap.org/data/2.5/weather?q=' + new_city + '&appid=' + api).read()
 
     # converting JSON data to a dictionary
     list_of_data = json.loads(source)
-    # timezone = json.loads(timezone)
 
     # data for variable list_of_data
     data = {
@@ -116,14 +128,38 @@ def weather():
     lat = str(list_of_data['coord']['lat'])
     lon = str(list_of_data['coord']['lon'])
 
+    # Sunrise and Sunset
+    get_sunrise_sunset(float(lat), float(lon))
+    rise_hour = int(sunr[0:2])
+    set_hour = int(suns[0:2])
+    rise_min = sunr[3:5]
+    set_min = suns[3:5]
+
+    if rise_hour == 0 or rise_hour == 1 or rise_hour == 2 or rise_hour == 3 or rise_hour == 4:
+        rise_hour += 12
+
+    if set_hour == 0 or set_hour == 1 or set_hour == 2 or set_hour == 3 or set_hour == 4:
+        set_hour += 12
+    #
+    # # rise_hour -= 4
+    # # set_hour -= 4
+    #
+    # rise_hour += 5
+    # set_hour += 5
+    sunrise = str(rise_hour) + ':' + str(rise_min)
+    sunset = str(set_hour) + ':' + str(set_min)
+
+    # sun_times = [sunrise, sunset]
+
+    print(strftime("%m/%d/%Y %I:%M:%S %p", localtime(data['sunrise'])))
+
+    # Hourly Weather
     hourly_source = urllib.request.urlopen(
         'https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon +
         '&exclude=minutely,daily&appid=' + api).read()
     hourly_data = json.loads(hourly_source)
 
-    timezone_offset = hourly_data['timezone_offset']
-    # print(hourly_data)
-
+    # Hourly Weather stored in dictionary
     data_hourly = {
         'hour_1': hourly_data['hourly'][0]['dt'],
         'hour_1_temp': int(round(1.8 * (hourly_data['hourly'][0]['temp'] - 273) + 32, 0)),
@@ -174,7 +210,7 @@ def weather():
         'hour_12_windspeed': hourly_data['hourly'][11]['wind_speed'],
         'hour_12_id': hourly_data['hourly'][11]['weather'][0]['id'],
     }
-
+    # Organizing the hours
     hour_1 = time.localtime(data_hourly['hour_1']).tm_hour
     hour_2 = time.localtime(data_hourly['hour_2']).tm_hour
     hour_3 = time.localtime(data_hourly['hour_3']).tm_hour
@@ -188,15 +224,16 @@ def weather():
     hour_11 = time.localtime(data_hourly['hour_11']).tm_hour
     hour_12 = time.localtime(data_hourly['hour_12']).tm_hour
 
-    print(hourly_data['hourly'][0]['wind_speed'])
     hour_times = [hour_1, hour_2, hour_3, hour_4, hour_5, hour_6, hour_7, hour_8, hour_9, hour_10, hour_11, hour_12]
 
+    # Got icon for each hour
     for i in range(1, 13):
         check_icon(data_hourly['hour_' + str(i) + '_id'])
 
     # print(hourly_images)
     # print(id_list)
 
+    # Addded pm or am tags based on the time
     for i in range(12):
         if hour_times[i] > 12:
             hour_times[i] -= 12
@@ -216,6 +253,7 @@ def weather():
     id_tag = data['id']
     id_tag_str = str(id_tag)
 
+    # Get icon for current weather
     if id_tag == 800:
         image = 'static/icons/icon-2.svg'
 
@@ -249,21 +287,22 @@ def weather():
     elif id_tag == 803 or 804:
         image = 'static/icons/icon-6.svg'
 
-    sunrise = time.localtime(data['sunrise'])
-    sunset = time.localtime(data['sunset'])
-
-    sunrise_min = sunrise.tm_min
-    sunset_min = sunset.tm_min
+    # sunrise = time.localtime(data['sunrise'])
+    # sunset = time.localtime(data['sunset'])
+    #
+    # sunrise_min = sunrise.tm_min
+    # sunset_min = sunset.tm_min
     # print(hourly_data)
 
-    if len(str(sunset_min)) == 1:
-        sunset_min = str(0) + str(sunset_min)
+    # if len(str(sunset_min)) == 1:
+    #     sunset_min = str(0) + str(sunset_min)
+    #
+    # if len(str(sunrise_min)) == 1:
+    #     sunrise_min = str(0) + str(sunrise_min)
 
-    if len(str(sunrise_min)) == 1:
-        sunrise_min = str(0) + str(sunrise_min)
+    # print(sun_times)
 
-    return render_template('home.html', data=data, image=image, sunrise=sunrise, sunset=sunset, sunset_min=sunset_min,
-                           sunrise_min=sunrise_min,
+    return render_template('home.html', data=data, image=image, sunrise=sunrise, sunset=sunset,
                            hour_times=hour_times, hourly_images=hourly_images, data_hourly=data_hourly, month=month,
                            day=date.day)
 
