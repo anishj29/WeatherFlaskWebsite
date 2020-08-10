@@ -1212,10 +1212,14 @@ form textarea {
 
 .find-location {
   position: relative;
-  margin-bottom: 70px; }
+  margin-bottom: 70px;
+
+  }
   .find-location input[type="text"] {
     width: 100%;
     padding: 20px 50px 20px 20px;
+    background: #1e202b;
+    color: white;
     }
   .find-location input[type="submit"] {
     position: absolute;
