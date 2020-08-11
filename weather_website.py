@@ -3,7 +3,6 @@ import json
 import time
 import urllib.request
 from datetime import datetime
-from time import localtime, strftime
 
 import requests
 from flask import Flask, render_template, request
@@ -11,6 +10,7 @@ from flask_googlemaps import GoogleMaps
 
 hourly_images = []
 id_list = []
+main_list = []
 
 sunr = ''
 suns = ''
@@ -151,64 +151,76 @@ def weather():
 
     # sun_times = [sunrise, sunset]
 
-    print(strftime("%m/%d/%Y %I:%M:%S %p", localtime(data['sunrise'])))
+    # print(strftime("%m/%d/%Y %I:%M:%S %p", localtime(data['sunrise'])))
 
     # Hourly Weather
     hourly_source = urllib.request.urlopen(
         'https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon +
         '&exclude=minutely,daily&appid=' + api).read()
     hourly_data = json.loads(hourly_source)
-
+    print(hourly_data)
     # Hourly Weather stored in dictionary
     data_hourly = {
         'hour_1': hourly_data['hourly'][0]['dt'],
         'hour_1_temp': int(round(1.8 * (hourly_data['hourly'][0]['temp'] - 273) + 32, 0)),
         'hour_1_id': hourly_data['hourly'][0]['weather'][0]['id'],
+        'hour_1_main': hourly_data['hourly'][0]['weather'][0]['main'],
         'hour_1_windspeed': hourly_data['hourly'][0]['wind_speed'],
         'hour_2': hourly_data['hourly'][1]['dt'],
         'hour_2_temp': int(round(1.8 * (hourly_data['hourly'][1]['temp'] - 273) + 32, 0)),
         'hour_2_windspeed': hourly_data['hourly'][1]['wind_speed'],
         'hour_2_id': hourly_data['hourly'][1]['weather'][0]['id'],
+        'hour_2_main': hourly_data['hourly'][1]['weather'][0]['main'],
         'hour_3': hourly_data['hourly'][2]['dt'],
         'hour_3_temp': int(round(1.8 * (hourly_data['hourly'][2]['temp'] - 273) + 32, 0)),
         'hour_3_windspeed': hourly_data['hourly'][2]['wind_speed'],
         'hour_3_id': hourly_data['hourly'][2]['weather'][0]['id'],
+        'hour_3_main': hourly_data['hourly'][2]['weather'][0]['main'],
         'hour_4': hourly_data['hourly'][3]['dt'],
         'hour_4_temp': int(round(1.8 * (hourly_data['hourly'][3]['temp'] - 273) + 32, 0)),
         'hour_4_windspeed': hourly_data['hourly'][3]['wind_speed'],
         'hour_4_id': hourly_data['hourly'][3]['weather'][0]['id'],
+        'hour_4_main': hourly_data['hourly'][3]['weather'][0]['main'],
         'hour_5': hourly_data['hourly'][4]['dt'],
         'hour_5_temp': int(round(1.8 * (hourly_data['hourly'][4]['temp'] - 273) + 32, 0)),
         'hour_5_windspeed': hourly_data['hourly'][4]['wind_speed'],
         'hour_5_id': hourly_data['hourly'][4]['weather'][0]['id'],
+        'hour_5_main': hourly_data['hourly'][4]['weather'][0]['main'],
         'hour_6': hourly_data['hourly'][5]['dt'],
         'hour_6_temp': int(round(1.8 * (hourly_data['hourly'][5]['temp'] - 273) + 32, 0)),
         'hour_6_windspeed': hourly_data['hourly'][5]['wind_speed'],
         'hour_6_id': hourly_data['hourly'][5]['weather'][0]['id'],
+        'hour_6_main': hourly_data['hourly'][5]['weather'][0]['main'],
         'hour_7': hourly_data['hourly'][6]['dt'],
         'hour_7_temp': int(round(1.8 * (hourly_data['hourly'][6]['temp'] - 273) + 32, 0)),
         'hour_7_windspeed': hourly_data['hourly'][6]['wind_speed'],
         'hour_7_id': hourly_data['hourly'][6]['weather'][0]['id'],
+        'hour_7_main': hourly_data['hourly'][6]['weather'][0]['main'],
         'hour_8': hourly_data['hourly'][7]['dt'],
         'hour_8_temp': int(round(1.8 * (hourly_data['hourly'][7]['temp'] - 273) + 32, 0)),
         'hour_8_windspeed': hourly_data['hourly'][7]['wind_speed'],
         'hour_8_id': hourly_data['hourly'][7]['weather'][0]['id'],
+        'hour_8_main': hourly_data['hourly'][7]['weather'][0]['main'],
         'hour_9': hourly_data['hourly'][8]['dt'],
         'hour_9_temp': int(round(1.8 * (hourly_data['hourly'][8]['temp'] - 273) + 32, 0)),
         'hour_9_windspeed': hourly_data['hourly'][8]['wind_speed'],
         'hour_9_id': hourly_data['hourly'][8]['weather'][0]['id'],
+        'hour_9_main': hourly_data['hourly'][8]['weather'][0]['main'],
         'hour_10': hourly_data['hourly'][9]['dt'],
         'hour_10_temp': int(round(1.8 * (hourly_data['hourly'][9]['temp'] - 273) + 32, 0)),
         'hour_10_windspeed': hourly_data['hourly'][9]['wind_speed'],
         'hour_10_id': hourly_data['hourly'][9]['weather'][0]['id'],
+        'hour_10_main': hourly_data['hourly'][9]['weather'][0]['main'],
         'hour_11': hourly_data['hourly'][10]['dt'],
         'hour_11_temp': int(round(1.8 * (hourly_data['hourly'][10]['temp'] - 273) + 32, 0)),
         'hour_11_windspeed': hourly_data['hourly'][10]['wind_speed'],
         'hour_11_id': hourly_data['hourly'][10]['weather'][0]['id'],
+        'hour_11_main': hourly_data['hourly'][10]['weather'][0]['main'],
         'hour_12': hourly_data['hourly'][11]['dt'],
         'hour_12_temp': int(round(1.8 * (hourly_data['hourly'][11]['temp'] - 273) + 32, 0)),
         'hour_12_windspeed': hourly_data['hourly'][11]['wind_speed'],
         'hour_12_id': hourly_data['hourly'][11]['weather'][0]['id'],
+        'hour_12_main': hourly_data['hourly'][11]['weather'][0]['main']
     }
     # Organizing the hours
     hour_1 = time.localtime(data_hourly['hour_1']).tm_hour
@@ -229,6 +241,10 @@ def weather():
     # Got icon for each hour
     for i in range(1, 13):
         check_icon(data_hourly['hour_' + str(i) + '_id'])
+        main_list.append(data_hourly['hour_' + str(i) + '_main'])
+
+    # for i in range(0, 12):
+    #     print(id_list[i], hourly_images[i], main_list[i])
 
     # print(hourly_images)
     # print(id_list)
