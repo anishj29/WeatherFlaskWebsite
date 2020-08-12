@@ -9,6 +9,7 @@ from flask import Flask, render_template, request
 from flask_googlemaps import GoogleMaps
 
 hourly_images = []
+daily_images = []
 id_list = []
 main_list = []
 
@@ -23,48 +24,47 @@ month = month_to_short[date.month]
 
 
 def check_icon(id_tag):
-    global hourly_images
     id_tag_str = str(id_tag)
     id_list.append(id_tag)
 
     if id_tag == 800:
-        hourly_images.append('static/icons/icon-2.svg')
+        return 'static/icons/icon-2.svg'
 
     elif id_tag == 200 or id_tag == 201 or id_tag == 202 or id_tag == 230 or id_tag == 231 or id_tag == 232:
-        hourly_images.append('static/icons/icon-11.svg')
+        return 'static/icons/icon-11.svg'
 
     elif id_tag == 210 or id_tag == 211 or id_tag == 212 or id_tag == 221:
-        hourly_images.append('static/icons/icon-12.svg')
+        return 'static/icons/icon-12.svg'
 
     elif id_tag_str[0] == '3':
-        hourly_images.append('static/icons/icon-9.svg')
+        return 'static/icons/icon-9.svg'
 
     elif id_tag == 500 or id_tag == 501 or id_tag == 502 or id_tag == 503 or id_tag == 504:
-        hourly_images.append('static/icons/icon-4.svg')
+        return 'static/icons/icon-4.svg'
 
     elif id_tag == 511 or id_tag == 520 or id_tag == 521 or id_tag == 522 or id_tag == 531:
-        hourly_images.append('static/icons/icon-10.svg')
+        return 'static/icons/icon-10.svg'
 
     elif id_tag_str[0] == '6':
-        hourly_images.append('static/icons/icon-13.svg ')
+        return 'static/icons/icon-13.svg '
 
     elif id_tag_str[0] == '7':
-        hourly_images.append('static/icons/icon-8.svg')
+        return 'static/icons/icon-8.svg'
 
     elif id_tag == 801:
-        hourly_images.append('static/icons/icon-3.svg')
+        return 'static/icons/icon-3.svg'
 
     elif id_tag == 802:
-        hourly_images.append('static/icons/icon-5.svg')
+        return 'static/icons/icon-5.svg'
 
     elif id_tag == 803:
-        hourly_images.append('static/icons/icon-6.svg')
+        return 'static/icons/icon-6.svg'
 
     elif id_tag == 803 or id_tag == 804:
-        hourly_images.append('static/icons/icon-6.svg')
+        return 'static/icons/icon-6.svg'
 
     else:
-        hourly_images.append('error')
+        return 'error'
 
 
 def get_sunrise_sunset(lat, long):
@@ -151,7 +151,7 @@ def weather():
     # Hourly Weather
     hourly_source = urllib.request.urlopen(
         'https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon +
-        '&exclude=minutely&appid=' + api).read()
+        '&exclude=minutely,current&appid=' + api).read()
     hourly_data = json.loads(hourly_source)
     print(hourly_data)
     # Hourly Weather stored in dictionary
@@ -223,30 +223,46 @@ def weather():
         'day_1_temp': int(round(1.8 * (hourly_data['daily'][0]['temp']['day'] - 273) + 32, 0)),
         'day_1_max': int(round(1.8 * (hourly_data['daily'][0]['temp']['max'] - 273) + 32, 0)),
         'day_1_min': int(round(1.8 * (hourly_data['daily'][0]['temp']['min'] - 273) + 32, 0)),
+        'day_1_main': hourly_data['daily'][0]['weather'][0]['main'],
+        'day_1_id': hourly_data['daily'][0]['weather'][0]['id'],
         'day_2_temp': int(round(1.8 * (hourly_data['daily'][1]['temp']['day'] - 273) + 32, 0)),
         'day_2_max': int(round(1.8 * (hourly_data['daily'][1]['temp']['max'] - 273) + 32, 0)),
         'day_2_min': int(round(1.8 * (hourly_data['daily'][1]['temp']['min'] - 273) + 32, 0)),
+        'day_2_main': hourly_data['daily'][1]['weather'][0]['main'],
+        'day_2_id': hourly_data['daily'][1]['weather'][0]['id'],
         'day_3_temp': int(round(1.8 * (hourly_data['daily'][2]['temp']['day'] - 273) + 32, 0)),
         'day_3_max': int(round(1.8 * (hourly_data['daily'][2]['temp']['max'] - 273) + 32, 0)),
         'day_3_min': int(round(1.8 * (hourly_data['daily'][2]['temp']['min'] - 273) + 32, 0)),
+        'day_3_main': hourly_data['daily'][2]['weather'][0]['main'],
+        'day_3_id': hourly_data['daily'][2]['weather'][0]['id'],
         'day_4_temp': int(round(1.8 * (hourly_data['daily'][3]['temp']['day'] - 273) + 32, 0)),
         'day_4_max': int(round(1.8 * (hourly_data['daily'][3]['temp']['max'] - 273) + 32, 0)),
         'day_4_min': int(round(1.8 * (hourly_data['daily'][3]['temp']['min'] - 273) + 32, 0)),
+        'day_4_main': hourly_data['daily'][3]['weather'][0]['main'],
+        'day_4_id': hourly_data['daily'][3]['weather'][0]['id'],
         'day_5_temp': int(round(1.8 * (hourly_data['daily'][4]['temp']['day'] - 273) + 32, 0)),
         'day_5_max': int(round(1.8 * (hourly_data['daily'][4]['temp']['max'] - 273) + 32, 0)),
         'day_5_min': int(round(1.8 * (hourly_data['daily'][4]['temp']['min'] - 273) + 32, 0)),
+        'day_5_main': hourly_data['daily'][4]['weather'][0]['main'],
+        'day_5_id': hourly_data['daily'][4]['weather'][0]['id'],
         'day_6_temp': int(round(1.8 * (hourly_data['daily'][5]['temp']['day'] - 273) + 32, 0)),
         'day_6_max': int(round(1.8 * (hourly_data['daily'][5]['temp']['max'] - 273) + 32, 0)),
         'day_6_min': int(round(1.8 * (hourly_data['daily'][5]['temp']['min'] - 273) + 32, 0)),
+        'day_6_main': hourly_data['daily'][5]['weather'][0]['main'],
+        'day_6_id': hourly_data['daily'][5]['weather'][0]['id'],
         'day_7_temp': int(round(1.8 * (hourly_data['daily'][6]['temp']['day'] - 273) + 32, 0)),
         'day_7_max': int(round(1.8 * (hourly_data['daily'][6]['temp']['max'] - 273) + 32, 0)),
         'day_7_min': int(round(1.8 * (hourly_data['daily'][6]['temp']['min'] - 273) + 32, 0)),
+        'day_7_main': hourly_data['daily'][6]['weather'][0]['main'],
+        'day_7_id': hourly_data['daily'][6]['weather'][0]['id'],
         'day_8_temp': int(round(1.8 * (hourly_data['daily'][7]['temp']['day'] - 273) + 32, 0)),
         'day_8_max': int(round(1.8 * (hourly_data['daily'][7]['temp']['max'] - 273) + 32, 0)),
         'day_8_min': int(round(1.8 * (hourly_data['daily'][7]['temp']['min'] - 273) + 32, 0)),
+        'day_8_main': hourly_data['daily'][7]['weather'][0]['main'],
+        'day_8_id': hourly_data['daily'][7]['weather'][0]['id'],
     }
 
-    # print(data_daily)
+    # print(data_daily['day_1_main'])
     # Organizing the hours
     hour_1 = time.localtime(data_hourly['hour_1']).tm_hour
     hour_2 = time.localtime(data_hourly['hour_2']).tm_hour
@@ -266,8 +282,11 @@ def weather():
                   hour_13]
     # Got icon for each hour
     for i in range(1, 13):
-        check_icon(data_hourly['hour_' + str(i) + '_id'])
+        hourly_images.append(check_icon(data_hourly['hour_' + str(i) + '_id']))
         main_list.append(data_hourly['hour_' + str(i) + '_main'])
+
+    for j in range(1, 9):
+        daily_images.append(check_icon(data_daily['day_' + str(j) + '_id']))
 
     # for i in range(0, 12):
     #     print(id_list[i], hourly_images[i], main_list[i])
@@ -329,9 +348,9 @@ def weather():
     elif id_tag == 803 or 804:
         image = 'static/icons/icon-6.svg'
 
-    return render_template('home.html', data=data, image=image,
-                           hour_times=hour_times, hourly_images=hourly_images, data_hourly=data_hourly, data_daily=data_daily,
-                           month=month, day=date.day, lat=lat, lon=lon)
+    return render_template('home.html', data=data, image=image, hour_times=hour_times, hourly_images=hourly_images,
+                           data_hourly=data_hourly, data_daily=data_daily, daily_images=daily_images, month=month,
+                           day=date.day, lat=lat, lon=lon)
 
 
 if __name__ == '__main__':

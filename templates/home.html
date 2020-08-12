@@ -21,7 +21,7 @@
 <div class="site-content">
     <div class="site-header">
         <div class="container">
-            <img alt="Weather App Logo" height="90" width="90" src="{{url_for('static', filename='weather_icon.jpg')}}">
+            <img alt="Weather App Logo" height="90" src="{{url_for('static', filename='weather_icon.jpg')}}" width="90">
             <div class="logo-type">
                 <h1 class="site-title">Weather</h1>
                 <small class="site-description">By Program Explorers</small>
@@ -34,8 +34,8 @@
     <div class="hero" data-bg-image="landscape.jpg" height="300px"
          style="background-image: url('static/landscape.jpg');">
         <div class="container">
-            <form method="post" class="find-location">
-                <input placeholder="Find your location..." name="city" type="text">
+            <form class="find-location" method="post">
+                <input name="city" placeholder="Find your location..." type="text">
                 <input type="submit" value="Find">
             </form>
 
@@ -58,7 +58,7 @@
                             </div>
                         </div>
                         <!--<span><img alt="" src="static/icons/icon-umberella.png">{{data.humidity}}%</span>-->
-                        <span><img alt="" src="static/icons/humiditywater.png" height="9%" width="9%">{{data.humidity}}%</span>
+                        <span><img alt="" height="9%" src="static/icons/humiditywater.png" width="9%">{{data.humidity}}%</span>
                         <span><img alt="" src="static/icons/icon-wind.png">{{data.wind_speed}}mph</span>
                         <span><img alt="" src="static/icons/icon-compass.png">East</span>
                     </div>
@@ -152,13 +152,13 @@
                             <div class="forecast-content">
                                 <div class="location">{{data.city_name}}</div>
                                 <div class="degree">
-                                    <div class="num">{{data.temp}}<sup>o</sup>F</div>
+                                    <div class="num">{{data_daily.day_1_temp}}<sup>o</sup>F</div>
                                     <div class="forecast-icon">
-                                        <img alt="" src={{image}} width=90>
+                                        <img alt="" src={{daily_images[0]}} width=90>
                                     </div>
                                 </div>
                                 <!--<span><img alt="" src="static/icons/icon-umberella.png">{{data.humidity}}%</span>-->
-                                <span><img alt="" src="static/icons/humiditywater.png" height="9%" width="9%">{{data.humidity}}%</span>
+                                <span><img alt="" height="9%" src="static/icons/humiditywater.png" width="9%">{{data.humidity}}%</span>
                                 <span><img alt="" src="static/icons/icon-wind.png">{{data.wind_speed}}mph</span>
                                 <span><img alt="" src="static/icons/icon-compass.png">East</span>
                             </div>
@@ -170,10 +170,12 @@
                             </div> <!-- .forecast-header -->
                             <div class="forecast-content">
                                 <div class="forecast-icon">
-                                    <img alt="" src={{hourly_images[1]}} width=48>
+                                    <img alt="" src={{daily_images[1]}} width=48>
                                 </div>
-                                <div class="degree">{{data_hourly['hour_1_temp']}}<sup>o</sup>F</div>
-                                <small>{{data_hourly['hour_1_windspeed']}}mph</small>
+                                <div class="degree">{{data_daily['day_2_temp']}}<sup>o</sup>F</div>
+                                <small>{{data_daily['day_2_main']}}</small>
+                                <br><br>
+                                <small>{{data_daily['day_2_max']}}/{{data_daily['day_2_min']}} <sup>o</sup>F</small>
                             </div>
                         </div>
                         <div class="forecast">
@@ -182,10 +184,12 @@
                             </div> <!-- .forecast-header -->
                             <div class="forecast-content">
                                 <div class="forecast-icon">
-                                    <img alt="" src={{hourly_images[2]}} width=48>
+                                    <img alt="" src={{daily_images[2]}} width=48>
                                 </div>
-                                <div class="degree">{{data_hourly['hour_2_temp']}}<sup>o</sup>F</div>
-                                <small>{{data_hourly['hour_2_windspeed']}}mph</small>
+                                <div class="degree">{{data_daily['day_3_temp']}}<sup>o</sup>F</div>
+                                <small>{{data_daily['day_3_main']}}</small>
+                                <br><br>
+                                <small>{{data_daily['day_3_max']}}/{{data_daily['day_3_min']}} <sup>o</sup>F</small>
                             </div>
                         </div>
                         <div class="forecast">
@@ -194,10 +198,12 @@
                             </div> <!-- .forecast-header -->
                             <div class="forecast-content">
                                 <div class="forecast-icon">
-                                    <img alt="" src={{hourly_images[3]}} width=48>
+                                    <img alt="" src={{daily_images[3]}} width=48>
                                 </div>
-                                <div class="degree">{{data_hourly['hour_3_temp']}}<sup>o</sup>F</div>
-                                <small>{{data_hourly['hour_3_windspeed']}}mph</small>
+                                <div class="degree">{{data_daily['day_4_temp']}}<sup>o</sup>F</div>
+                                <small>{{data_daily['day_4_main']}}</small>
+                                <br><br>
+                                <small>{{data_daily['day_4_max']}}/{{data_daily['day_4_min']}} <sup>o</sup>F</small>
                             </div>
                         </div>
                         <div class="forecast">
@@ -206,10 +212,12 @@
                             </div> <!-- .forecast-header -->
                             <div class="forecast-content">
                                 <div class="forecast-icon">
-                                    <img alt="" src={{hourly_images[4]}} width=48>
+                                    <img alt="" src={{daily_images[4]}} width=48>
                                 </div>
-                                <div class="degree">{{data_hourly['hour_4_temp']}}<sup>o</sup>F</div>
-                                <small>{{data_hourly['hour_4_windspeed']}}mph</small>
+                                <div class="degree">{{data_daily['day_5_temp']}}<sup>o</sup>F</div>
+                                <small>{{data_daily['day_5_main']}}</small>
+                                <br><br>
+                                <small>{{data_daily['day_5_max']}}/{{data_daily['day_5_min']}} <sup>o</sup>F</small>
                             </div>
                         </div>
                         <div class="forecast">
@@ -218,10 +226,12 @@
                             </div> <!-- .forecast-header -->
                             <div class="forecast-content">
                                 <div class="forecast-icon">
-                                    <img alt="" src={{hourly_images[5]}} width=48>
+                                    <img alt="" src={{daily_images[5]}} width=48>
                                 </div>
-                                <div class="degree">{{data_hourly['hour_5_temp']}}<sup>o</sup>F</div>
-                                <small>{{data_hourly['hour_5_windspeed']}}mph</small>
+                                <div class="degree">{{data_daily['day_6_temp']}}<sup>o</sup>F</div>
+                                <small>{{data_daily['day_6_main']}}</small>
+                                <br><br>
+                                <small>{{data_daily['day_6_max']}}/{{data_daily['day_6_min']}} <sup>o</sup>F</small>
                             </div>
                         </div>
                         <div class="forecast">
@@ -230,10 +240,12 @@
                             </div> <!-- .forecast-header -->
                             <div class="forecast-content">
                                 <div class="forecast-icon">
-                                    <img alt="" src={{hourly_images[6]}} width=48>
+                                    <img alt="" src={{daily_images[6]}} width=48>
                                 </div>
-                                <div class="degree">{{data_hourly['hour_6_temp']}}<sup>o</sup>F</div>
-                                <small>{{data_hourly['hour_6_windspeed']}}mph</small>
+                                <div class="degree">{{data_daily['day_7_temp']}}<sup>o</sup>F</div>
+                                <small>{{data_daily['day_7_main']}}</small>
+                                <br><br>
+                                <small>{{data_daily['day_7_max']}}/{{data_daily['day_7_min']}}<sup>o</sup>F</small>
                             </div>
                         </div>
                     </div>
@@ -263,9 +275,9 @@
                                 allowfullscreen
                                 frameborder="2"
                                 height="450"
-                                width="500"
                                 src="https://www.ventusky.com/?p={{lat}};{{lon}};10&l=temperature-2m"
-                                style="border:10">
+                                style="border:10"
+                                width="500">
                         </iframe>
                     </div>
                 </div>
