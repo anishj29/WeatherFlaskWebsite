@@ -123,42 +123,37 @@ def weather():
         "wind_speed": list_of_data['wind']['speed'],
         'id': list_of_data['weather'][0]['id'],
         'sunrise': list_of_data['sys']['sunrise'],
-        'sunset': list_of_data['sys']['sunset']
+        'sunset': list_of_data['sys']['sunset'],
+        'offset': list_of_data['timezone']
     }
     lat = str(list_of_data['coord']['lat'])
     lon = str(list_of_data['coord']['lon'])
-
     # Sunrise and Sunset
-    get_sunrise_sunset(float(lat), float(lon))
-    rise_hour = int(sunr[0:2])
-    set_hour = int(suns[0:2])
-    rise_min = sunr[3:5]
-    set_min = suns[3:5]
-
-    if rise_hour == 0 or rise_hour == 1 or rise_hour == 2 or rise_hour == 3 or rise_hour == 4:
-        rise_hour += 12
-
-    if set_hour == 0 or set_hour == 1 or set_hour == 2 or set_hour == 3 or set_hour == 4:
-        set_hour += 12
+    # get_sunrise_sunset(float(lat), float(lon))
+    # rise_hour = int(sunr[0:2])
+    # set_hour = int(suns[0:2])
+    # rise_min = sunr[3:5]
+    # set_min = suns[3:5]
     #
-    # # rise_hour -= 4
-    # # set_hour -= 4
+    # if rise_hour == 0 or rise_hour == 1 or rise_hour == 2 or rise_hour == 3 or rise_hour == 4:
+    #     rise_hour += 12
     #
-    # rise_hour += 5
-    # set_hour += 5
-    sunrise = str(rise_hour) + ':' + str(rise_min)
-    sunset = str(set_hour) + ':' + str(set_min)
-
-    # sun_times = [sunrise, sunset]
-
-    # print(strftime("%m/%d/%Y %I:%M:%S %p", localtime(data['sunrise'])))
+    # if set_hour == 0 or set_hour == 1 or set_hour == 2 or set_hour == 3 or set_hour == 4:
+    #     set_hour += 12
+    # print(data['sunrise'], data['sunset'], data['offset'])
+    sunrise_time = data['sunrise'] + data['offset']
+    sunset_time = data['sunset'] + data['offset']
+    # print('sunrise time: ', sunrise_time, 'sunset time:', sunset_time)
+    # sunrise = datetime.fromtimestamp(sunrise_time).strftime('%Y-%m-%d %H:%M:%S')
+    # sunset = datetime.fromtimestamp(sunset_time).strftime('%Y-%m-%d %H:%M:%S')
+    # print( new_city, '::::::',sunrise, '----', sunset)
 
     # Hourly Weather
     hourly_source = urllib.request.urlopen(
         'https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon +
         '&exclude=minutely,daily&appid=' + api).read()
     hourly_data = json.loads(hourly_source)
-    print(hourly_data)
+    # print(hourly_data)
     # Hourly Weather stored in dictionary
     data_hourly = {
         'hour_1': hourly_data['hourly'][0]['dt'],
@@ -220,7 +215,8 @@ def weather():
         'hour_12_temp': int(round(1.8 * (hourly_data['hourly'][11]['temp'] - 273) + 32, 0)),
         'hour_12_windspeed': hourly_data['hourly'][11]['wind_speed'],
         'hour_12_id': hourly_data['hourly'][11]['weather'][0]['id'],
-        'hour_12_main': hourly_data['hourly'][11]['weather'][0]['main']
+        'hour_12_main': hourly_data['hourly'][11]['weather'][0]['main'],
+        'hour_13': hourly_data['hourly'][12]['dt']
     }
     # Organizing the hours
     hour_1 = time.localtime(data_hourly['hour_1']).tm_hour
@@ -235,9 +231,10 @@ def weather():
     hour_10 = time.localtime(data_hourly['hour_10']).tm_hour
     hour_11 = time.localtime(data_hourly['hour_11']).tm_hour
     hour_12 = time.localtime(data_hourly['hour_12']).tm_hour
+    hour_13 = time.localtime(data_hourly['hour_13']).tm_hour
 
-    hour_times = [hour_1, hour_2, hour_3, hour_4, hour_5, hour_6, hour_7, hour_8, hour_9, hour_10, hour_11, hour_12]
-
+    hour_times = [hour_1, hour_2, hour_3, hour_4, hour_5, hour_6, hour_7, hour_8, hour_9, hour_10, hour_11, hour_12,
+                  hour_13]
     # Got icon for each hour
     for i in range(1, 13):
         check_icon(data_hourly['hour_' + str(i) + '_id'])
@@ -303,24 +300,10 @@ def weather():
     elif id_tag == 803 or 804:
         image = 'static/icons/icon-6.svg'
 
-    # sunrise = time.localtime(data['sunrise'])
-    # sunset = time.localtime(data['sunset'])
-    #
-    # sunrise_min = sunrise.tm_min
-    # sunset_min = sunset.tm_min
-    # print(hourly_data)
 
-    # if len(str(sunset_min)) == 1:
-    #     sunset_min = str(0) + str(sunset_min)
-    #
-    # if len(str(sunrise_min)) == 1:
-    #     sunrise_min = str(0) + str(sunrise_min)
-
-    # print(sun_times)
-
-    return render_template('home.html', data=data, image=image, sunrise=sunrise, sunset=sunset,
+    return render_template('home.html', data=data, image=image,
                            hour_times=hour_times, hourly_images=hourly_images, data_hourly=data_hourly, month=month,
-                           day=date.day)
+                           day=date.day, lat=lat, lon=lon)
 
 
 if __name__ == '__main__':
