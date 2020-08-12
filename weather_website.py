@@ -151,9 +151,9 @@ def weather():
     # Hourly Weather
     hourly_source = urllib.request.urlopen(
         'https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon +
-        '&exclude=minutely,daily&appid=' + api).read()
+        '&exclude=minutely&appid=' + api).read()
     hourly_data = json.loads(hourly_source)
-    # print(hourly_data)
+    print(hourly_data)
     # Hourly Weather stored in dictionary
     data_hourly = {
         'hour_1': hourly_data['hourly'][0]['dt'],
@@ -218,6 +218,35 @@ def weather():
         'hour_12_main': hourly_data['hourly'][11]['weather'][0]['main'],
         'hour_13': hourly_data['hourly'][12]['dt']
     }
+
+    data_daily = {
+        'day_1_temp': int(round(1.8 * (hourly_data['daily'][0]['temp']['day'] - 273) + 32, 0)),
+        'day_1_max': int(round(1.8 * (hourly_data['daily'][0]['temp']['max'] - 273) + 32, 0)),
+        'day_1_min': int(round(1.8 * (hourly_data['daily'][0]['temp']['min'] - 273) + 32, 0)),
+        'day_2_temp': int(round(1.8 * (hourly_data['daily'][1]['temp']['day'] - 273) + 32, 0)),
+        'day_2_max': int(round(1.8 * (hourly_data['daily'][1]['temp']['max'] - 273) + 32, 0)),
+        'day_2_min': int(round(1.8 * (hourly_data['daily'][1]['temp']['min'] - 273) + 32, 0)),
+        'day_3_temp': int(round(1.8 * (hourly_data['daily'][2]['temp']['day'] - 273) + 32, 0)),
+        'day_3_max': int(round(1.8 * (hourly_data['daily'][2]['temp']['max'] - 273) + 32, 0)),
+        'day_3_min': int(round(1.8 * (hourly_data['daily'][2]['temp']['min'] - 273) + 32, 0)),
+        'day_4_temp': int(round(1.8 * (hourly_data['daily'][3]['temp']['day'] - 273) + 32, 0)),
+        'day_4_max': int(round(1.8 * (hourly_data['daily'][3]['temp']['max'] - 273) + 32, 0)),
+        'day_4_min': int(round(1.8 * (hourly_data['daily'][3]['temp']['min'] - 273) + 32, 0)),
+        'day_5_temp': int(round(1.8 * (hourly_data['daily'][4]['temp']['day'] - 273) + 32, 0)),
+        'day_5_max': int(round(1.8 * (hourly_data['daily'][4]['temp']['max'] - 273) + 32, 0)),
+        'day_5_min': int(round(1.8 * (hourly_data['daily'][4]['temp']['min'] - 273) + 32, 0)),
+        'day_6_temp': int(round(1.8 * (hourly_data['daily'][5]['temp']['day'] - 273) + 32, 0)),
+        'day_6_max': int(round(1.8 * (hourly_data['daily'][5]['temp']['max'] - 273) + 32, 0)),
+        'day_6_min': int(round(1.8 * (hourly_data['daily'][5]['temp']['min'] - 273) + 32, 0)),
+        'day_7_temp': int(round(1.8 * (hourly_data['daily'][6]['temp']['day'] - 273) + 32, 0)),
+        'day_7_max': int(round(1.8 * (hourly_data['daily'][6]['temp']['max'] - 273) + 32, 0)),
+        'day_7_min': int(round(1.8 * (hourly_data['daily'][6]['temp']['min'] - 273) + 32, 0)),
+        'day_8_temp': int(round(1.8 * (hourly_data['daily'][7]['temp']['day'] - 273) + 32, 0)),
+        'day_8_max': int(round(1.8 * (hourly_data['daily'][7]['temp']['max'] - 273) + 32, 0)),
+        'day_8_min': int(round(1.8 * (hourly_data['daily'][7]['temp']['min'] - 273) + 32, 0)),
+    }
+
+    # print(data_daily)
     # Organizing the hours
     hour_1 = time.localtime(data_hourly['hour_1']).tm_hour
     hour_2 = time.localtime(data_hourly['hour_2']).tm_hour
@@ -300,10 +329,9 @@ def weather():
     elif id_tag == 803 or 804:
         image = 'static/icons/icon-6.svg'
 
-
     return render_template('home.html', data=data, image=image,
-                           hour_times=hour_times, hourly_images=hourly_images, data_hourly=data_hourly, month=month,
-                           day=date.day, lat=lat, lon=lon)
+                           hour_times=hour_times, hourly_images=hourly_images, data_hourly=data_hourly, data_daily=data_daily,
+                           month=month, day=date.day, lat=lat, lon=lon)
 
 
 if __name__ == '__main__':
