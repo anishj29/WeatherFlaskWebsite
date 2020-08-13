@@ -4,7 +4,7 @@
  * Email: contact[at]themezy.com
  * Url: http://www.themezy.com
  */
-/*=========================================== 
+/*===========================================
  * Importing CSS Libraries
  *===========================================*/
 article,
@@ -1114,23 +1114,24 @@ form textarea {
  * Header Styles
  */
 .site-header {
-  padding: 50px 0; }
+  padding: 20px 0; }
   .site-header .branding {
     float: left; }
     .site-header .branding .logo, .site-header .branding .logo-type {
       display: inline-block;
-      vertical-align: middle; }
+      vertical-align: top; }
     .site-header .branding .logo {
+      margin-left: 10px;
       margin-right: 10px; }
     .site-header .branding .site-title {
-      margin-bottom: 5px;
+      margin-bottom: 10px;
       font-size: 16px;
       font-size: 1.1428571429em;
       color: white; }
     .site-header .branding .site-description {
       font-size: 10px;
       font-size: 0.7142857143em;
-      display: block;
+      display: ;
       color: #bfc1c8; }
 
 .main-navigation {
@@ -1207,7 +1208,7 @@ form textarea {
 
 .hero {
   background-size: cover;
-  padding: 70px 0;
+  padding: 10px 0;
   min-height: 350px; }
 
 .find-location {
