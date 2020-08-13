@@ -3,6 +3,7 @@ import json
 import time
 import urllib.request
 from datetime import datetime
+from datetime import timezone
 
 import requests
 from flask import Flask, render_template, request
@@ -143,17 +144,18 @@ def weather():
     # print(data['sunrise'], data['sunset'], data['offset'])
     sunrise_time = data['sunrise'] + data['offset']
     sunset_time = data['sunset'] + data['offset']
-    # print('sunrise time: ', sunrise_time, 'sunset time:', sunset_time)
-    # sunrise = datetime.fromtimestamp(sunrise_time).strftime('%Y-%m-%d %H:%M:%S')
-    # sunset = datetime.fromtimestamp(sunset_time).strftime('%Y-%m-%d %H:%M:%S')
-    # print( new_city, '::::::',sunrise, '----', sunset)
+
+    sunrise = datetime.fromtimestamp(sunrise_time, timezone.utc).strftime('%I:%M %p')
+    sunset = datetime.fromtimestamp(sunset_time, timezone.utc).strftime('%I:%M %p')
+    sun_time = [sunrise, sunset]
 
     # Hourly Weather
     hourly_source = urllib.request.urlopen(
         'https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon +
         '&exclude=minutely,current&appid=' + api).read()
     hourly_data = json.loads(hourly_source)
-    print(hourly_data)
+    # print(hourly_data)
+
     # Hourly Weather stored in dictionary
     data_hourly = {
         'hour_1': hourly_data['hourly'][0]['dt'],
@@ -350,7 +352,7 @@ def weather():
 
     return render_template('home.html', data=data, image=image, hour_times=hour_times, hourly_images=hourly_images,
                            data_hourly=data_hourly, data_daily=data_daily, daily_images=daily_images, month=month,
-                           day=date.day, lat=lat, lon=lon)
+                           day=date.day, sun_time=sun_time, lat=lat, lon=lon)
 
 
 if __name__ == '__main__':
