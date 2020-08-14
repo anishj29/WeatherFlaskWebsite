@@ -2,6 +2,7 @@
 import json
 import time
 import urllib.request
+from geopy.geocoders import Nominatim
 from datetime import datetime, timezone
 from flask import Flask, render_template, request
 from flask_googlemaps import GoogleMaps
@@ -98,7 +99,6 @@ def weather():
         return render_template('404.html')
 
     else:
-        alert_source = urllib.request.urlopen('https://api.helios.earth/v1/alerts?lat=43.1563&lon=lat=33.5437&lon=-112.1155')
         data = {
             "country_code": str(list_of_data['sys']['country']),
             "city_name": str(city),
@@ -135,6 +135,14 @@ def weather():
             '&exclude=minutely,current&appid=' + api).read()
         hourly_data = json.loads(hourly_source)
 
+        geolocator = Nominatim(user_agent="hi")
+
+        location = geolocator.reverse(lat+", "+ lon,  language="en")
+
+        location = location.address.split(",")
+
+        state = location[5]
+        print(location)
         # Hourly Weather stored in dictionary
         data_hourly = {
             'hour_1': hourly_data['hourly'][0]['dt'],
@@ -321,7 +329,7 @@ def weather():
 
         return render_template('home.html', data=data, image=image, hour_times=hour_times, hourly_images=hourly_images,
                                data_hourly=data_hourly, data_daily=data_daily, daily_images=daily_images, month=month,
-                               day=date.day, sun_time=sun_time, lat=lat, lon=lon)
+                               day=date.day, sun_time=sun_time, lat=lat, lon=lon, state=state)
 
 
 if __name__ == '__main__':
