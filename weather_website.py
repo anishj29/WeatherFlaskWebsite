@@ -2,7 +2,6 @@
 import json
 import time
 import urllib.request
-from geopy.geocoders import Nominatim
 from datetime import datetime, timezone
 from flask import Flask, render_template, request
 from flask_googlemaps import GoogleMaps
@@ -12,8 +11,6 @@ daily_images = []
 id_list = []
 main_list = []
 
-sunr = ''
-suns = ''
 
 month_to_short = {1: 'Jan', 2: 'Feb', 3: 'Mar', 4: 'Apr', 5: 'May', 6: 'Jun', 7: 'Jul', 8: 'Aug', 9: 'Sep', 10: 'Oct',
                   11: 'Nov', 12: 'Dec'}
@@ -133,16 +130,14 @@ def weather():
         hourly_source = urllib.request.urlopen(
             'https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon +
             '&exclude=minutely,current&appid=' + api).read()
+
+        alerts_source = urllib.request.urlopen(
+            'https://api.weatherbit.io/v2.0/alerts?lat=' + lat + '&lon=' + lon + '&key'
+                                                                                 '=1cf128280bb04048bae0788e390369b2')
         hourly_data = json.loads(hourly_source)
+        # alerts_data = json.loads(alerts_source)
+        # print(alerts_data)
 
-        geolocator = Nominatim(user_agent="hi")
-
-        location = geolocator.reverse(lat+", "+ lon,  language="en")
-
-        location = location.address.split(",")
-
-        state = location[5]
-        print(location)
         # Hourly Weather stored in dictionary
         data_hourly = {
             'hour_1': hourly_data['hourly'][0]['dt'],
@@ -289,7 +284,6 @@ def weather():
             else:
                 hour_times[i] = str(hour_times[i]) + ' am'
 
-
         id_tag = data['id']
         id_tag_str = str(id_tag)
 
@@ -329,9 +323,8 @@ def weather():
 
         return render_template('home.html', data=data, image=image, hour_times=hour_times, hourly_images=hourly_images,
                                data_hourly=data_hourly, data_daily=data_daily, daily_images=daily_images, month=month,
-                               day=date.day, sun_time=sun_time, lat=lat, lon=lon, state=state)
+                               day=date.day, sun_time=sun_time, lat=lat, lon=lon)
 
 
 if __name__ == '__main__':
     app.run(debug=True)
-
