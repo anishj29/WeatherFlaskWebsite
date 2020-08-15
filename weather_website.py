@@ -4,7 +4,6 @@ import time
 import urllib.request
 from datetime import datetime, timezone
 from flask import Flask, render_template, request
-from flask_googlemaps import GoogleMaps
 
 hourly_images = []
 daily_images = []
@@ -64,7 +63,6 @@ def check_icon(id_tag):
 
 
 app = Flask(__name__)
-GoogleMaps(app)
 
 
 @app.route('/', methods=['POST', 'GET'])
@@ -131,12 +129,7 @@ def weather():
             'https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon +
             '&exclude=minutely,current&appid=' + api).read()
 
-        alerts_source = urllib.request.urlopen(
-            'https://api.weatherbit.io/v2.0/alerts?lat=' + lat + '&lon=' + lon + '&key'
-                                                                                 '=1cf128280bb04048bae0788e390369b2')
         hourly_data = json.loads(hourly_source)
-        # alerts_data = json.loads(alerts_source)
-        # print(alerts_data)
 
         # Hourly Weather stored in dictionary
         data_hourly = {
