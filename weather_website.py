@@ -148,7 +148,21 @@ def weather():
         day_6 = day_6.day
 
         list_of_days = [day, day_2, day_3, day_4, day_5, day_6]
-        print(list_of_days)
+        # print(list_of_days)
+
+        current_month = datetime_tz.month
+        month_2 = datetime_tz + datetime.timedelta(days=1)
+        month_2 = month_2.month
+        month_3 = datetime_tz + datetime.timedelta(days=2)
+        month_3 = month_3.month
+        month_4 = datetime_tz + datetime.timedelta(days=3)
+        month_4 = month_4.month
+        month_5 = datetime_tz + datetime.timedelta(days=4)
+        month_5 = month_5.month
+        month_6 = datetime_tz + datetime.timedelta(days=5)
+        month_6 = month_6.month
+
+        list_of_months = [current_month, month_2, month_3, month_4, month_5, month_6]
 
         current_hour = int(datetime_tz.strftime("%H"))
         hour_2 = current_hour + 1
@@ -362,7 +376,8 @@ def weather():
 
         return render_template('home.html', data=data, image=image, hour_times=hour_times, hourly_images=hourly_images,
                                data_hourly=data_hourly, data_daily=data_daily, daily_images=daily_images, month=month,
-                               day=date.day, sun_time=sun_time, list_of_hours=list_of_hours, lat=lat, lon=lon)
+                               day=date.day, sun_time=sun_time, list_of_hours=list_of_hours,
+                               list_of_months=list_of_months, lat=lat, lon=lon)
 
 
 if __name__ == '__main__':
