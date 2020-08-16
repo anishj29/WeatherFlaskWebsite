@@ -3,7 +3,9 @@ import json
 import time
 import urllib.request
 from datetime import datetime, timezone
+import datetime
 from flask import Flask, render_template, request
+import pytz
 
 hourly_images = []
 daily_images = []
@@ -13,7 +15,7 @@ main_list = []
 
 month_to_short = {1: 'Jan', 2: 'Feb', 3: 'Mar', 4: 'Apr', 5: 'May', 6: 'Jun', 7: 'Jul', 8: 'Aug', 9: 'Sep', 10: 'Oct',
                   11: 'Nov', 12: 'Dec'}
-date = datetime.today()
+date = datetime.datetime.today()
 
 month = month_to_short[date.month]
 
@@ -120,8 +122,8 @@ def weather():
         sunrise_time = data['sunrise'] + data['offset']
         sunset_time = data['sunset'] + data['offset']
 
-        sunrise = datetime.fromtimestamp(sunrise_time, timezone.utc).strftime('%I:%M %p')
-        sunset = datetime.fromtimestamp(sunset_time, timezone.utc).strftime('%I:%M %p')
+        sunrise = datetime.datetime.fromtimestamp(sunrise_time, timezone.utc).strftime('%I:%M %p')
+        sunset = datetime.datetime.fromtimestamp(sunset_time, timezone.utc).strftime('%I:%M %p')
         sun_time = [sunrise, sunset]
 
         # Hourly Weather
@@ -130,6 +132,49 @@ def weather():
             '&exclude=minutely,current&appid=' + api).read()
 
         hourly_data = json.loads(hourly_source)
+
+        tz = hourly_data['timezone']
+        datetime_tz = datetime.datetime.now(pytz.timezone(tz))
+        day = datetime_tz.day
+        day_2 = datetime_tz + datetime.timedelta(days=1)
+        day_2 = day_2.day
+        day_3 = datetime_tz + datetime.timedelta(days=2)
+        day_3 = day_3.day
+        day_4 = datetime_tz + datetime.timedelta(days=3)
+        day_4 = day_4.day
+        day_5 = datetime_tz + datetime.timedelta(days=4)
+        day_5 = day_5.day
+        day_6 = datetime_tz + datetime.timedelta(days=5)
+        day_6 = day_6.day
+
+        list_of_days = [day, day_2, day_3, day_4, day_5, day_6]
+        print(list_of_days)
+
+        current_hour = int(datetime_tz.strftime("%H"))
+        hour_2 = current_hour + 1
+        hour_3 = hour_2 + 1
+        hour_4 = hour_3 + 1
+        hour_5 = hour_4 + 1
+        hour_6 = hour_5 + 1
+        hour_7 = hour_6 + 1
+
+        list_of_hours = [current_hour, hour_2, hour_3, hour_4, hour_5, hour_6, hour_7]
+
+        for i in range(len(list_of_hours)):
+            if list_of_hours[i] > 24:
+                list_of_hours[i] -= 24
+
+            if list_of_hours[i] > 12:
+                list_of_hours[i] -= 12
+                list_of_hours[i] = str(list_of_hours[i]) + ' pm'
+
+            elif list_of_hours[i] == 0:
+                list_of_hours[i] = 12
+                list_of_hours[i] = str(list_of_hours[i]) + ' pm'
+
+            else:
+                list_of_hours[i] = str(list_of_hours[i]) + ' am'
+
 
         # Hourly Weather stored in dictionary
         data_hourly = {
@@ -256,6 +301,7 @@ def weather():
 
         hour_times = [hour_1, hour_2, hour_3, hour_4, hour_5, hour_6, hour_7, hour_8, hour_9, hour_10, hour_11, hour_12,
                       hour_13]
+
         # Got icon for each hour
         for i in range(1, 13):
             hourly_images.append(check_icon(data_hourly['hour_' + str(i) + '_id']))
@@ -264,7 +310,7 @@ def weather():
         for j in range(1, 9):
             daily_images.append(check_icon(data_daily['day_' + str(j) + '_id']))
 
-        # Addded pm or am tags based on the time
+        # Added pm or am tags based on the time
         for i in range(12):
             if hour_times[i] > 12:
                 hour_times[i] -= 12
@@ -316,7 +362,7 @@ def weather():
 
         return render_template('home.html', data=data, image=image, hour_times=hour_times, hourly_images=hourly_images,
                                data_hourly=data_hourly, data_daily=data_daily, daily_images=daily_images, month=month,
-                               day=date.day, sun_time=sun_time, lat=lat, lon=lon)
+                               day=date.day, sun_time=sun_time, list_of_hours=list_of_hours, lat=lat, lon=lon)
 
 
 if __name__ == '__main__':
