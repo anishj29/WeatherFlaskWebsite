@@ -146,23 +146,34 @@ def weather():
         day_5 = day_5.day
         day_6 = datetime_tz + datetime.timedelta(days=5)
         day_6 = day_6.day
+        day_7 = datetime_tz + datetime.timedelta(days=6)
+        day_7 = day_7.day
 
-        list_of_days = [day, day_2, day_3, day_4, day_5, day_6]
-        # print(list_of_days)
+
+
+        list_of_days = [day, day_2, day_3, day_4, day_5, day_6, day_7]
+
+        month_to_short = {1: 'Jan', 2: 'Feb', 3: 'Mar', 4: 'Apr', 5: 'May', 6: 'Jun', 7: 'Jul', 8: 'Aug', 9: 'Sep',
+                          10: 'Oct',
+                          11: 'Nov', 12: 'Dec'}
 
         current_month = datetime_tz.month
+        current_month = month_to_short[current_month]
         month_2 = datetime_tz + datetime.timedelta(days=1)
-        month_2 = month_2.month
+        month_2 = month_to_short[month_2.month]
         month_3 = datetime_tz + datetime.timedelta(days=2)
-        month_3 = month_3.month
+        month_3 = month_to_short[month_3.month]
         month_4 = datetime_tz + datetime.timedelta(days=3)
-        month_4 = month_4.month
+        month_4 = month_to_short[month_4.month]
         month_5 = datetime_tz + datetime.timedelta(days=4)
-        month_5 = month_5.month
+        month_5 = month_to_short[month_5.month]
         month_6 = datetime_tz + datetime.timedelta(days=5)
-        month_6 = month_6.month
+        month_6 = month_to_short[month_6.month]
+        month_7 = datetime_tz + datetime.timedelta(days=6)
+        month_7 = month_to_short[month_7.month]
 
-        list_of_months = [current_month, month_2, month_3, month_4, month_5, month_6]
+
+        list_of_months = [current_month, month_2, month_3, month_4, month_5, month_6, month_7]
 
         current_hour = int(datetime_tz.strftime("%H"))
         hour_2 = current_hour + 1
@@ -189,7 +200,8 @@ def weather():
             else:
                 list_of_hours[i] = str(list_of_hours[i]) + ' am'
 
-
+        alerts_api = '888c4677014d4578a511570492df67b0'
+        alerts = urllib.request.urlopen('https://api.weatherbit.io/v2.0/alerts?lat='+lat+'&lon='+lon+'&key='+ alerts_api)
         # Hourly Weather stored in dictionary
         data_hourly = {
             'hour_1': hourly_data['hourly'][0]['dt'],
@@ -375,8 +387,8 @@ def weather():
             image = 'static/icons/icon-6.svg'
 
         return render_template('home.html', data=data, image=image, hour_times=hour_times, hourly_images=hourly_images,
-                               data_hourly=data_hourly, data_daily=data_daily, daily_images=daily_images, month=month,
-                               day=date.day, sun_time=sun_time, list_of_hours=list_of_hours,
+                               data_hourly=data_hourly, data_daily=data_daily, daily_images=daily_images,
+                               days=list_of_days, sun_time=sun_time, list_of_hours=list_of_hours,
                                list_of_months=list_of_months, lat=lat, lon=lon)
 
 
