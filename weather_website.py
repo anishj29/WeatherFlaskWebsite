@@ -12,7 +12,6 @@ daily_images = []
 id_list = []
 main_list = []
 
-
 month_to_short = {1: 'Jan', 2: 'Feb', 3: 'Mar', 4: 'Apr', 5: 'May', 6: 'Jun', 7: 'Jul', 8: 'Aug', 9: 'Sep', 10: 'Oct',
                   11: 'Nov', 12: 'Dec'}
 date = datetime.datetime.today()
@@ -107,7 +106,6 @@ def weather():
             "temp_min": int(round(1.8 * (list_of_data['main']['temp_min'] - 273) + 32, 0)),
             "temp_max": int(round(1.8 * (list_of_data['main']['temp_max'] - 273) + 32, 0)),
             "feels_like": int(round(1.8 * (list_of_data['main']['feels_like'] - 273) + 32, 0)),
-            "pressure": str(list_of_data['main']['pressure']),
             "humidity": str(list_of_data['main']['humidity']),
             "wind_speed": list_of_data['wind']['speed'],
             'id': list_of_data['weather'][0]['id'],
@@ -133,6 +131,7 @@ def weather():
 
         hourly_data = json.loads(hourly_source)
 
+        # Gets accurate hour, day and month for searched location
         tz = hourly_data['timezone']
         datetime_tz = datetime.datetime.now(pytz.timezone(tz))
         day = datetime_tz.day
@@ -149,29 +148,25 @@ def weather():
         day_7 = datetime_tz + datetime.timedelta(days=6)
         day_7 = day_7.day
 
-
-
         list_of_days = [day, day_2, day_3, day_4, day_5, day_6, day_7]
 
-        month_to_short = {1: 'Jan', 2: 'Feb', 3: 'Mar', 4: 'Apr', 5: 'May', 6: 'Jun', 7: 'Jul', 8: 'Aug', 9: 'Sep',
-                          10: 'Oct',
-                          11: 'Nov', 12: 'Dec'}
+        month_name = {1: 'Jan', 2: 'Feb', 3: 'Mar', 4: 'Apr', 5: 'May', 6: 'Jun', 7: 'Jul', 8: 'Aug', 9: 'Sep',
+                      10: 'Oct', 11: 'Nov', 12: 'Dec'}
 
         current_month = datetime_tz.month
-        current_month = month_to_short[current_month]
+        current_month = month_name[current_month]
         month_2 = datetime_tz + datetime.timedelta(days=1)
-        month_2 = month_to_short[month_2.month]
+        month_2 = month_name[month_2.month]
         month_3 = datetime_tz + datetime.timedelta(days=2)
-        month_3 = month_to_short[month_3.month]
+        month_3 = month_name[month_3.month]
         month_4 = datetime_tz + datetime.timedelta(days=3)
-        month_4 = month_to_short[month_4.month]
+        month_4 = month_name[month_4.month]
         month_5 = datetime_tz + datetime.timedelta(days=4)
-        month_5 = month_to_short[month_5.month]
+        month_5 = month_name[month_5.month]
         month_6 = datetime_tz + datetime.timedelta(days=5)
-        month_6 = month_to_short[month_6.month]
+        month_6 = month_name[month_6.month]
         month_7 = datetime_tz + datetime.timedelta(days=6)
-        month_7 = month_to_short[month_7.month]
-
+        month_7 = month_name[month_7.month]
 
         list_of_months = [current_month, month_2, month_3, month_4, month_5, month_6, month_7]
 
@@ -201,67 +196,44 @@ def weather():
                 list_of_hours[i] = str(list_of_hours[i]) + ' am'
 
         alerts_api = '888c4677014d4578a511570492df67b0'
-        alerts = urllib.request.urlopen('https://api.weatherbit.io/v2.0/alerts?lat='+lat+'&lon='+lon+'&key='+ alerts_api)
+        alerts = urllib.request.urlopen(
+            'https://api.weatherbit.io/v2.0/alerts?lat=' + lat + '&lon=' + lon + '&key=' + alerts_api)
         # Hourly Weather stored in dictionary
         data_hourly = {
-            'hour_1': hourly_data['hourly'][0]['dt'],
             'hour_1_temp': int(round(1.8 * (hourly_data['hourly'][0]['temp'] - 273) + 32, 0)),
             'hour_1_id': hourly_data['hourly'][0]['weather'][0]['id'],
             'hour_1_main': hourly_data['hourly'][0]['weather'][0]['main'],
-            'hour_1_windspeed': hourly_data['hourly'][0]['wind_speed'],
-            'hour_2': hourly_data['hourly'][1]['dt'],
             'hour_2_temp': int(round(1.8 * (hourly_data['hourly'][1]['temp'] - 273) + 32, 0)),
-            'hour_2_windspeed': hourly_data['hourly'][1]['wind_speed'],
             'hour_2_id': hourly_data['hourly'][1]['weather'][0]['id'],
             'hour_2_main': hourly_data['hourly'][1]['weather'][0]['main'],
-            'hour_3': hourly_data['hourly'][2]['dt'],
             'hour_3_temp': int(round(1.8 * (hourly_data['hourly'][2]['temp'] - 273) + 32, 0)),
-            'hour_3_windspeed': hourly_data['hourly'][2]['wind_speed'],
             'hour_3_id': hourly_data['hourly'][2]['weather'][0]['id'],
             'hour_3_main': hourly_data['hourly'][2]['weather'][0]['main'],
-            'hour_4': hourly_data['hourly'][3]['dt'],
             'hour_4_temp': int(round(1.8 * (hourly_data['hourly'][3]['temp'] - 273) + 32, 0)),
-            'hour_4_windspeed': hourly_data['hourly'][3]['wind_speed'],
             'hour_4_id': hourly_data['hourly'][3]['weather'][0]['id'],
             'hour_4_main': hourly_data['hourly'][3]['weather'][0]['main'],
-            'hour_5': hourly_data['hourly'][4]['dt'],
             'hour_5_temp': int(round(1.8 * (hourly_data['hourly'][4]['temp'] - 273) + 32, 0)),
-            'hour_5_windspeed': hourly_data['hourly'][4]['wind_speed'],
             'hour_5_id': hourly_data['hourly'][4]['weather'][0]['id'],
             'hour_5_main': hourly_data['hourly'][4]['weather'][0]['main'],
-            'hour_6': hourly_data['hourly'][5]['dt'],
             'hour_6_temp': int(round(1.8 * (hourly_data['hourly'][5]['temp'] - 273) + 32, 0)),
-            'hour_6_windspeed': hourly_data['hourly'][5]['wind_speed'],
             'hour_6_id': hourly_data['hourly'][5]['weather'][0]['id'],
             'hour_6_main': hourly_data['hourly'][5]['weather'][0]['main'],
-            'hour_7': hourly_data['hourly'][6]['dt'],
             'hour_7_temp': int(round(1.8 * (hourly_data['hourly'][6]['temp'] - 273) + 32, 0)),
-            'hour_7_windspeed': hourly_data['hourly'][6]['wind_speed'],
             'hour_7_id': hourly_data['hourly'][6]['weather'][0]['id'],
             'hour_7_main': hourly_data['hourly'][6]['weather'][0]['main'],
-            'hour_8': hourly_data['hourly'][7]['dt'],
             'hour_8_temp': int(round(1.8 * (hourly_data['hourly'][7]['temp'] - 273) + 32, 0)),
-            'hour_8_windspeed': hourly_data['hourly'][7]['wind_speed'],
             'hour_8_id': hourly_data['hourly'][7]['weather'][0]['id'],
             'hour_8_main': hourly_data['hourly'][7]['weather'][0]['main'],
-            'hour_9': hourly_data['hourly'][8]['dt'],
             'hour_9_temp': int(round(1.8 * (hourly_data['hourly'][8]['temp'] - 273) + 32, 0)),
-            'hour_9_windspeed': hourly_data['hourly'][8]['wind_speed'],
             'hour_9_id': hourly_data['hourly'][8]['weather'][0]['id'],
             'hour_9_main': hourly_data['hourly'][8]['weather'][0]['main'],
-            'hour_10': hourly_data['hourly'][9]['dt'],
             'hour_10_temp': int(round(1.8 * (hourly_data['hourly'][9]['temp'] - 273) + 32, 0)),
-            'hour_10_windspeed': hourly_data['hourly'][9]['wind_speed'],
             'hour_10_id': hourly_data['hourly'][9]['weather'][0]['id'],
             'hour_10_main': hourly_data['hourly'][9]['weather'][0]['main'],
-            'hour_11': hourly_data['hourly'][10]['dt'],
             'hour_11_temp': int(round(1.8 * (hourly_data['hourly'][10]['temp'] - 273) + 32, 0)),
-            'hour_11_windspeed': hourly_data['hourly'][10]['wind_speed'],
             'hour_11_id': hourly_data['hourly'][10]['weather'][0]['id'],
             'hour_11_main': hourly_data['hourly'][10]['weather'][0]['main'],
-            'hour_12': hourly_data['hourly'][11]['dt'],
             'hour_12_temp': int(round(1.8 * (hourly_data['hourly'][11]['temp'] - 273) + 32, 0)),
-            'hour_12_windspeed': hourly_data['hourly'][11]['wind_speed'],
             'hour_12_id': hourly_data['hourly'][11]['weather'][0]['id'],
             'hour_12_main': hourly_data['hourly'][11]['weather'][0]['main'],
             'hour_13': hourly_data['hourly'][12]['dt']
@@ -310,24 +282,6 @@ def weather():
             'day_8_id': hourly_data['daily'][7]['weather'][0]['id'],
         }
 
-        # Organizing the hours
-        hour_1 = time.localtime(data_hourly['hour_1']).tm_hour
-        hour_2 = time.localtime(data_hourly['hour_2']).tm_hour
-        hour_3 = time.localtime(data_hourly['hour_3']).tm_hour
-        hour_4 = time.localtime(data_hourly['hour_4']).tm_hour
-        hour_5 = time.localtime(data_hourly['hour_5']).tm_hour
-        hour_6 = time.localtime(data_hourly['hour_6']).tm_hour
-        hour_7 = time.localtime(data_hourly['hour_7']).tm_hour
-        hour_8 = time.localtime(data_hourly['hour_8']).tm_hour
-        hour_9 = time.localtime(data_hourly['hour_9']).tm_hour
-        hour_10 = time.localtime(data_hourly['hour_10']).tm_hour
-        hour_11 = time.localtime(data_hourly['hour_11']).tm_hour
-        hour_12 = time.localtime(data_hourly['hour_12']).tm_hour
-        hour_13 = time.localtime(data_hourly['hour_13']).tm_hour
-
-        hour_times = [hour_1, hour_2, hour_3, hour_4, hour_5, hour_6, hour_7, hour_8, hour_9, hour_10, hour_11, hour_12,
-                      hour_13]
-
         # Got icon for each hour
         for i in range(1, 13):
             hourly_images.append(check_icon(data_hourly['hour_' + str(i) + '_id']))
@@ -336,57 +290,10 @@ def weather():
         for j in range(1, 9):
             daily_images.append(check_icon(data_daily['day_' + str(j) + '_id']))
 
-        # Added pm or am tags based on the time
-        for i in range(12):
-            if hour_times[i] > 12:
-                hour_times[i] -= 12
-                hour_times[i] = str(hour_times[i]) + ' pm'
-
-            elif hour_times[i] == 0:
-                hour_times[i] = 12
-                hour_times[i] = str(hour_times[i]) + ' pm'
-
-            else:
-                hour_times[i] = str(hour_times[i]) + ' am'
-
         id_tag = data['id']
-        id_tag_str = str(id_tag)
+        image = check_icon(id_tag)
 
-        # Get icon for current weather
-        if id_tag == 800:
-            image = 'static/icons/icon-2.svg'
-
-        elif all(x == id_tag for x in (200, 201, 202, 230, 231, 232)):
-            image = 'static/icons/icon-11.svg'
-
-        elif all(x == id_tag for x in (210, 211, 212, 221)):
-            image = 'static/icons/icon-12.svg'
-
-        elif id_tag_str[0] == '3':
-            image = 'static/icons/icon-9.svg'
-
-        elif all(x == id_tag for x in (500, 501, 502, 503, 504)):
-            image = 'static/icons/icon-4.svg'
-
-        elif all(x == id_tag for x in (511, 520, 521, 522, 531)):
-            image = 'static/icons/icon-10.svg'
-
-        elif id_tag_str[0] == '6':
-            image = 'static/icons/icon-13.svg '
-
-        elif id_tag_str[0] == '7':
-            image = 'static/icons/icon-8.svg'
-
-        elif id_tag == 801:
-            image = 'static/icons/icon-3.svg'
-
-        elif id_tag == 802:
-            image = 'static/icons/icon-5.svg'
-
-        elif id_tag == 803 or 804:
-            image = 'static/icons/icon-6.svg'
-
-        return render_template('home.html', data=data, image=image, hour_times=hour_times, hourly_images=hourly_images,
+        return render_template('home.html', data=data, image=image, hourly_images=hourly_images,
                                data_hourly=data_hourly, data_daily=data_daily, daily_images=daily_images,
                                days=list_of_days, sun_time=sun_time, list_of_hours=list_of_hours,
                                list_of_months=list_of_months, lat=lat, lon=lon)
