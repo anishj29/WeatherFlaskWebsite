@@ -286,7 +286,17 @@
         <div class="fullwidth-block">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-4">
+                     <div class="live-camera col-md-3 col-sm-6">
+                         <h2 class="section-title">Alerts  <img alt="" height="8.5%" width="8.5%" src="{{alerts_image}}"></h2>
+                        <div>
+                            <h3>{{alerts_data['title']}}</h3>
+                            <h3>Locations: {{alerts_data['regions'][0]}}, {{alerts_data['regions'][1]}}, {{alerts_data['regions'][2]}}, {{alerts_data['regions'][3]}}</h3>
+                            <h4>{{alerts_data['description']}}</h4>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-6">
+                    </div>
+                    <div class="col-md-3 col-sm-6">
                         <h2 class="section-title">News</h2>
                         <iframe
                                 allowfullscreen
@@ -295,17 +305,11 @@
                                 style="border:10" width="500">
                         </iframe>
                     </div>
-                    <div class="col-md-4">
-                        <h2 class="section-title">Alerts</h2>
-                        <ul class="arrow-list">
-
-                        </ul>
-                    </div>
 
                 </div>
             </div>
         </div>
-    </main> <!-- .main-content -->
+    </main>
 
     <footer class="site-footer">
         <div class="container">

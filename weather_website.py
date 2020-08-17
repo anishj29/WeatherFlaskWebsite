@@ -69,6 +69,7 @@ app = Flask(__name__)
 @app.route('/', methods=['POST', 'GET'])
 def weather():
     global image
+    global alerts_image
     if request.method == 'POST':
         city = request.form['city'].title()
     else:
@@ -197,7 +198,27 @@ def weather():
 
         alerts_api = '888c4677014d4578a511570492df67b0'
         alerts = urllib.request.urlopen(
-            'https://api.weatherbit.io/v2.0/alerts?lat=' + lat + '&lon=' + lon + '&key=' + alerts_api)
+            'https://api.weatherbit.io/v2.0/alerts?lat=' + lat + '&lon=' + lon + '&key=' + alerts_api).read()
+
+        alerts_store = json.loads(alerts)
+
+        print(alerts_store)
+
+        alerts_data = {
+            'regions': alerts_store['alerts'][0]['regions'],
+            'expires': alerts_store['alerts'][0]['expires_utc'],
+            'effective': alerts_store['alerts'][0]['effective_local'],
+            'description': alerts_store['alerts'][0]['description'],
+            'effective_utc': alerts_store['alerts'][0]['effective_utc'],
+            'severity': alerts_store['alerts'][0]['severity'],
+            'title': alerts_store['alerts'][0]['title'],
+            'local_expire': alerts_store['alerts'][0]['expires_local']
+        }
+        print(alerts_data)
+        if alerts_data['severity'] == 'Warning':
+            alerts_image = 'static/alerts/warning.png'
+        else:
+            alerts_image = ''
         # Hourly Weather stored in dictionary
         data_hourly = {
             'hour_1_temp': int(round(1.8 * (hourly_data['hourly'][0]['temp'] - 273) + 32, 0)),
@@ -296,7 +317,7 @@ def weather():
         return render_template('home.html', data=data, image=image, hourly_images=hourly_images,
                                data_hourly=data_hourly, data_daily=data_daily, daily_images=daily_images,
                                days=list_of_days, sun_time=sun_time, list_of_hours=list_of_hours,
-                               list_of_months=list_of_months, lat=lat, lon=lon)
+                               list_of_months=list_of_months, lat=lat, lon=lon, alerts_data=alerts_data, alerts_image=alerts_image)
 
 
 if __name__ == '__main__':
