@@ -223,6 +223,8 @@ def weather():
 
         if alerts_data['severity'] == 'Warning':
             alerts_image = 'static/alerts/warning.png'
+        if alerts_data['severity'] == 'Watch':
+            alerts_data = 'static/alerts/watch.png'
         else:
             alerts_image = ''
         # Hourly Weather stored in dictionary
