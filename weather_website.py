@@ -1,6 +1,5 @@
 # Import Statements
 import json
-import time
 import urllib.request
 from datetime import datetime, timezone
 import datetime
