@@ -1,10 +1,10 @@
 # Import Statements
-
 import json
 import urllib.request
 from datetime import datetime, timezone
 import datetime
 from flask import Flask, render_template, request
+from googletrans import Translator
 import pytz
 
 hourly_images = []
@@ -202,7 +202,7 @@ def weather():
 
         alerts_store = json.loads(alerts)
 
-        print(alerts_store)
+        # print(alerts_store)
 
         alerts_data = {
             'regions': alerts_store['alerts'][0]['regions'],
@@ -214,7 +214,13 @@ def weather():
             'title': alerts_store['alerts'][0]['title'],
             'local_expire': alerts_store['alerts'][0]['expires_local']
         }
+
         print(alerts_data)
+
+        translator = Translator()
+        description = translator.translate(alerts_data['description'])
+        alerts_data['description'] = description.text.replace('English: ', '')
+
         if alerts_data['severity'] == 'Warning':
             alerts_image = 'static/alerts/warning.png'
         else:
@@ -317,7 +323,8 @@ def weather():
         return render_template('home.html', data=data, image=image, hourly_images=hourly_images,
                                data_hourly=data_hourly, data_daily=data_daily, daily_images=daily_images,
                                days=list_of_days, sun_time=sun_time, list_of_hours=list_of_hours,
-                               list_of_months=list_of_months, lat=lat, lon=lon, alerts_data=alerts_data, alerts_image=alerts_image)
+                               list_of_months=list_of_months, lat=lat, lon=lon, alerts_data=alerts_data,
+                               alerts_image=alerts_image)
 
 
 if __name__ == '__main__':
