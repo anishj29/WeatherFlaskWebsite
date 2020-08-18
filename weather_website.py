@@ -1,16 +1,18 @@
 # Import Statements
+import datetime
 import json
 import urllib.request
 from datetime import datetime, timezone
 import datetime
+import pytz
 from flask import Flask, render_template, request
 from googletrans import Translator
-import pytz
 
 hourly_images = []
 daily_images = []
 id_list = []
 main_list = []
+alerts_image = ''
 
 month_to_short = {1: 'Jan', 2: 'Feb', 3: 'Mar', 4: 'Apr', 5: 'May', 6: 'Jun', 7: 'Jul', 8: 'Aug', 9: 'Sep', 10: 'Oct',
                   11: 'Nov', 12: 'Dec'}
@@ -201,38 +203,44 @@ def weather():
             'https://api.weatherbit.io/v2.0/alerts?lat=' + lat + '&lon=' + lon + '&key=' + alerts_api).read()
 
         alerts_store = json.loads(alerts)
+        print(alerts_store)
 
         # print(alerts_store)
+        try:
+            alerts_data = {
+                'regions': 'Location:' + alerts_store['alerts'][0]['regions'],
+                'expires': alerts_store['alerts'][0]['expires_utc'],
+                'effective': alerts_store['alerts'][0]['effective_local'],
+                'description': alerts_store['alerts'][0]['description'],
+                'effective_utc': alerts_store['alerts'][0]['effective_utc'],
+                'severity': alerts_store['alerts'][0]['severity'],
+                'title': alerts_store['alerts'][0]['title'],
+                'local_expire': alerts_store['alerts'][0]['expires_local']
+            }
 
-        alerts_data = {
-            'regions': alerts_store['alerts'][0]['regions'],
-            'expires': alerts_store['alerts'][0]['expires_utc'],
-            'effective': alerts_store['alerts'][0]['effective_local'],
-            'description': alerts_store['alerts'][0]['description'],
-            'effective_utc': alerts_store['alerts'][0]['effective_utc'],
-            'severity': alerts_store['alerts'][0]['severity'],
-            'title': alerts_store['alerts'][0]['title'],
-            'local_expire': alerts_store['alerts'][0]['expires_local']
-        }
+        except IndexError:
+            alerts_data = {
+                'regions': "No alerts in this area"
+            }
 
-        # print(alerts_data)
-
-        translator = Translator()
-        description = translator.translate(alerts_data['description'])
-        description = description.text.replace('English: ', '')
-        description = description.replace('* WHAT...', 'What: ')
-        description = description.replace('* WHEN...', 'When: ')
-        description = description.replace('* WHERE...', 'Where: ')
-        description = description.replace('* IMPACTS...', 'Impacts: ')
-        # print(description)
-        alerts_data['description'] = description
-
-        if alerts_data['severity'] == 'Warning':
-            alerts_image = 'static/alerts/warning.png'
-        if alerts_data['severity'] == 'Watch':
-            alerts_data = 'static/alerts/watch.png'
         else:
-            alerts_image = ''
+            translator = Translator()
+            description = translator.translate(alerts_data['description'])
+            description = description.text.replace('English: ', '')
+            description = description.replace('* WHAT...', 'What: ')
+            description = description.replace('* WHEN...', 'When: ')
+            description = description.replace('* WHERE...', 'Where: ')
+            description = description.replace('* IMPACTS...', 'Impacts: ')
+            # des_what = description.split('What:')
+            # print(des_what)
+
+            alerts_data['description'] = description
+
+            if alerts_data['severity'] == 'Warning':
+                alerts_image = 'static/alerts/warning.png'
+
+            elif alerts_data['severity'] == 'Watch':
+                alerts_data = 'static/alerts/watch.png'
 
         # Hourly Weather stored in dictionary
         data_hourly = {
