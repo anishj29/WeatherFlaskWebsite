@@ -215,11 +215,17 @@ def weather():
             'local_expire': alerts_store['alerts'][0]['expires_local']
         }
 
-        print(alerts_data)
+        # print(alerts_data)
 
         translator = Translator()
         description = translator.translate(alerts_data['description'])
-        alerts_data['description'] = description.text.replace('English: ', '')
+        description = description.text.replace('English: ', '')
+        description = description.replace('* WHAT...', 'What: ')
+        description = description.replace('* WHEN...', 'When: ')
+        description = description.replace('* WHERE...', 'Where: ')
+        description = description.replace('* IMPACTS...', 'Impacts: ')
+        # print(description)
+        alerts_data['description'] = description
 
         if alerts_data['severity'] == 'Warning':
             alerts_image = 'static/alerts/warning.png'
@@ -227,6 +233,7 @@ def weather():
             alerts_data = 'static/alerts/watch.png'
         else:
             alerts_image = ''
+
         # Hourly Weather stored in dictionary
         data_hourly = {
             'hour_1_temp': int(round(1.8 * (hourly_data['hourly'][0]['temp'] - 273) + 32, 0)),
