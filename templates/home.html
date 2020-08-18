@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0,maximum-scale=1" name="viewport">
@@ -15,9 +14,7 @@
 
 </head>
 
-
 <body>
-
 <div class="site-content">
     <div class="site-header">
         <div class="container-fluid">
@@ -29,7 +26,6 @@
 
         </div>
     </div>
-
     <div class="hero" data-bg-image="landscape.jpg" height="300px"
          style="background-image: url('https://cdn.lynda.com/course/438407/438407-637286184088314228-16x9.jpg');">
         <div class="container">
@@ -250,7 +246,6 @@
                 </div>
             </div>
         </div>
-
         <div class="fullwidth-block" data-bg-color="#262936">
             <div class="container">
                 <h2 class="section-title" style="">Maps</h2>
@@ -281,7 +276,6 @@
                 </div>
             </div>
         </div>
-
         <div class="fullwidth-block">
             <div class="container">
                 <div class="row">
@@ -300,16 +294,21 @@
                         <h2 class="section-title">Alerts <img alt="" height="8.5%" width="8.5%" src="{{alerts_image}}">
                         </h2>
                         <div>
-                            <h3>{{alerts_data['title']}}</h3>
-                            <h3>{{alerts_data['regions']}}</h3>
-                            <h4>{{alerts_data['description']}}</h4>
-                        </div>
+                            {% if new_des == 'No alerts in this area!' %}
+                                <h3>No alerts in this area!</h3>
+                            {% else %}
+                                <h3>{{alerts_data['title']}}</h3>
+                                <h4>{{new_des[0]}}</h4>
+                                <h4>{{new_des[1]}}</h4>
+                                <h4>{{new_des[2]}}</h4>
+                                <h4>{{new_des[3]}}</h4>
+                            {% endif %}
+                       </div>
                     </div>
                 </div>
             </div>
         </div>
     </main>
-
     <footer class="site-footer">
         <div class="container">
             <div class="row">
@@ -320,16 +319,9 @@
                     </form>
                 </div>
             </div>
-
             <p class="colophon">Program Explorers. Designed by Themezy.</p>
         </div>
-    </footer> <!-- .site-footer -->
+    </footer>
 </div>
-
-<script src="js/jquery-1.11.1.min.js"></script>
-<script src="js/plugins.js"></script>
-<script src="js/app.js"></script>
-
 </body>
-
 </html>

@@ -71,6 +71,8 @@ app = Flask(__name__)
 @app.route('/', methods=['POST', 'GET'])
 def weather():
     global image
+    global ref_description
+    global alerts_data
     global alerts_image
     if request.method == 'POST':
         city = request.form['city'].title()
@@ -85,7 +87,8 @@ def weather():
 
     # your API key will come here
     api = '8a5edfd4d0e0f8953dbe82364cfc0b10'
-
+    ref_description = ''
+    alerts_data = ''
     try:
         # source contain json data from api
         source = urllib.request.urlopen(
@@ -208,7 +211,6 @@ def weather():
         # print(alerts_store)
         try:
             alerts_data = {
-                'regions': 'Location:' + alerts_store['alerts'][0]['regions'],
                 'expires': alerts_store['alerts'][0]['expires_utc'],
                 'effective': alerts_store['alerts'][0]['effective_local'],
                 'description': alerts_store['alerts'][0]['description'],
@@ -219,9 +221,7 @@ def weather():
             }
 
         except IndexError:
-            alerts_data = {
-                'regions': "No alerts in this area"
-            }
+            ref_description = 'No alerts in this area!'
 
         else:
             translator = Translator()
@@ -231,8 +231,27 @@ def weather():
             description = description.replace('* WHEN...', 'When: ')
             description = description.replace('* WHERE...', 'Where: ')
             description = description.replace('* IMPACTS...', 'Impacts: ')
-            # des_what = description.split('What:')
-            # print(des_what)
+            description = description.replace('* ADDITIONAL DETAILS...', 'Add Details: ')
+            print(description)
+
+            where_start = description.find('Where: ') + len('Where: ')
+            where_end = description.find('When')
+            where = description[where_start:where_end]
+
+            when_start = description.find('When: ') + len('When: ')
+            when_end = description.find('Impacts: ')
+            when = description[when_start:when_end]
+
+            impacts_start = description.find('Impacts: ') + len('Impacts: ')
+            impacts_end = description.find('Add Details: ')
+            impacts = description[impacts_start:impacts_end]
+
+            add_start = description.find('Add Details: ') + len('Add Details: ')
+            add_details = description[add_start:]
+
+            print(where, when, impacts, add_details)
+
+            ref_description = [where, when, impacts, add_details]
 
             alerts_data['description'] = description
 
@@ -341,7 +360,7 @@ def weather():
                                data_hourly=data_hourly, data_daily=data_daily, daily_images=daily_images,
                                days=list_of_days, sun_time=sun_time, list_of_hours=list_of_hours,
                                list_of_months=list_of_months, lat=lat, lon=lon, alerts_data=alerts_data,
-                               alerts_image=alerts_image)
+                               alerts_image=alerts_image, new_des=ref_description)
 
 
 if __name__ == '__main__':
