@@ -206,7 +206,7 @@ def weather():
             'https://api.weatherbit.io/v2.0/alerts?lat=' + lat + '&lon=' + lon + '&key=' + alerts_api).read()
 
         alerts_store = json.loads(alerts)
-        print(alerts_store)
+        # print(alerts_store)
 
         # print(alerts_store)
         try:
@@ -232,7 +232,7 @@ def weather():
             description = description.replace('* WHERE...', 'Where: ')
             description = description.replace('* IMPACTS...', 'Impacts: ')
             description = description.replace('* ADDITIONAL DETAILS...', 'Add Details: ')
-            print(description)
+            # print(description)
 
             where_start = description.find('Where: ') + len('Where: ')
             where_end = description.find('When')
@@ -343,8 +343,9 @@ def weather():
             'day_8_min': int(round(1.8 * (hourly_data['daily'][7]['temp']['min'] - 273) + 32, 0)),
             'day_8_main': hourly_data['daily'][7]['weather'][0]['main'],
             'day_8_id': hourly_data['daily'][7]['weather'][0]['id'],
+            'uv': round(hourly_data['daily'][0]['uvi'])
         }
-
+        # print(data_daily['uv'])
         # Got icon for each hour
         for i in range(1, 13):
             hourly_images.append(check_icon(data_hourly['hour_' + str(i) + '_id']))
