@@ -202,14 +202,26 @@ def weather():
             else:
                 list_of_hours[i] = str(list_of_hours[i]) + ' am'
 
+        get_id = urllib.request.urlopen("http://dataservice.accuweather.com/locations/v1/cities/search?"
+                                        "apikey=ktm9Gh7eXUxd0mSVe2zEgwb1QwcT58x1&q=" + new_city +
+                                        "&details=false").read()
+        city_id = json.loads(get_id)
+        key = city_id[0]["Key"]
+
+        get_pop = urllib.request.urlopen("http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/"+key +
+                                         "?apikey=ktm9Gh7eXUxd0mSVe2zEgwb1QwcT58x1&details=false ").read()
+        pop_info = json.loads(get_pop)
+
+        pop_list = []
+
+        for i in range(0, 8):
+            pop_list.append(pop_info[i]['PrecipitationProbability'])
+
         alerts_api = '888c4677014d4578a511570492df67b0'
         alerts = urllib.request.urlopen(
             'https://api.weatherbit.io/v2.0/alerts?lat=' + lat + '&lon=' + lon + '&key=' + alerts_api).read()
-
         alerts_store = json.loads(alerts)
-        # print(alerts_store)
 
-        # print(alerts_store)
         try:
             alerts_data = {
                 'expires': alerts_store['alerts'][0]['expires_utc'],
@@ -362,7 +374,7 @@ def weather():
                                data_hourly=data_hourly, data_daily=data_daily, daily_images=daily_images,
                                days=list_of_days, sun_time=sun_time, list_of_hours=list_of_hours,
                                list_of_months=list_of_months, lat=lat, lon=lon, alerts_data=alerts_data,
-                               alerts_image=alerts_image, new_des=ref_description)
+                               alerts_image=alerts_image, new_des=ref_description, pop_list=pop_list)
 
 
 if __name__ == '__main__':
