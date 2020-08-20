@@ -133,10 +133,11 @@ def weather():
         # Hourly Weather
         hourly_source = urllib.request.urlopen(
             'https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon +
-            '&exclude=minutely,current&appid=' + api).read()
+            '&units=imperial&exclude=minutely,current&appid=' + api).read()
 
         hourly_data = json.loads(hourly_source)
 
+        print(hourly_data)
         # Gets accurate hour, day and month for searched location
         tz = hourly_data['timezone']
         datetime_tz = datetime.datetime.now(pytz.timezone(tz))
@@ -263,40 +264,40 @@ def weather():
 
         # Hourly Weather stored in dictionary
         data_hourly = {
-            'hour_1_temp': int(round(1.8 * (hourly_data['hourly'][0]['temp'] - 273) + 32, 0)),
+            'hour_1_temp': int(round(hourly_data['hourly'][0]['temp'], 0)),
             'hour_1_id': hourly_data['hourly'][0]['weather'][0]['id'],
             'hour_1_main': hourly_data['hourly'][0]['weather'][0]['main'],
-            'hour_2_temp': int(round(1.8 * (hourly_data['hourly'][1]['temp'] - 273) + 32, 0)),
+            'hour_2_temp': int(round(hourly_data['hourly'][1]['temp'], 0)),
             'hour_2_id': hourly_data['hourly'][1]['weather'][0]['id'],
             'hour_2_main': hourly_data['hourly'][1]['weather'][0]['main'],
-            'hour_3_temp': int(round(1.8 * (hourly_data['hourly'][2]['temp'] - 273) + 32, 0)),
+            'hour_3_temp': int(round(hourly_data['hourly'][2]['temp'], 0)),
             'hour_3_id': hourly_data['hourly'][2]['weather'][0]['id'],
             'hour_3_main': hourly_data['hourly'][2]['weather'][0]['main'],
-            'hour_4_temp': int(round(1.8 * (hourly_data['hourly'][3]['temp'] - 273) + 32, 0)),
+            'hour_4_temp': int(round(hourly_data['hourly'][3]['temp'], 0)),
             'hour_4_id': hourly_data['hourly'][3]['weather'][0]['id'],
             'hour_4_main': hourly_data['hourly'][3]['weather'][0]['main'],
-            'hour_5_temp': int(round(1.8 * (hourly_data['hourly'][4]['temp'] - 273) + 32, 0)),
+            'hour_5_temp': int(round(hourly_data['hourly'][4]['temp'], 0)),
             'hour_5_id': hourly_data['hourly'][4]['weather'][0]['id'],
             'hour_5_main': hourly_data['hourly'][4]['weather'][0]['main'],
-            'hour_6_temp': int(round(1.8 * (hourly_data['hourly'][5]['temp'] - 273) + 32, 0)),
+            'hour_6_temp': int(round(hourly_data['hourly'][5]['temp'], 0)),
             'hour_6_id': hourly_data['hourly'][5]['weather'][0]['id'],
             'hour_6_main': hourly_data['hourly'][5]['weather'][0]['main'],
-            'hour_7_temp': int(round(1.8 * (hourly_data['hourly'][6]['temp'] - 273) + 32, 0)),
+            'hour_7_temp': int(round(hourly_data['hourly'][6]['temp'], 0)),
             'hour_7_id': hourly_data['hourly'][6]['weather'][0]['id'],
             'hour_7_main': hourly_data['hourly'][6]['weather'][0]['main'],
-            'hour_8_temp': int(round(1.8 * (hourly_data['hourly'][7]['temp'] - 273) + 32, 0)),
+            'hour_8_temp': int(round(hourly_data['hourly'][7]['temp'], 0)),
             'hour_8_id': hourly_data['hourly'][7]['weather'][0]['id'],
             'hour_8_main': hourly_data['hourly'][7]['weather'][0]['main'],
-            'hour_9_temp': int(round(1.8 * (hourly_data['hourly'][8]['temp'] - 273) + 32, 0)),
+            'hour_9_temp': int(round(hourly_data['hourly'][8]['temp'], 0)),
             'hour_9_id': hourly_data['hourly'][8]['weather'][0]['id'],
             'hour_9_main': hourly_data['hourly'][8]['weather'][0]['main'],
-            'hour_10_temp': int(round(1.8 * (hourly_data['hourly'][9]['temp'] - 273) + 32, 0)),
+            'hour_10_temp': int(round(hourly_data['hourly'][9]['temp'], 0)),
             'hour_10_id': hourly_data['hourly'][9]['weather'][0]['id'],
             'hour_10_main': hourly_data['hourly'][9]['weather'][0]['main'],
-            'hour_11_temp': int(round(1.8 * (hourly_data['hourly'][10]['temp'] - 273) + 32, 0)),
+            'hour_11_temp': int(round(hourly_data['hourly'][10]['temp'], 0)),
             'hour_11_id': hourly_data['hourly'][10]['weather'][0]['id'],
             'hour_11_main': hourly_data['hourly'][10]['weather'][0]['main'],
-            'hour_12_temp': int(round(1.8 * (hourly_data['hourly'][11]['temp'] - 273) + 32, 0)),
+            'hour_12_temp': int(round(hourly_data['hourly'][11]['temp'], 0)),
             'hour_12_id': hourly_data['hourly'][11]['weather'][0]['id'],
             'hour_12_main': hourly_data['hourly'][11]['weather'][0]['main'],
             'hour_13': hourly_data['hourly'][12]['dt']
