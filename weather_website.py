@@ -130,10 +130,12 @@ def weather():
         sunset = datetime.datetime.fromtimestamp(sunset_time, timezone.utc).strftime('%I:%M %p')
         sun_time = [sunrise, sunset]
 
+        temp = 'imperial'
+
         # Hourly Weather
         hourly_source = urllib.request.urlopen(
             'https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon +
-            '&units=imperial&exclude=minutely,current&appid=' + api).read()
+            '&units='+temp+'&exclude=minutely,current&appid=' + api).read()
 
         hourly_data = json.loads(hourly_source)
 
@@ -202,14 +204,13 @@ def weather():
             else:
                 list_of_hours[i] = str(list_of_hours[i]) + ' am'
 
-        get_id = urllib.request.urlopen("http://dataservice.accuweather.com/locations/v1/cities/search?"
-                                        "apikey=ktm9Gh7eXUxd0mSVe2zEgwb1QwcT58x1&q=" + new_city +
-                                        "&details=false").read()
+        get_id = urllib.request.urlopen('http://dataservice.accuweather.com/locations/v1/cities/search?' +
+                                        'apikey=ktm9Gh7eXUxd0mSVe2zEgwb1QwcT58x1&q='+new_city+'&details=true').read()
         city_id = json.loads(get_id)
         key = city_id[0]["Key"]
 
-        get_pop = urllib.request.urlopen("http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/"+key +
-                                         "?apikey=ktm9Gh7eXUxd0mSVe2zEgwb1QwcT58x1&details=false ").read()
+        get_pop = urllib.request.urlopen('http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/'+key +
+                                         '?apikey=ktm9Gh7eXUxd0mSVe2zEgwb1QwcT58x1&details=false').read()
         pop_info = json.loads(get_pop)
 
         pop_list = []
@@ -316,44 +317,44 @@ def weather():
         }
 
         data_daily = {
-            'day_1_temp': int(round(1.8 * (hourly_data['daily'][0]['temp']['day'] - 273) + 32, 0)),
-            'day_1_max': int(round(1.8 * (hourly_data['daily'][0]['temp']['max'] - 273) + 32, 0)),
-            'day_1_min': int(round(1.8 * (hourly_data['daily'][0]['temp']['min'] - 273) + 32, 0)),
+            'day_1_temp': int(round(hourly_data['daily'][0]['temp']['day'], 0)),
+            'day_1_max': int(round(hourly_data['daily'][0]['temp']['max'], 0)),
+            'day_1_min': int(round(hourly_data['daily'][0]['temp']['min'], 0)),
             'day_1_main': hourly_data['daily'][0]['weather'][0]['main'],
             'day_1_id': hourly_data['daily'][0]['weather'][0]['id'],
-            'day_2_temp': int(round(1.8 * (hourly_data['daily'][1]['temp']['day'] - 273) + 32, 0)),
-            'day_2_max': int(round(1.8 * (hourly_data['daily'][1]['temp']['max'] - 273) + 32, 0)),
-            'day_2_min': int(round(1.8 * (hourly_data['daily'][1]['temp']['min'] - 273) + 32, 0)),
+            'day_2_temp': int(round(hourly_data['daily'][1]['temp']['day'], 0)),
+            'day_2_max': int(round(hourly_data['daily'][1]['temp']['max'], 0)),
+            'day_2_min': int(round(hourly_data['daily'][1]['temp']['min'], 0)),
             'day_2_main': hourly_data['daily'][1]['weather'][0]['main'],
             'day_2_id': hourly_data['daily'][1]['weather'][0]['id'],
-            'day_3_temp': int(round(1.8 * (hourly_data['daily'][2]['temp']['day'] - 273) + 32, 0)),
-            'day_3_max': int(round(1.8 * (hourly_data['daily'][2]['temp']['max'] - 273) + 32, 0)),
-            'day_3_min': int(round(1.8 * (hourly_data['daily'][2]['temp']['min'] - 273) + 32, 0)),
+            'day_3_temp': int(round(hourly_data['daily'][2]['temp']['day'], 0)),
+            'day_3_max': int(round(hourly_data['daily'][2]['temp']['max'], 0)),
+            'day_3_min': int(round(hourly_data['daily'][2]['temp']['min'], 0)),
             'day_3_main': hourly_data['daily'][2]['weather'][0]['main'],
             'day_3_id': hourly_data['daily'][2]['weather'][0]['id'],
-            'day_4_temp': int(round(1.8 * (hourly_data['daily'][3]['temp']['day'] - 273) + 32, 0)),
-            'day_4_max': int(round(1.8 * (hourly_data['daily'][3]['temp']['max'] - 273) + 32, 0)),
-            'day_4_min': int(round(1.8 * (hourly_data['daily'][3]['temp']['min'] - 273) + 32, 0)),
+            'day_4_temp': int(round(hourly_data['daily'][3]['temp']['day'], 0)),
+            'day_4_max': int(round(hourly_data['daily'][3]['temp']['max'], 0)),
+            'day_4_min': int(round(hourly_data['daily'][3]['temp']['min'], 0)),
             'day_4_main': hourly_data['daily'][3]['weather'][0]['main'],
             'day_4_id': hourly_data['daily'][3]['weather'][0]['id'],
-            'day_5_temp': int(round(1.8 * (hourly_data['daily'][4]['temp']['day'] - 273) + 32, 0)),
-            'day_5_max': int(round(1.8 * (hourly_data['daily'][4]['temp']['max'] - 273) + 32, 0)),
-            'day_5_min': int(round(1.8 * (hourly_data['daily'][4]['temp']['min'] - 273) + 32, 0)),
+            'day_5_temp': int(round(hourly_data['daily'][4]['temp']['day'] , 0)),
+            'day_5_max': int(round(hourly_data['daily'][4]['temp']['max'], 0)),
+            'day_5_min': int(round(hourly_data['daily'][4]['temp']['min'], 0)),
             'day_5_main': hourly_data['daily'][4]['weather'][0]['main'],
             'day_5_id': hourly_data['daily'][4]['weather'][0]['id'],
-            'day_6_temp': int(round(1.8 * (hourly_data['daily'][5]['temp']['day'] - 273) + 32, 0)),
-            'day_6_max': int(round(1.8 * (hourly_data['daily'][5]['temp']['max'] - 273) + 32, 0)),
-            'day_6_min': int(round(1.8 * (hourly_data['daily'][5]['temp']['min'] - 273) + 32, 0)),
+            'day_6_temp': int(round(hourly_data['daily'][5]['temp']['day'], 0)),
+            'day_6_max': int(round(hourly_data['daily'][5]['temp']['max'], 0)),
+            'day_6_min': int(round(hourly_data['daily'][5]['temp']['min'], 0)),
             'day_6_main': hourly_data['daily'][5]['weather'][0]['main'],
             'day_6_id': hourly_data['daily'][5]['weather'][0]['id'],
-            'day_7_temp': int(round(1.8 * (hourly_data['daily'][6]['temp']['day'] - 273) + 32, 0)),
-            'day_7_max': int(round(1.8 * (hourly_data['daily'][6]['temp']['max'] - 273) + 32, 0)),
-            'day_7_min': int(round(1.8 * (hourly_data['daily'][6]['temp']['min'] - 273) + 32, 0)),
+            'day_7_temp': int(round(hourly_data['daily'][6]['temp']['day'], 0)),
+            'day_7_max': int(round(hourly_data['daily'][6]['temp']['max'], 0)),
+            'day_7_min': int(round(hourly_data['daily'][6]['temp']['min'], 0)),
             'day_7_main': hourly_data['daily'][6]['weather'][0]['main'],
             'day_7_id': hourly_data['daily'][6]['weather'][0]['id'],
-            'day_8_temp': int(round(1.8 * (hourly_data['daily'][7]['temp']['day'] - 273) + 32, 0)),
-            'day_8_max': int(round(1.8 * (hourly_data['daily'][7]['temp']['max'] - 273) + 32, 0)),
-            'day_8_min': int(round(1.8 * (hourly_data['daily'][7]['temp']['min'] - 273) + 32, 0)),
+            'day_8_temp': int(round(hourly_data['daily'][7]['temp']['day'], 0)),
+            'day_8_max': int(round(hourly_data['daily'][7]['temp']['max'], 0)),
+            'day_8_min': int(round(hourly_data['daily'][7]['temp']['min'], 0)),
             'day_8_main': hourly_data['daily'][7]['weather'][0]['main'],
             'day_8_id': hourly_data['daily'][7]['weather'][0]['id'],
             'uv': round(hourly_data['daily'][0]['uvi'])

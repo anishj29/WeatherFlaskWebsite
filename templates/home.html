@@ -55,7 +55,7 @@
                         </div>
                         <span><img alt="" height="9%" src="static/icons/humiditywater.png" width="9%">{{data.humidity}}%</span>
                         <span><img alt="" src="static/icons/icon-wind.png">{{data.wind_speed}}mph</span>
-                        <span><img alt="" src="static/icons/icon-compass.png">East</span>
+                        <span>{{pop_list[0]}}%</span>
                     </div>
                 </div>
                 <div class="forecast">
@@ -68,6 +68,8 @@
                         </div>
                         <div class="degree">{{data_hourly['hour_1_temp']}}<sup>o</sup>F</div>
                         <small>{{data_hourly['hour_2_main']}}</small>
+                        <h4>{{pop_list[1]}}%</h4>
+
                     </div>
                 </div>
                 <div class="forecast">
@@ -80,6 +82,8 @@
                         </div>
                         <div class="degree">{{data_hourly['hour_2_temp']}}<sup>o</sup>F</div>
                         <small>{{data_hourly['hour_3_main']}}</small>
+                        <h4>{{pop_list[2]}}%</h4>
+
                     </div>
                 </div>
                 <div class="forecast">
@@ -92,6 +96,8 @@
                         </div>
                         <div class="degree">{{data_hourly['hour_3_temp']}}<sup>o</sup>F</div>
                         <small>{{data_hourly['hour_4_main']}}</small>
+                        <h4>{{pop_list[3]}}%</h4>
+
                     </div>
                 </div>
                 <div class="forecast">
@@ -104,6 +110,8 @@
                         </div>
                         <div class="degree">{{data_hourly['hour_4_temp']}}<sup>o</sup>F</div>
                         <small>{{data_hourly['hour_5_main']}}</small>
+                        <h4>{{pop_list[4]}}%</h4>
+
                     </div>
                 </div>
                 <div class="forecast">
@@ -116,6 +124,8 @@
                         </div>
                         <div class="degree">{{data_hourly['hour_5_temp']}}<sup>o</sup>F</div>
                         <small>{{data_hourly['hour_6_main']}}</small>
+                        <h4>{{pop_list[5]}}%</h4>
+
                     </div>
                 </div>
                 <div class="forecast">
@@ -128,6 +138,8 @@
                         </div>
                         <div class="degree">{{data_hourly['hour_6_temp']}}<sup>o</sup>F</div>
                         <small>{{data_hourly['hour_7_main']}}</small>
+                        <h4>{{pop_list[6]}}%</h4>
+
                     </div>
                 </div>
             </div>
