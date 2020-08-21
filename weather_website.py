@@ -3,8 +3,6 @@
 import datetime
 import json
 import urllib.request
-from datetime import datetime, timezone
-
 import pytz
 from flask import Flask, render_template, request
 from googletrans import Translator
@@ -127,8 +125,8 @@ def weather():
         sunrise_time = data['sunrise'] + data['offset']
         sunset_time = data['sunset'] + data['offset']
 
-        sunrise = datetime.datetime.fromtimestamp(sunrise_time, timezone.utc).strftime('%I:%M %p')
-        sunset = datetime.datetime.fromtimestamp(sunset_time, timezone.utc).strftime('%I:%M %p')
+        sunrise = datetime.datetime.fromtimestamp(sunrise_time, datetime.timezone.utc).strftime('%I:%M %p')
+        sunset = datetime.datetime.fromtimestamp(sunset_time, datetime.timezone.utc).strftime('%I:%M %p')
         sun_time = [sunrise, sunset]
 
         temp = 'imperial'
