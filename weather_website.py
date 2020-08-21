@@ -220,6 +220,7 @@ def weather():
 
             for i in range(0, 8):
                 pop_list.append(pop_info[i]['PrecipitationProbability'])
+                pop_list[i] = str(int(round(pop_list[i] + 0.1, -1))) + '%'
 
         alerts_api = '888c4677014d4578a511570492df67b0'
         alerts = urllib.request.urlopen(
@@ -249,7 +250,6 @@ def weather():
             description = description.replace('* WHERE...', 'Where: ')
             description = description.replace('* IMPACTS...', 'Impacts: ')
             description = description.replace('* ADDITIONAL DETAILS...', 'Add Details: ')
-            # print(description)
 
             where_start = description.find('Where: ') + len('Where: ')
             where_end = description.find('When')
