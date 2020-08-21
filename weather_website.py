@@ -73,7 +73,7 @@ def weather():
         city = request.form['city'].title()
     else:
         # for default name mathura
-        city = 'Plainsboro'
+        city = 'Princeton'
 
     new_city = city
 
@@ -199,9 +199,8 @@ def weather():
                 list_of_hours[i] = str(list_of_hours[i]) + ' am'
         try:
             get_id = urllib.request.urlopen('http://dataservice.accuweather.com/locations/v1/cities/search?' +
-                                            'apikey=ktm9Gh7eXUxd0mSVe2zEgwb1QwcT58x1&q=' + new_city +
-                                            '&details=true').read()
-            pop_list = []
+                                            'apikey=4zrGVjvJENvvA6SvIPA6hW1qUmtKqCcd&q=' + new_city.lower() +
+                                            '&details=false').read()
 
         except:
             pop_list = []
@@ -214,7 +213,7 @@ def weather():
             key = city_id[0]["Key"]
 
             get_pop = urllib.request.urlopen('http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/' + key +
-                                             '?apikey=ktm9Gh7eXUxd0mSVe2zEgwb1QwcT58x1&details=false').read()
+                                             '?apikey=4zrGVjvJENvvA6SvIPA6hW1qUmtKqCcd&details=false').read()
             pop_info = json.loads(get_pop)
 
             pop_list = []
