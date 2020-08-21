@@ -362,7 +362,8 @@ def weather():
             'day_8_id': hourly_data['daily'][7]['weather'][0]['id'],
             'uv': round(hourly_data['daily'][0]['uvi'])
         }
-
+        print(hourly_data['daily'][0]['uvi'])
+        print(data_daily['uv'])
         # Got icon for each hour
         for i in range(1, 13):
             hourly_images.append(check_icon(data_hourly['hour_' + str(i) + '_id']))
