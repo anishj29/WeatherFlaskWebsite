@@ -1,5 +1,4 @@
 # Import Statements
-
 import datetime
 import json
 import urllib.request
@@ -69,9 +68,6 @@ app = Flask(__name__)
 
 @app.route('/', methods=['POST', 'GET'])
 def weather():
-    global image, pop_list
-    global ref_description
-    global alerts_data
     global alerts_image
     if request.method == 'POST':
         city = request.form['city'].title()
@@ -138,7 +134,6 @@ def weather():
 
         hourly_data = json.loads(hourly_source)
 
-        print(hourly_data)
         # Gets accurate hour, day and month for searched location
         tz = hourly_data['timezone']
         datetime_tz = datetime.datetime.now(pytz.timezone(tz))
@@ -272,8 +267,6 @@ def weather():
             add_start = description.find('Add Details: ') + len('Add Details: ')
             add_details = description[add_start:]
 
-            print(where, when, impacts, add_details)
-
             ref_description = [where, when, impacts, add_details]
 
             alerts_data['description'] = description
@@ -368,7 +361,7 @@ def weather():
             'day_8_id': hourly_data['daily'][7]['weather'][0]['id'],
             'uv': round(hourly_data['daily'][0]['uvi'])
         }
-        # print(data_daily['uv'])
+
         # Got icon for each hour
         for i in range(1, 13):
             hourly_images.append(check_icon(data_hourly['hour_' + str(i) + '_id']))
