@@ -1,9 +1,10 @@
 # Import Statements
 
+import datetime
 import json
 import urllib.request
 from datetime import datetime, timezone
-import datetime
+
 import pytz
 from flask import Flask, render_template, request
 from googletrans import Translator
@@ -70,7 +71,7 @@ app = Flask(__name__)
 
 @app.route('/', methods=['POST', 'GET'])
 def weather():
-    global image
+    global image, pop_list
     global ref_description
     global alerts_data
     global alerts_image
@@ -135,7 +136,7 @@ def weather():
         # Hourly Weather
         hourly_source = urllib.request.urlopen(
             'https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon +
-            '&units='+temp+'&exclude=minutely,current&appid=' + api).read()
+            '&units=' + temp + '&exclude=minutely,current&appid=' + api).read()
 
         hourly_data = json.loads(hourly_source)
 
@@ -203,20 +204,30 @@ def weather():
 
             else:
                 list_of_hours[i] = str(list_of_hours[i]) + ' am'
+        try:
+            get_id = urllib.request.urlopen('http://dataservice.accuweather.com/locations/v1/cities/search?' +
+                                            'apikey=ktm9Gh7eXUxd0mSVe2zEgwb1QwcT58x1&q=' + new_city +
+                                            '&details=true').read()
+            pop_list = []
 
-        get_id = urllib.request.urlopen('http://dataservice.accuweather.com/locations/v1/cities/search?' +
-                                        'apikey=ktm9Gh7eXUxd0mSVe2zEgwb1QwcT58x1&q='+new_city+'&details=true').read()
-        city_id = json.loads(get_id)
-        key = city_id[0]["Key"]
+        except:
+            pop_list = []
 
-        get_pop = urllib.request.urlopen('http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/'+key +
-                                         '?apikey=ktm9Gh7eXUxd0mSVe2zEgwb1QwcT58x1&details=false').read()
-        pop_info = json.loads(get_pop)
+            for i in range(0, 8):
+                pop_list.append('N/A')
 
-        pop_list = []
+        else:
+            city_id = json.loads(get_id)
+            key = city_id[0]["Key"]
 
-        for i in range(0, 8):
-            pop_list.append(pop_info[i]['PrecipitationProbability'])
+            get_pop = urllib.request.urlopen('http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/' + key +
+                                             '?apikey=ktm9Gh7eXUxd0mSVe2zEgwb1QwcT58x1&details=false').read()
+            pop_info = json.loads(get_pop)
+
+            pop_list = []
+
+            for i in range(0, 8):
+                pop_list.append(pop_info[i]['PrecipitationProbability'])
 
         alerts_api = '888c4677014d4578a511570492df67b0'
         alerts = urllib.request.urlopen(
@@ -337,7 +348,7 @@ def weather():
             'day_4_min': int(round(hourly_data['daily'][3]['temp']['min'], 0)),
             'day_4_main': hourly_data['daily'][3]['weather'][0]['main'],
             'day_4_id': hourly_data['daily'][3]['weather'][0]['id'],
-            'day_5_temp': int(round(hourly_data['daily'][4]['temp']['day'] , 0)),
+            'day_5_temp': int(round(hourly_data['daily'][4]['temp']['day'], 0)),
             'day_5_max': int(round(hourly_data['daily'][4]['temp']['max'], 0)),
             'day_5_min': int(round(hourly_data['daily'][4]['temp']['min'], 0)),
             'day_5_main': hourly_data['daily'][4]['weather'][0]['main'],

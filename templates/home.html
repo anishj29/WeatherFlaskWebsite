@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0,maximum-scale=1" name="viewport">
     <title>Weather App by Program Explorers</title>
-    <link rel="shortcut icon" type="image/x-icon" href="static/weather_icon-2.ico"/>
+    <link href="static/weather_icon-2.ico" rel="shortcut icon" type="image/x-icon"/>
 
     <!-- Loading third party fonts -->
     <link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700|" rel="stylesheet" type="text/css">
@@ -165,9 +165,10 @@
                                     </div>
                                 </div>
                                 <!--<span><img alt="" src="static/icons/icon-umberella.png">{{data.humidity}}%</span>-->
-                                <span><img alt="" height="7%" width="7%" src="static/icons/uv.png">{{data_daily.uv}}</span>
-                                <span><img alt="" height="8.5%" width="8.5%" src="static/icons/sunrise.png">{{sun_time[0]}}</span>
-                                <span><img alt="" height="8.5%" width="8.5%" src="static/icons/sunset.png">{{sun_time[1]}}</span>
+                                <span><img alt="" height="7%" src="static/icons/uv.png"
+                                           width="7%">{{data_daily.uv}}</span>
+                                <span><img alt="" height="8.5%" src="static/icons/sunrise.png" width="8.5%">{{sun_time[0]}}</span>
+                                <span><img alt="" height="8.5%" src="static/icons/sunset.png" width="8.5%">{{sun_time[1]}}</span>
                             </div>
                         </div>
                         <div class="forecast">
@@ -304,19 +305,19 @@
                     <div class="col-md-3 col-sm-6">
                     </div>
                     <div class="live-camera col-md-3 col-sm-6">
-                        <h2 class="section-title">Alerts <img alt="" height="8.5%" width="8.5%" src="{{alerts_image}}">
+                        <h2 class="section-title">Alerts <img alt="" height="8.5%" src="{{alerts_image}}" width="8.5%">
                         </h2>
                         <div>
                             {% if new_des == 'No alerts in this area!' %}
-                                <h3>No alerts in this area!</h3>
+                            <h3>No alerts in this area!</h3>
                             {% else %}
-                                <h3>{{alerts_data['title']}}</h3>
-                                <h4>{{new_des[0]}}</h4>
-                                <h4>{{new_des[1]}}</h4>
-                                <h4>{{new_des[2]}}</h4>
-                                <h4>{{new_des[3]}}</h4>
+                            <h3>{{alerts_data['title']}}</h3>
+                            <h4>{{new_des[0]}}</h4>
+                            <h4>{{new_des[1]}}</h4>
+                            <h4>{{new_des[2]}}</h4>
+                            <h4>{{new_des[3]}}</h4>
                             {% endif %}
-                       </div>
+                        </div>
                     </div>
                 </div>
             </div>
