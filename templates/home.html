@@ -55,7 +55,12 @@
                         </div>
                         <span><img alt="" height="9%" src="static/icons/humiditywater.png" width="9%">{{data.humidity}}%</span>
                         <span><img alt="" src="static/icons/icon-wind.png">{{data.wind_speed}}mph</span>
-                        <span>{{pop_list[0]}}%</span>
+                        {% if pop_list[0] == '' %}
+                            <span><img alt="" src="static/icons/umbrella.png">{{pop_list[0]}}0%</span>
+                        {% else %}
+                            <span><img alt="" src="static/icons/umbrella.png">{{pop_list[0]}}</span>
+                        {% endif %}
+
                     </div>
                 </div>
                 <div class="forecast">
@@ -68,7 +73,7 @@
                         </div>
                         <div class="degree">{{data_hourly['hour_1_temp']}}<sup>o</sup>F</div>
                         <small>{{data_hourly['hour_2_main']}}</small>
-                        <h4>{{pop_list[1]}}%</h4>
+                        <h4>{{pop_list[1]}}</h4>
 
                     </div>
                 </div>
@@ -82,7 +87,7 @@
                         </div>
                         <div class="degree">{{data_hourly['hour_2_temp']}}<sup>o</sup>F</div>
                         <small>{{data_hourly['hour_3_main']}}</small>
-                        <h4>{{pop_list[2]}}%</h4>
+                        <h4>{{pop_list[2]}}</h4>
 
                     </div>
                 </div>
@@ -96,7 +101,7 @@
                         </div>
                         <div class="degree">{{data_hourly['hour_3_temp']}}<sup>o</sup>F</div>
                         <small>{{data_hourly['hour_4_main']}}</small>
-                        <h4>{{pop_list[3]}}%</h4>
+                        <h4>{{pop_list[3]}}</h4>
 
                     </div>
                 </div>
@@ -110,7 +115,7 @@
                         </div>
                         <div class="degree">{{data_hourly['hour_4_temp']}}<sup>o</sup>F</div>
                         <small>{{data_hourly['hour_5_main']}}</small>
-                        <h4>{{pop_list[4]}}%</h4>
+                        <h4>{{pop_list[4]}}</h4>
 
                     </div>
                 </div>
@@ -124,7 +129,7 @@
                         </div>
                         <div class="degree">{{data_hourly['hour_5_temp']}}<sup>o</sup>F</div>
                         <small>{{data_hourly['hour_6_main']}}</small>
-                        <h4>{{pop_list[5]}}%</h4>
+                        <h4>{{pop_list[5]}}</h4>
 
                     </div>
                 </div>
@@ -138,7 +143,7 @@
                         </div>
                         <div class="degree">{{data_hourly['hour_6_temp']}}<sup>o</sup>F</div>
                         <small>{{data_hourly['hour_7_main']}}</small>
-                        <h4>{{pop_list[6]}}%</h4>
+                        <h4>{{pop_list[6]}}</h4>
 
                     </div>
                 </div>
@@ -164,7 +169,7 @@
                                         <img alt="" src={{daily_images[0]}} width=90>
                                     </div>
                                 </div>
-                                <!--<span><img alt="" src="static/icons/icon-umberella.png">{{data.humidity}}%</span>-->
+                                <!--<span><img alt="" src="static/icons/umbrella.png">{{data.humidity}}%</span>-->
                                 <span><img alt="" height="7%" src="static/icons/uv.png"
                                            width="7%">{{data_daily.uv}}</span>
                                 <span><img alt="" height="8.5%" src="static/icons/sunrise.png" width="8.5%">{{sun_time[0]}}</span>

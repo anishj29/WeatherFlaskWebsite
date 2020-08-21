@@ -219,9 +219,11 @@ def weather():
             pop_list = []
 
             for i in range(0, 8):
-                pop_list.append(pop_info[i]['PrecipitationProbability'])
-                pop_list[i] = str(int(round(pop_list[i] + 0.1, -1))) + '%'
-
+                pop_num = pop_info[i]['PrecipitationProbability']
+                pop_num = str(int(round(pop_num + 0.1, -1))) + '%'
+                if pop_num == '0%':
+                    pop_num = ''
+                pop_list.append(pop_num)
         alerts_api = '888c4677014d4578a511570492df67b0'
         alerts = urllib.request.urlopen(
             'https://api.weatherbit.io/v2.0/alerts?lat=' + lat + '&lon=' + lon + '&key=' + alerts_api).read()
