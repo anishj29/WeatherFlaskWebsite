@@ -247,36 +247,32 @@ def weather():
             translator = Translator()
             description = translator.translate(alerts_data['description'])
             description = description.text.replace('English: ', '')
-            description = description.replace('* WHAT...', 'What: ')
-            description = description.replace('* WHEN...', 'When: ')
-            description = description.replace('* WHERE...', 'Where: ')
-            description = description.replace('* IMPACTS...', 'Impacts: ')
-            description = description.replace('* ADDITIONAL DETAILS...', 'Add Details: ')
 
-            where_start = description.find('Where: ') + len('Where: ')
-            where_end = description.find('When')
+            where_start = description.find('* WHERE...') + len('* WHERE...')
+            where_end = description.find('* WHEN...')
             where = description[where_start:where_end]
 
-            when_start = description.find('When: ') + len('When: ')
-            when_end = description.find('Impacts: ')
+            when_start = description.find('* WHEN...') + len('* WHEN...')
+            when_end = description.find('* IMPACTS...')
             when = description[when_start:when_end]
 
-            impacts_start = description.find('Impacts: ') + len('Impacts: ')
-            impacts_end = description.find('Add Details: ')
+            impacts_start = description.find('* IMPACTS...') + len('* IMPACTS...')
+            impacts_end = description.find('* ADDITIONAL DETAILS...')
             impacts = description[impacts_start:impacts_end]
 
-            add_start = description.find('Add Details: ') + len('Add Details: ')
+            add_start = description.find('* ADDITIONAL DETAILS...') + len('* ADDITIONAL DETAILS...')
             add_details = description[add_start:]
 
             ref_description = [where, when, impacts, add_details]
-
-            alerts_data['description'] = description
 
             if alerts_data['severity'] == 'Warning':
                 alerts_image = 'static/alerts/warning.png'
 
             elif alerts_data['severity'] == 'Watch':
-                alerts_data = 'static/alerts/watch.png'
+                alerts_image = 'static/alerts/watch.png'
+
+            elif alerts_data['severity'] == 'Extreme':
+                alerts_image = 'static/alerts/extreme.png'
 
         # Hourly Weather stored in dictionary
         data_hourly = {
@@ -362,8 +358,7 @@ def weather():
             'day_8_id': hourly_data['daily'][7]['weather'][0]['id'],
             'uv': round(hourly_data['daily'][0]['uvi'])
         }
-        print(hourly_data['daily'][0]['uvi'])
-        print(data_daily['uv'])
+
         # Got icon for each hour
         for i in range(1, 13):
             hourly_images.append(check_icon(data_hourly['hour_' + str(i) + '_id']))

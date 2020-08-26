@@ -310,13 +310,12 @@
                     <div class="col-md-3 col-sm-6">
                     </div>
                     <div class="live-camera col-md-3 col-sm-6">
-                        <h2 class="section-title">Alerts <img alt="" height="8.5%" src="{{alerts_image}}" width="8.5%">
-                        </h2>
+                        <h2 class="section-title">Alerts <img height="15%" width="15%" src={{alerts_image}}> </h2>
                         <div>
                             {% if new_des == 'No alerts in this area!' %}
                             <h3>No alerts in this area!</h3>
                             {% else %}
-                            <h3>{{alerts_data['title']}}</h3>
+                            <h2>{{alerts_data['title']}}</h2>
                             <h4>{{new_des[0]}}</h4>
                             <h4>{{new_des[1]}}</h4>
                             <h4>{{new_des[2]}}</h4>
