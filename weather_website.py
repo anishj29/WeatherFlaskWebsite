@@ -228,6 +228,7 @@ def weather():
         alerts = urllib.request.urlopen(
             'https://api.weatherbit.io/v2.0/alerts?lat=' + lat + '&lon=' + lon + '&key=' + alerts_api).read()
         alerts_store = json.loads(alerts)
+        print(alerts_store)
 
         try:
             alerts_data = {
@@ -260,10 +261,11 @@ def weather():
             impacts_end = description.find('* ADDITIONAL DETAILS...')
             impacts = description[impacts_start:impacts_end]
 
-            add_start = description.find('* ADDITIONAL DETAILS...') + len('* ADDITIONAL DETAILS...')
-            add_details = description[add_start:]
-
-            ref_description = [where, when, impacts, add_details]
+            # add_start = description.find('* ADDITIONAL DETAILS...') + len('* ADDITIONAL DETAILS...')
+            # add_details = description[add_start]
+            # print(add_details)
+            ref_description = [where, when, impacts]
+            print(ref_description)
 
             if alerts_data['severity'] == 'Warning':
                 alerts_image = 'static/alerts/warning.png'
