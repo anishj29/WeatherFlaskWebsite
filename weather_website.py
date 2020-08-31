@@ -249,22 +249,24 @@ def weather():
             description = translator.translate(alerts_data['description'])
             description = description.text.replace('English: ', '')
 
-            where_start = description.find('* WHERE...') + len('* WHERE...')
-            where_end = description.find('* WHEN...')
-            where = description[where_start:where_end]
-
-            when_start = description.find('* WHEN...') + len('* WHEN...')
-            when_end = description.find('* IMPACTS...')
-            when = description[when_start:when_end]
-
-            impacts_start = description.find('* IMPACTS...') + len('* IMPACTS...')
-            impacts_end = description.find('* ADDITIONAL DETAILS...')
-            impacts = description[impacts_start:impacts_end]
+            des_start = description.find('* ') + len('* ')
+            des = description[des_start:]
+            # where_start = description.find('* WHERE...') + len('* WHERE...')
+            # where_end = description.find('* WHEN...')
+            # where = description[where_start:where_end]
+            #
+            # when_start = description.find('* WHEN...') + len('* WHEN...')
+            # when_end = description.find('* IMPACTS...')
+            # when = description[when_start:when_end]
+            #
+            # impacts_start = description.find('* IMPACTS...') + len('* IMPACTS...')
+            # impacts_end = description.find('* ADDITIONAL DETAILS...')
+            # impacts = description[impacts_start:impacts_end]
 
             # add_start = description.find('* ADDITIONAL DETAILS...') + len('* ADDITIONAL DETAILS...')
             # add_details = description[add_start]
             # print(add_details)
-            ref_description = [where, when, impacts]
+            ref_description = description
             print(ref_description)
 
             if alerts_data['severity'] == 'Warning':
