@@ -68,7 +68,7 @@ app = Flask(__name__)
 
 @app.route('/', methods=['POST', 'GET'])
 def weather():
-    global alerts_image
+    global alerts_image, pop_list
     if request.method == 'POST':
         city = request.form['city'].title()
     else:
@@ -82,7 +82,6 @@ def weather():
 
     # your API key will come here
     api = '8a5edfd4d0e0f8953dbe82364cfc0b10'
-    ref_description = ''
     alerts_data = ''
     try:
         # source contain json data from api
@@ -198,13 +197,12 @@ def weather():
             else:
                 list_of_hours[i] = str(list_of_hours[i]) + ' am'
         try:
+            pop_list = []
             get_id = urllib.request.urlopen('http://dataservice.accuweather.com/locations/v1/cities/search?' +
                                             'apikey=4zrGVjvJENvvA6SvIPA6hW1qUmtKqCcd&q=' + new_city.lower() +
                                             '&details=false').read()
 
         except:
-            pop_list = []
-
             for i in range(0, 8):
                 pop_list.append('N/A')
 
@@ -216,8 +214,6 @@ def weather():
                                              '?apikey=4zrGVjvJENvvA6SvIPA6hW1qUmtKqCcd&details=false').read()
             pop_info = json.loads(get_pop)
 
-            pop_list = []
-
             for i in range(0, 8):
                 pop_num = pop_info[i]['PrecipitationProbability']
                 pop_num = str(int(round(pop_num + 0.1, -1))) + '%'
@@ -228,7 +224,7 @@ def weather():
         alerts = urllib.request.urlopen(
             'https://api.weatherbit.io/v2.0/alerts?lat=' + lat + '&lon=' + lon + '&key=' + alerts_api).read()
         alerts_store = json.loads(alerts)
-        print(alerts_store)
+        # print(alerts_store)
 
         try:
             alerts_data = {
@@ -242,32 +238,16 @@ def weather():
             }
 
         except IndexError:
-            ref_description = 'No alerts in this area!'
+            description = 'No alerts in this area!'
 
         else:
             translator = Translator()
             description = translator.translate(alerts_data['description'])
             description = description.text.replace('English: ', '')
-
-            des_start = description.find('* ') + len('* ')
-            des = description[des_start:]
-            # where_start = description.find('* WHERE...') + len('* WHERE...')
-            # where_end = description.find('* WHEN...')
-            # where = description[where_start:where_end]
-            #
-            # when_start = description.find('* WHEN...') + len('* WHEN...')
-            # when_end = description.find('* IMPACTS...')
-            # when = description[when_start:when_end]
-            #
-            # impacts_start = description.find('* IMPACTS...') + len('* IMPACTS...')
-            # impacts_end = description.find('* ADDITIONAL DETAILS...')
-            # impacts = description[impacts_start:impacts_end]
-
-            # add_start = description.find('* ADDITIONAL DETAILS...') + len('* ADDITIONAL DETAILS...')
-            # add_details = description[add_start]
-            # print(add_details)
-            ref_description = description
-            print(ref_description)
+            description = description.replace('* WHAT...', 'What: ')
+            description = description.replace('* WHERE...', 'Where: ')
+            description = description.replace('* WHEN...', 'When: ')
+            description = description.replace('* IMPACTS...', 'Impacts: ')
 
             if alerts_data['severity'] == 'Warning':
                 alerts_image = 'static/alerts/warning.png'
@@ -378,7 +358,7 @@ def weather():
                                data_hourly=data_hourly, data_daily=data_daily, daily_images=daily_images,
                                days=list_of_days, sun_time=sun_time, list_of_hours=list_of_hours,
                                list_of_months=list_of_months, lat=lat, lon=lon, alerts_data=alerts_data,
-                               alerts_image=alerts_image, new_des=ref_description, pop_list=pop_list)
+                               alerts_image=alerts_image, new_des=description, pop_list=pop_list)
 
 
 if __name__ == '__main__':
