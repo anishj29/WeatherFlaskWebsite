@@ -65,10 +65,10 @@ def check_icon(id_tag):
 
 app = Flask(__name__)
 
-
+description = ''
 @app.route('/', methods=['POST', 'GET'])
 def weather():
-    global alerts_image, pop_list
+    global alerts_image, pop_list, description
     if request.method == 'POST':
         city = request.form['city'].title()
     else:
@@ -224,8 +224,6 @@ def weather():
         alerts = urllib.request.urlopen(
             'https://api.weatherbit.io/v2.0/alerts?lat=' + lat + '&lon=' + lon + '&key=' + alerts_api).read()
         alerts_store = json.loads(alerts)
-        # print(alerts_store)
-
         try:
             alerts_data = {
                 'expires': alerts_store['alerts'][0]['expires_utc'],
@@ -360,6 +358,11 @@ def weather():
                                list_of_months=list_of_months, lat=lat, lon=lon, alerts_data=alerts_data,
                                alerts_image=alerts_image, new_des=description, pop_list=pop_list)
 
+
+@app.route('/alerts')
+def alerts():
+    global description
+    return render_template('alerts.html', des=description)
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1315,7 +1315,21 @@ form textarea {
 
 .filter {
   margin-bottom: 30px; }
-
+.a {
+  float: right;
+  font-size: 16px;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+.text {
+   overflow: hidden;
+   text-overflow: ellipsis;
+   display: -webkit-box;
+   -webkit-line-clamp: 8; /* number of lines to show */
+   -webkit-box-orient: vertical;
+}
 .filter-control {
   border: 2px solid #262936;
   padding: 5px 5px 5px 20px;

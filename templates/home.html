@@ -20,11 +20,9 @@
     <div class="site-header">
         <div class="container-fluid">
             <div class="logo-type">
-                <h1 class="site-title">Weather</h1>
+                <a href="{{ url_for('weather') }}"><h1 class="site-title">Weather</h1></a>
                 <small class="site-description">By Program Explorers</small>
             </div>
-
-
         </div>
     </div>
     <div class="hero" data-bg-image="landscape.jpg" height="300px"
@@ -316,10 +314,8 @@
                             {% else %}
                             <h2 class="section-title">Alerts <img height="15%" width="15%" src={{alerts_image}}> </h2>
                             <h2>{{alerts_data['title']}}</h2>
-                            <pre>{{new_des}}</pre>
-<!--                            <h4>{{new_des[1]}}</h4>-->
-<!--                            <h4>{{new_des[2]}}</h4>-->
-<!--                            <h4>{{new_des[3]}}</h4>-->
+                            <pre class="text">{{ new_des }}</pre>
+                            <a href="{{ url_for('alerts') }}">Click Here To See More</a>
                             {% endif %}
                         </div>
                     </div>
