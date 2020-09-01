@@ -5,6 +5,7 @@ import urllib.request
 
 import pytz
 from flask import Flask, render_template, request
+from flask_compress import Compress
 from googletrans import Translator
 
 hourly_images = []
@@ -12,6 +13,8 @@ daily_images = []
 id_list = []
 main_list = []
 alerts_image = ''
+
+
 
 month_to_short = {1: 'Jan', 2: 'Feb', 3: 'Mar', 4: 'Apr', 5: 'May', 6: 'Jun', 7: 'Jul', 8: 'Aug', 9: 'Sep', 10: 'Oct',
                   11: 'Nov', 12: 'Dec'}
@@ -65,6 +68,10 @@ def verify_icon(id_tag):
 
 
 app = Flask(__name__)
+COMPRESS_MIMETYPES = ['text/html', 'text/css', 'text/xml', 'application/json', 'application/javascript']
+COMPRESS_LEVEL = 6
+COMPRESS_MIN_SIZE = 500
+Compress(app)
 
 description = ''
 
@@ -79,7 +86,6 @@ def weather():
         city = 'Princeton'
 
     new_city = city
-
     if ' ' in city:
         new_city = city.replace(' ', '+')
 
