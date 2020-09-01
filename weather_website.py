@@ -2,6 +2,7 @@
 import datetime
 import json
 import urllib.request
+
 import pytz
 from flask import Flask, render_template, request
 from googletrans import Translator
@@ -19,12 +20,12 @@ date = datetime.datetime.today()
 month = month_to_short[date.month]
 
 
-def check_icon(id_tag):
+def verify_icon(id_tag):
     id_tag_str = str(id_tag)
     id_list.append(id_tag)
 
     if id_tag == 800:
-        return 'static/icons/icon-2.svg'
+        return 'static/icons/sunny.svg'
 
     elif id_tag == 200 or id_tag == 201 or id_tag == 202 or id_tag == 230 or id_tag == 231 or id_tag == 232:
         return 'static/icons/icon-11.svg'
@@ -33,25 +34,25 @@ def check_icon(id_tag):
         return 'static/icons/icon-12.svg'
 
     elif id_tag_str[0] == '3':
-        return 'static/icons/icon-9.svg'
+        return 'static/icons/light_rain.svg'
 
     elif id_tag == 500 or id_tag == 501 or id_tag == 502 or id_tag == 503 or id_tag == 504:
-        return 'static/icons/icon-4.svg'
+        return 'static/icons/rain&sunny.svg'
 
     elif id_tag == 511 or id_tag == 520 or id_tag == 521 or id_tag == 522 or id_tag == 531:
-        return 'static/icons/icon-10.svg'
+        return 'static/icons/heavy_rain.svg'
 
     elif id_tag_str[0] == '6':
         return 'static/icons/icon-13.svg '
 
     elif id_tag_str[0] == '7':
-        return 'static/icons/icon-8.svg'
+        return 'static/icons/fog_2.svg'
 
     elif id_tag == 801:
-        return 'static/icons/icon-3.svg'
+        return 'static/icons/cloudy&sunny.svg'
 
     elif id_tag == 802:
-        return 'static/icons/icon-5.svg'
+        return 'static/icons/cloudy.svg'
 
     elif id_tag == 803:
         return 'static/icons/icon-6.svg'
@@ -66,6 +67,8 @@ def check_icon(id_tag):
 app = Flask(__name__)
 
 description = ''
+
+
 @app.route('/', methods=['POST', 'GET'])
 def weather():
     global alerts_image, pop_list, description
@@ -343,14 +346,14 @@ def weather():
 
         # Got icon for each hour
         for i in range(1, 13):
-            hourly_images.append(check_icon(data_hourly['hour_' + str(i) + '_id']))
+            hourly_images.append(verify_icon(data_hourly['hour_' + str(i) + '_id']))
             main_list.append(data_hourly['hour_' + str(i) + '_main'])
 
         for j in range(1, 9):
-            daily_images.append(check_icon(data_daily['day_' + str(j) + '_id']))
+            daily_images.append(verify_icon(data_daily['day_' + str(j) + '_id']))
 
         id_tag = data['id']
-        image = check_icon(id_tag)
+        image = verify_icon(id_tag)
 
         return render_template('home.html', data=data, image=image, hourly_images=hourly_images,
                                data_hourly=data_hourly, data_daily=data_daily, daily_images=daily_images,
@@ -363,6 +366,7 @@ def weather():
 def alerts():
     global description
     return render_template('alerts.html', des=description)
+
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -54,9 +54,9 @@
                         <span><img alt="" height="9%" src="static/icons/humiditywater.png" width="9%">{{data.humidity}}%</span>
                         <span><img alt="" src="static/icons/icon-wind.png">{{data.wind_speed}}mph</span>
                         {% if pop_list[0] == '' %}
-                            <span><img alt="" src="static/icons/umbrella.png">{{pop_list[0]}}0%</span>
+                        <span><img alt="" src="static/icons/umbrella.png">{{pop_list[0]}}0%</span>
                         {% else %}
-                            <span><img alt="" src="static/icons/umbrella.png">{{pop_list[0]}}</span>
+                        <span><img alt="" src="static/icons/umbrella.png">{{pop_list[0]}}</span>
                         {% endif %}
 
                     </div>
@@ -308,19 +308,19 @@
                     <div class="col-md-3 col-sm-6">
                     </div>
                     <div class="live-camera col-md-3 col-sm-6">
-                            {% if new_des == 'No alerts in this area!' %}
-                            <h2 class="section-title">Alerts</h2>
-                            <h3>No alerts in this area!</h3>
-                            {% else %}
-                            <h2 class="section-title">Alerts <img height="15%" width="15%" src={{alerts_image}}> </h2>
-                            <h2>{{alerts_data['title']}}</h2>
-                            <pre class="text">{{ new_des }}</pre>
-                            <a href="{{ url_for('alerts') }}">Click Here To See More</a>
-                            {% endif %}
-                        </div>
+                        {% if new_des == 'No alerts in this area!' %}
+                        <h2 class="section-title">Alerts</h2>
+                        <h3>No alerts in this area!</h3>
+                        {% else %}
+                        <h2 class="section-title">Alerts <img height="15%" src={{alerts_image}} width="15%"></h2>
+                        <h2>{{alerts_data['title']}}</h2>
+                        <pre class="text">{{ new_des }}</pre>
+                        <a href="{{ url_for('alerts') }}">Click Here To See More</a>
+                        {% endif %}
                     </div>
                 </div>
             </div>
+        </div>
     </main>
     <footer class="site-footer">
         <div class="container">
