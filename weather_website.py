@@ -243,11 +243,19 @@ def weather():
                 'title': alerts_store['alerts'][0]['title'],
                 'local_expire': alerts_store['alerts'][0]['expires_local']
             }
-
+            print(alerts_data)
         except IndexError:
             description = 'No alerts in this area!'
 
         else:
+            translator = Translator()
+            description = translator.translate(alerts_data['description'])
+            description = description.text.replace('English: ', '')
+            description = description.replace('* WHAT...', 'What: ')
+            description = description.replace('* WHERE...', 'Where: ')
+            description = description.replace('* WHEN...', 'When: ')
+            description = description.replace('* IMPACTS...', 'Impacts: ')
+
             try:
                 alerts_data_2 = {
                     'expires': alerts_store['alerts'][1]['expires_utc'],
@@ -264,13 +272,6 @@ def weather():
                 second_alert = False
 
             else:
-                translator = Translator()
-                description = translator.translate(alerts_data['description'])
-                description = description.text.replace('English: ', '')
-                description = description.replace('* WHAT...', 'What: ')
-                description = description.replace('* WHERE...', 'Where: ')
-                description = description.replace('* WHEN...', 'When: ')
-                description = description.replace('* IMPACTS...', 'Impacts: ')
 
                 description_2 = translator.translate(alerts_data_2['description'])
                 description_2 = description_2.text.replace('English: ', '')
@@ -383,7 +384,7 @@ def weather():
 
         id_tag = data['id']
         image = verify_icon(id_tag)
-
+        print(description)
         return render_template('home.html', data=data, image=image, hourly_images=hourly_images,
                                data_hourly=data_hourly, data_daily=data_daily, daily_images=daily_images,
                                days=list_of_days, sun_time=sun_time, list_of_hours=list_of_hours,
