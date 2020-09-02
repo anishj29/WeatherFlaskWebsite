@@ -256,6 +256,15 @@ def weather():
             description = description.replace('* WHEN...', 'When: ')
             description = description.replace('* IMPACTS...', 'Impacts: ')
 
+            if alerts_data['severity'] == 'Warning':
+                alerts_image = 'static/alerts/warning.png'
+
+            elif alerts_data['severity'] == 'Watch':
+                alerts_image = 'static/alerts/watch.png'
+
+            elif alerts_data['severity'] == 'Extreme':
+                alerts_image = 'static/alerts/extreme.png'
+
             try:
                 alerts_data_2 = {
                     'expires': alerts_store['alerts'][1]['expires_utc'],
@@ -279,15 +288,6 @@ def weather():
                 description_2 = description_2.replace('* WHERE...', 'Where: ')
                 description_2 = description_2.replace('* WHEN...', 'When: ')
                 description_2 = description_2.replace('* IMPACTS...', 'Impacts: ')
-
-                if alerts_data['severity'] == 'Warning':
-                    alerts_image = 'static/alerts/warning.png'
-
-                elif alerts_data['severity'] == 'Watch':
-                    alerts_image = 'static/alerts/watch.png'
-
-                elif alerts_data['severity'] == 'Extreme':
-                    alerts_image = 'static/alerts/extreme.png'
 
         # Hourly Weather stored in dictionary
         data_hourly = {
