@@ -70,6 +70,7 @@ COMPRESS_LEVEL = 6
 COMPRESS_MIN_SIZE = 500
 Compress(app)
 
+alerts_data = {}
 description = ''
 description_2 = ''
 second_alert = False
@@ -77,7 +78,7 @@ second_alert = False
 
 @app.route('/', methods=['POST', 'GET'])
 def weather():
-    global alerts_image, pop_list, description, description_2, second_alert
+    global alerts_image, description, description_2, second_alert, alerts_data
     if request.method == 'POST':
         city = request.form['city'].title()
     else:
@@ -231,6 +232,7 @@ def weather():
         alerts = urllib.request.urlopen(
             'https://api.weatherbit.io/v2.0/alerts?lat=' + lat + '&lon=' + lon + '&key=' + alerts_api).read()
         alerts_store = json.loads(alerts)
+        print('hi')
         try:
             alerts_data = {
                 'expires': alerts_store['alerts'][0]['expires_utc'],
@@ -286,107 +288,107 @@ def weather():
                 elif alerts_data['severity'] == 'Extreme':
                     alerts_image = 'static/alerts/extreme.png'
 
-            # Hourly Weather stored in dictionary
-            data_hourly = {
-                'hour_1_temp': int(round(hourly_data['hourly'][0]['temp'], 0)),
-                'hour_1_id': hourly_data['hourly'][0]['weather'][0]['id'],
-                'hour_1_main': hourly_data['hourly'][0]['weather'][0]['main'],
-                'hour_2_temp': int(round(hourly_data['hourly'][1]['temp'], 0)),
-                'hour_2_id': hourly_data['hourly'][1]['weather'][0]['id'],
-                'hour_2_main': hourly_data['hourly'][1]['weather'][0]['main'],
-                'hour_3_temp': int(round(hourly_data['hourly'][2]['temp'], 0)),
-                'hour_3_id': hourly_data['hourly'][2]['weather'][0]['id'],
-                'hour_3_main': hourly_data['hourly'][2]['weather'][0]['main'],
-                'hour_4_temp': int(round(hourly_data['hourly'][3]['temp'], 0)),
-                'hour_4_id': hourly_data['hourly'][3]['weather'][0]['id'],
-                'hour_4_main': hourly_data['hourly'][3]['weather'][0]['main'],
-                'hour_5_temp': int(round(hourly_data['hourly'][4]['temp'], 0)),
-                'hour_5_id': hourly_data['hourly'][4]['weather'][0]['id'],
-                'hour_5_main': hourly_data['hourly'][4]['weather'][0]['main'],
-                'hour_6_temp': int(round(hourly_data['hourly'][5]['temp'], 0)),
-                'hour_6_id': hourly_data['hourly'][5]['weather'][0]['id'],
-                'hour_6_main': hourly_data['hourly'][5]['weather'][0]['main'],
-                'hour_7_temp': int(round(hourly_data['hourly'][6]['temp'], 0)),
-                'hour_7_id': hourly_data['hourly'][6]['weather'][0]['id'],
-                'hour_7_main': hourly_data['hourly'][6]['weather'][0]['main'],
-                'hour_8_temp': int(round(hourly_data['hourly'][7]['temp'], 0)),
-                'hour_8_id': hourly_data['hourly'][7]['weather'][0]['id'],
-                'hour_8_main': hourly_data['hourly'][7]['weather'][0]['main'],
-                'hour_9_temp': int(round(hourly_data['hourly'][8]['temp'], 0)),
-                'hour_9_id': hourly_data['hourly'][8]['weather'][0]['id'],
-                'hour_9_main': hourly_data['hourly'][8]['weather'][0]['main'],
-                'hour_10_temp': int(round(hourly_data['hourly'][9]['temp'], 0)),
-                'hour_10_id': hourly_data['hourly'][9]['weather'][0]['id'],
-                'hour_10_main': hourly_data['hourly'][9]['weather'][0]['main'],
-                'hour_11_temp': int(round(hourly_data['hourly'][10]['temp'], 0)),
-                'hour_11_id': hourly_data['hourly'][10]['weather'][0]['id'],
-                'hour_11_main': hourly_data['hourly'][10]['weather'][0]['main'],
-                'hour_12_temp': int(round(hourly_data['hourly'][11]['temp'], 0)),
-                'hour_12_id': hourly_data['hourly'][11]['weather'][0]['id'],
-                'hour_12_main': hourly_data['hourly'][11]['weather'][0]['main'],
-                'hour_13': hourly_data['hourly'][12]['dt']
-            }
+        # Hourly Weather stored in dictionary
+        data_hourly = {
+            'hour_1_temp': int(round(hourly_data['hourly'][0]['temp'], 0)),
+            'hour_1_id': hourly_data['hourly'][0]['weather'][0]['id'],
+            'hour_1_main': hourly_data['hourly'][0]['weather'][0]['main'],
+            'hour_2_temp': int(round(hourly_data['hourly'][1]['temp'], 0)),
+            'hour_2_id': hourly_data['hourly'][1]['weather'][0]['id'],
+            'hour_2_main': hourly_data['hourly'][1]['weather'][0]['main'],
+            'hour_3_temp': int(round(hourly_data['hourly'][2]['temp'], 0)),
+            'hour_3_id': hourly_data['hourly'][2]['weather'][0]['id'],
+            'hour_3_main': hourly_data['hourly'][2]['weather'][0]['main'],
+            'hour_4_temp': int(round(hourly_data['hourly'][3]['temp'], 0)),
+            'hour_4_id': hourly_data['hourly'][3]['weather'][0]['id'],
+            'hour_4_main': hourly_data['hourly'][3]['weather'][0]['main'],
+            'hour_5_temp': int(round(hourly_data['hourly'][4]['temp'], 0)),
+            'hour_5_id': hourly_data['hourly'][4]['weather'][0]['id'],
+            'hour_5_main': hourly_data['hourly'][4]['weather'][0]['main'],
+            'hour_6_temp': int(round(hourly_data['hourly'][5]['temp'], 0)),
+            'hour_6_id': hourly_data['hourly'][5]['weather'][0]['id'],
+            'hour_6_main': hourly_data['hourly'][5]['weather'][0]['main'],
+            'hour_7_temp': int(round(hourly_data['hourly'][6]['temp'], 0)),
+            'hour_7_id': hourly_data['hourly'][6]['weather'][0]['id'],
+            'hour_7_main': hourly_data['hourly'][6]['weather'][0]['main'],
+            'hour_8_temp': int(round(hourly_data['hourly'][7]['temp'], 0)),
+            'hour_8_id': hourly_data['hourly'][7]['weather'][0]['id'],
+            'hour_8_main': hourly_data['hourly'][7]['weather'][0]['main'],
+            'hour_9_temp': int(round(hourly_data['hourly'][8]['temp'], 0)),
+            'hour_9_id': hourly_data['hourly'][8]['weather'][0]['id'],
+            'hour_9_main': hourly_data['hourly'][8]['weather'][0]['main'],
+            'hour_10_temp': int(round(hourly_data['hourly'][9]['temp'], 0)),
+            'hour_10_id': hourly_data['hourly'][9]['weather'][0]['id'],
+            'hour_10_main': hourly_data['hourly'][9]['weather'][0]['main'],
+            'hour_11_temp': int(round(hourly_data['hourly'][10]['temp'], 0)),
+            'hour_11_id': hourly_data['hourly'][10]['weather'][0]['id'],
+            'hour_11_main': hourly_data['hourly'][10]['weather'][0]['main'],
+            'hour_12_temp': int(round(hourly_data['hourly'][11]['temp'], 0)),
+            'hour_12_id': hourly_data['hourly'][11]['weather'][0]['id'],
+            'hour_12_main': hourly_data['hourly'][11]['weather'][0]['main'],
+            'hour_13': hourly_data['hourly'][12]['dt']
+        }
 
-            data_daily = {
-                'day_1_temp': int(round(hourly_data['daily'][0]['temp']['day'], 0)),
-                'day_1_max': int(round(hourly_data['daily'][0]['temp']['max'], 0)),
-                'day_1_min': int(round(hourly_data['daily'][0]['temp']['min'], 0)),
-                'day_1_main': hourly_data['daily'][0]['weather'][0]['main'],
-                'day_1_id': hourly_data['daily'][0]['weather'][0]['id'],
-                'day_2_temp': int(round(hourly_data['daily'][1]['temp']['day'], 0)),
-                'day_2_max': int(round(hourly_data['daily'][1]['temp']['max'], 0)),
-                'day_2_min': int(round(hourly_data['daily'][1]['temp']['min'], 0)),
-                'day_2_main': hourly_data['daily'][1]['weather'][0]['main'],
-                'day_2_id': hourly_data['daily'][1]['weather'][0]['id'],
-                'day_3_temp': int(round(hourly_data['daily'][2]['temp']['day'], 0)),
-                'day_3_max': int(round(hourly_data['daily'][2]['temp']['max'], 0)),
-                'day_3_min': int(round(hourly_data['daily'][2]['temp']['min'], 0)),
-                'day_3_main': hourly_data['daily'][2]['weather'][0]['main'],
-                'day_3_id': hourly_data['daily'][2]['weather'][0]['id'],
-                'day_4_temp': int(round(hourly_data['daily'][3]['temp']['day'], 0)),
-                'day_4_max': int(round(hourly_data['daily'][3]['temp']['max'], 0)),
-                'day_4_min': int(round(hourly_data['daily'][3]['temp']['min'], 0)),
-                'day_4_main': hourly_data['daily'][3]['weather'][0]['main'],
-                'day_4_id': hourly_data['daily'][3]['weather'][0]['id'],
-                'day_5_temp': int(round(hourly_data['daily'][4]['temp']['day'], 0)),
-                'day_5_max': int(round(hourly_data['daily'][4]['temp']['max'], 0)),
-                'day_5_min': int(round(hourly_data['daily'][4]['temp']['min'], 0)),
-                'day_5_main': hourly_data['daily'][4]['weather'][0]['main'],
-                'day_5_id': hourly_data['daily'][4]['weather'][0]['id'],
-                'day_6_temp': int(round(hourly_data['daily'][5]['temp']['day'], 0)),
-                'day_6_max': int(round(hourly_data['daily'][5]['temp']['max'], 0)),
-                'day_6_min': int(round(hourly_data['daily'][5]['temp']['min'], 0)),
-                'day_6_main': hourly_data['daily'][5]['weather'][0]['main'],
-                'day_6_id': hourly_data['daily'][5]['weather'][0]['id'],
-                'day_7_temp': int(round(hourly_data['daily'][6]['temp']['day'], 0)),
-                'day_7_max': int(round(hourly_data['daily'][6]['temp']['max'], 0)),
-                'day_7_min': int(round(hourly_data['daily'][6]['temp']['min'], 0)),
-                'day_7_main': hourly_data['daily'][6]['weather'][0]['main'],
-                'day_7_id': hourly_data['daily'][6]['weather'][0]['id'],
-                'day_8_temp': int(round(hourly_data['daily'][7]['temp']['day'], 0)),
-                'day_8_max': int(round(hourly_data['daily'][7]['temp']['max'], 0)),
-                'day_8_min': int(round(hourly_data['daily'][7]['temp']['min'], 0)),
-                'day_8_main': hourly_data['daily'][7]['weather'][0]['main'],
-                'day_8_id': hourly_data['daily'][7]['weather'][0]['id'],
-                'uv': round(hourly_data['daily'][0]['uvi'])
-            }
+        data_daily = {
+            'day_1_temp': int(round(hourly_data['daily'][0]['temp']['day'], 0)),
+            'day_1_max': int(round(hourly_data['daily'][0]['temp']['max'], 0)),
+            'day_1_min': int(round(hourly_data['daily'][0]['temp']['min'], 0)),
+            'day_1_main': hourly_data['daily'][0]['weather'][0]['main'],
+            'day_1_id': hourly_data['daily'][0]['weather'][0]['id'],
+            'day_2_temp': int(round(hourly_data['daily'][1]['temp']['day'], 0)),
+            'day_2_max': int(round(hourly_data['daily'][1]['temp']['max'], 0)),
+            'day_2_min': int(round(hourly_data['daily'][1]['temp']['min'], 0)),
+            'day_2_main': hourly_data['daily'][1]['weather'][0]['main'],
+            'day_2_id': hourly_data['daily'][1]['weather'][0]['id'],
+            'day_3_temp': int(round(hourly_data['daily'][2]['temp']['day'], 0)),
+            'day_3_max': int(round(hourly_data['daily'][2]['temp']['max'], 0)),
+            'day_3_min': int(round(hourly_data['daily'][2]['temp']['min'], 0)),
+            'day_3_main': hourly_data['daily'][2]['weather'][0]['main'],
+            'day_3_id': hourly_data['daily'][2]['weather'][0]['id'],
+            'day_4_temp': int(round(hourly_data['daily'][3]['temp']['day'], 0)),
+            'day_4_max': int(round(hourly_data['daily'][3]['temp']['max'], 0)),
+            'day_4_min': int(round(hourly_data['daily'][3]['temp']['min'], 0)),
+            'day_4_main': hourly_data['daily'][3]['weather'][0]['main'],
+            'day_4_id': hourly_data['daily'][3]['weather'][0]['id'],
+            'day_5_temp': int(round(hourly_data['daily'][4]['temp']['day'], 0)),
+            'day_5_max': int(round(hourly_data['daily'][4]['temp']['max'], 0)),
+            'day_5_min': int(round(hourly_data['daily'][4]['temp']['min'], 0)),
+            'day_5_main': hourly_data['daily'][4]['weather'][0]['main'],
+            'day_5_id': hourly_data['daily'][4]['weather'][0]['id'],
+            'day_6_temp': int(round(hourly_data['daily'][5]['temp']['day'], 0)),
+            'day_6_max': int(round(hourly_data['daily'][5]['temp']['max'], 0)),
+            'day_6_min': int(round(hourly_data['daily'][5]['temp']['min'], 0)),
+            'day_6_main': hourly_data['daily'][5]['weather'][0]['main'],
+            'day_6_id': hourly_data['daily'][5]['weather'][0]['id'],
+            'day_7_temp': int(round(hourly_data['daily'][6]['temp']['day'], 0)),
+            'day_7_max': int(round(hourly_data['daily'][6]['temp']['max'], 0)),
+            'day_7_min': int(round(hourly_data['daily'][6]['temp']['min'], 0)),
+            'day_7_main': hourly_data['daily'][6]['weather'][0]['main'],
+            'day_7_id': hourly_data['daily'][6]['weather'][0]['id'],
+            'day_8_temp': int(round(hourly_data['daily'][7]['temp']['day'], 0)),
+            'day_8_max': int(round(hourly_data['daily'][7]['temp']['max'], 0)),
+            'day_8_min': int(round(hourly_data['daily'][7]['temp']['min'], 0)),
+            'day_8_main': hourly_data['daily'][7]['weather'][0]['main'],
+            'day_8_id': hourly_data['daily'][7]['weather'][0]['id'],
+            'uv': round(hourly_data['daily'][0]['uvi'])
+        }
 
-            # Got icon for each hour
-            for i in range(1, 13):
-                hourly_images.append(verify_icon(data_hourly['hour_' + str(i) + '_id']))
-                main_list.append(data_hourly['hour_' + str(i) + '_main'])
+        # Got icon for each hour
+        for i in range(1, 13):
+            hourly_images.append(verify_icon(data_hourly['hour_' + str(i) + '_id']))
+            main_list.append(data_hourly['hour_' + str(i) + '_main'])
 
-            for j in range(1, 9):
-                daily_images.append(verify_icon(data_daily['day_' + str(j) + '_id']))
+        for j in range(1, 9):
+            daily_images.append(verify_icon(data_daily['day_' + str(j) + '_id']))
 
-            id_tag = data['id']
-            image = verify_icon(id_tag)
+        id_tag = data['id']
+        image = verify_icon(id_tag)
 
-            return render_template('home.html', data=data, image=image, hourly_images=hourly_images,
-                                   data_hourly=data_hourly, data_daily=data_daily, daily_images=daily_images,
-                                   days=list_of_days, sun_time=sun_time, list_of_hours=list_of_hours,
-                                   list_of_months=list_of_months, lat=lat, lon=lon, alerts_data=alerts_data,
-                                   alerts_image=alerts_image, new_des=description, pop_list=pop_list)
+        return render_template('home.html', data=data, image=image, hourly_images=hourly_images,
+                               data_hourly=data_hourly, data_daily=data_daily, daily_images=daily_images,
+                               days=list_of_days, sun_time=sun_time, list_of_hours=list_of_hours,
+                               list_of_months=list_of_months, lat=lat, lon=lon, alerts_data=alerts_data,
+                               alerts_image=alerts_image, new_des=description, pop_list=pop_list)
 
 
 @app.route('/alerts')
