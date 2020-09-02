@@ -314,8 +314,8 @@
                         {% else %}
                         <h2 class="section-title">Alerts <img height="15%" src={{alerts_image}} width="15%"></h2>
                         <h2>{{alerts_data['title']}}</h2>
-                        <pre class="text">{{ new_des }}</pre>
-                        <a href="{{ url_for('alerts') }}">Click Here To See More</a>
+                        <pre class="text">{{new_des}}</pre>
+                        <a href="{{url_for('alerts')}}">See More</a>
                         {% endif %}
                     </div>
                 </div>
