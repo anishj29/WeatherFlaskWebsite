@@ -2,6 +2,7 @@
 import datetime
 import json
 import urllib.request
+
 import pytz
 from flask import Flask, render_template, request
 from flask_compress import Compress
@@ -232,7 +233,7 @@ def weather():
         alerts = urllib.request.urlopen(
             'https://api.weatherbit.io/v2.0/alerts?lat=' + lat + '&lon=' + lon + '&key=' + alerts_api).read()
         alerts_store = json.loads(alerts)
-        print('hi')
+        print(alerts_store)
         try:
             alerts_data = {
                 'expires': alerts_store['alerts'][0]['expires_utc'],
@@ -243,7 +244,6 @@ def weather():
                 'title': alerts_store['alerts'][0]['title'],
                 'local_expire': alerts_store['alerts'][0]['expires_local']
             }
-            print(alerts_data)
         except IndexError:
             description = 'No alerts in this area!'
 
