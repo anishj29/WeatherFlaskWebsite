@@ -2,6 +2,7 @@
 import datetime
 import json
 import urllib.request
+
 import pytz
 from flask import Flask, render_template, request
 from flask_compress import Compress
@@ -12,12 +13,9 @@ daily_images = []
 id_list = []
 main_list = []
 alerts_image = ''
+pop_list = ''
 
-month_to_short = {1: 'Jan', 2: 'Feb', 3: 'Mar', 4: 'Apr', 5: 'May', 6: 'Jun', 7: 'Jul', 8: 'Aug', 9: 'Sep', 10: 'Oct',
-                  11: 'Nov', 12: 'Dec'}
-date = datetime.datetime.today()
-
-month = month_to_short[date.month]
+day_name = {0: 'Monday', 1: 'Tuesday', 2: 'Wednesday', 3: 'Thursday', 4: 'Friday', 5: 'Saturday', 6: 'Sunday'}
 
 
 def verify_icon(id_tag):
@@ -78,11 +76,11 @@ second_alert = False
 
 @app.route('/', methods=['POST', 'GET'])
 def weather():
-    global alerts_image, description, description_2, second_alert, alerts_data
+    global alerts_image, description, description_2, second_alert, alerts_data, pop_list, day_name
     if request.method == 'POST':
         city = request.form['city'].title()
     else:
-        # for default name princeotn
+        # for default name Princeton
         city = 'Princeton'
 
     new_city = city
@@ -144,51 +142,30 @@ def weather():
         # Gets accurate hour, day and month for searched location
         tz = hourly_data['timezone']
         datetime_tz = datetime.datetime.now(pytz.timezone(tz))
-        day = datetime_tz.day
-        day_2 = datetime_tz + datetime.timedelta(days=1)
-        day_2 = day_2.day
-        day_3 = datetime_tz + datetime.timedelta(days=2)
-        day_3 = day_3.day
-        day_4 = datetime_tz + datetime.timedelta(days=3)
-        day_4 = day_4.day
-        day_5 = datetime_tz + datetime.timedelta(days=4)
-        day_5 = day_5.day
-        day_6 = datetime_tz + datetime.timedelta(days=5)
-        day_6 = day_6.day
-        day_7 = datetime_tz + datetime.timedelta(days=6)
-        day_7 = day_7.day
+        today_date = datetime_tz.day
+        day = datetime_tz.today().weekday()  # Gets day in number
+        day_2 = (datetime_tz + datetime.timedelta(days=1)).weekday()
+        day_3 = (datetime_tz + datetime.timedelta(days=2)).weekday()
+        day_4 = (datetime_tz + datetime.timedelta(days=3)).weekday()
+        day_5 = (datetime_tz + datetime.timedelta(days=4)).weekday()
+        day_6 = (datetime_tz + datetime.timedelta(days=5)).weekday()
+        day_7 = (datetime_tz + datetime.timedelta(days=6)).weekday()
 
         list_of_days = [day, day_2, day_3, day_4, day_5, day_6, day_7]
 
-        month_name = {1: 'Jan', 2: 'Feb', 3: 'Mar', 4: 'Apr', 5: 'May', 6: 'Jun', 7: 'Jul', 8: 'Aug', 9: 'Sep',
-                      10: 'Oct', 11: 'Nov', 12: 'Dec'}
+        for i in range(len(list_of_days)):  # Converts number to day ( 1 = Monday 2 = Tuesday etc)
+            list_of_days[i] = day_name[list_of_days[i]]
+
+        month_name = {1: 'January', 2: 'February', 3: 'March', 4: 'April', 5: 'May', 6: 'June', 7: 'July', 8: 'August',
+                      9: 'September', 10: 'October', 11: 'November', 12: 'December'}
 
         current_month = datetime_tz.month
         current_month = month_name[current_month]
-        month_2 = datetime_tz + datetime.timedelta(days=1)
-        month_2 = month_name[month_2.month]
-        month_3 = datetime_tz + datetime.timedelta(days=2)
-        month_3 = month_name[month_3.month]
-        month_4 = datetime_tz + datetime.timedelta(days=3)
-        month_4 = month_name[month_4.month]
-        month_5 = datetime_tz + datetime.timedelta(days=4)
-        month_5 = month_name[month_5.month]
-        month_6 = datetime_tz + datetime.timedelta(days=5)
-        month_6 = month_name[month_6.month]
-        month_7 = datetime_tz + datetime.timedelta(days=6)
-        month_7 = month_name[month_7.month]
 
-        list_of_months = [current_month, month_2, month_3, month_4, month_5, month_6, month_7]
+        current_hour = int(datetime_tz.strftime("%H"))  # Gets hour in 12 hour format (am/pm)
 
-        current_hour = int(datetime_tz.strftime("%H"))
-        hour_2 = current_hour + 1
-        hour_3 = hour_2 + 1
-        hour_4 = hour_3 + 1
-        hour_5 = hour_4 + 1
-        hour_6 = hour_5 + 1
-        hour_7 = hour_6 + 1
-
-        list_of_hours = [current_hour, hour_2, hour_3, hour_4, hour_5, hour_6, hour_7]
+        list_of_hours = [current_hour, current_hour + 1, current_hour + 2, current_hour + 3, current_hour + 4,
+                         current_hour + 5, current_hour + 6]
 
         for i in range(len(list_of_hours)):
             if list_of_hours[i] > 24:
@@ -209,7 +186,6 @@ def weather():
             get_id = urllib.request.urlopen('http://dataservice.accuweather.com/locations/v1/cities/search?' +
                                             'apikey=4zrGVjvJENvvA6SvIPA6hW1qUmtKqCcd&q=' + new_city.lower() +
                                             '&details=false').read()
-
         except:
             for i in range(0, 8):
                 pop_list.append('N/A')
@@ -228,11 +204,11 @@ def weather():
                 if pop_num == '0%':
                     pop_num = ''
                 pop_list.append(pop_num)
-        alerts_api = '888c4677014d4578a511570492df67b0'
-        alerts = urllib.request.urlopen(
-            'https://api.weatherbit.io/v2.0/alerts?lat=' + lat + '&lon=' + lon + '&key=' + alerts_api).read()
-        alerts_store = json.loads(alerts)
-        print(alerts_store)
+        alerts_api_key = '888c4677014d4578a511570492df67b0'
+        alerts_api = urllib.request.urlopen(
+            'https://api.weatherbit.io/v2.0/alerts?lat=' + lat + '&lon=' + lon + '&key=' + alerts_api_key).read()
+        alerts_store = json.loads(alerts_api)
+
         try:
             alerts_data = {
                 'expires': alerts_store['alerts'][0]['expires_utc'],
@@ -243,6 +219,7 @@ def weather():
                 'title': alerts_store['alerts'][0]['title'],
                 'local_expire': alerts_store['alerts'][0]['expires_local']
             }
+
         except IndexError:
             description = 'No alerts in this area!'
 
@@ -280,7 +257,6 @@ def weather():
                 second_alert = False
 
             else:
-
                 description_2 = translator.translate(alerts_data_2['description'])
                 description_2 = description_2.text.replace('English: ', '')
                 description_2 = description_2.replace('* WHAT...', 'What: ')
@@ -383,12 +359,12 @@ def weather():
 
         id_tag = data['id']
         image = verify_icon(id_tag)
-        print(description)
         return render_template('home.html', data=data, image=image, hourly_images=hourly_images,
                                data_hourly=data_hourly, data_daily=data_daily, daily_images=daily_images,
                                days=list_of_days, sun_time=sun_time, list_of_hours=list_of_hours,
-                               list_of_months=list_of_months, lat=lat, lon=lon, alerts_data=alerts_data,
-                               alerts_image=alerts_image, new_des=description, pop_list=pop_list)
+                               current_month=current_month, lat=lat, lon=lon, alerts_data=alerts_data,
+                               alerts_image=alerts_image, new_des=description, pop_list=pop_list,
+                               todays_date=today_date)
 
 
 @app.route('/alerts')
