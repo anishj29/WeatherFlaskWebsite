@@ -2,7 +2,6 @@
 import datetime
 import json
 import urllib.request
-
 import pytz
 from flask import Flask, render_template, request
 from flask_compress import Compress
