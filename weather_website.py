@@ -7,6 +7,7 @@ import pytz
 from flask import Flask, render_template, request
 from flask_compress import Compress
 from googletrans import Translator
+
 import send_email
 
 hourly_images = []
@@ -113,25 +114,20 @@ def weather():
 
     else:
         data = {
-            "country_code": str(list_of_data['sys']['country']),
-            "city_name": str(city),
-            "main": list_of_data['weather'][0]['main'],
-            "description": list_of_data['weather'][0]['description'],
-            "coordinate": str(list_of_data['coord']['lon']) + ' '
-                          + str(list_of_data['coord']['lat']),
+            "country_code": str(list_of_data['sys']['country']), "city_name": str(city),
+            "main": list_of_data['weather'][0]['main'], "description": list_of_data['weather'][0]['description'],
+            "coordinate": str(list_of_data['coord']['lon']) + ' ' + str(list_of_data['coord']['lat']),
             "temp": int(round(1.8 * (list_of_data['main']['temp'] - 273) + 32, 0)),
             "temp_min": int(round(1.8 * (list_of_data['main']['temp_min'] - 273) + 32, 0)),
             "temp_max": int(round(1.8 * (list_of_data['main']['temp_max'] - 273) + 32, 0)),
             "feels_like": int(round(1.8 * (list_of_data['main']['feels_like'] - 273) + 32, 0)),
-            "humidity": str(list_of_data['main']['humidity']),
-            "wind_speed": list_of_data['wind']['speed'],
-            'id': list_of_data['weather'][0]['id'],
-            'sunrise': list_of_data['sys']['sunrise'],
-            'sunset': list_of_data['sys']['sunset'],
-            'offset': list_of_data['timezone']
+            "humidity": str(list_of_data['main']['humidity']), "wind_speed": list_of_data['wind']['speed'],
+            'id': list_of_data['weather'][0]['id'], 'sunrise': list_of_data['sys']['sunrise'],
+            'sunset': list_of_data['sys']['sunset'], 'offset': list_of_data['timezone']
         }
         lat = str(list_of_data['coord']['lat'])
         lon = str(list_of_data['coord']['lon'])
+        temp = 'imperial'
 
         # Sunrise and Sunset
         sunrise_time = data['sunrise'] + data['offset']
@@ -141,20 +137,19 @@ def weather():
         sunset = datetime.datetime.fromtimestamp(sunset_time, datetime.timezone.utc).strftime('%I:%M %p')
         sun_time = [sunrise, sunset]
 
-        temp = 'imperial'
-
         # Hourly Weather
         hourly_source = urllib.request.urlopen(
             'https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon +
             '&units=' + temp + '&exclude=minutely,current&appid=' + api).read()
-
         hourly_data = json.loads(hourly_source)
 
         # Gets accurate hour, day and month for searched location
         tz = hourly_data['timezone']
         datetime_tz = datetime.datetime.now(pytz.timezone(tz))
         today_date = datetime_tz.day
-        day = datetime_tz.today().weekday()  # Gets day in number
+        day = datetime_tz.today().weekday()
+
+        # Gets day in number
         day_2 = (datetime_tz + datetime.timedelta(days=1)).weekday()
         day_3 = (datetime_tz + datetime.timedelta(days=2)).weekday()
         day_4 = (datetime_tz + datetime.timedelta(days=3)).weekday()
@@ -167,29 +162,27 @@ def weather():
         for i in range(len(list_of_days)):  # Converts number to day ( 1 = Monday 2 = Tuesday etc)
             list_of_days[i] = day_name[list_of_days[i]]
 
-        month_name = {1: 'January', 2: 'February', 3: 'March', 4: 'April', 5: 'May', 6: 'June', 7: 'July', 8: 'August',
-                      9: 'September', 10: 'October', 11: 'November', 12: 'December'}
+        month_name = {1: 'Jan', 2: 'Feb', 3: 'Mar', 4: 'Apr', 5: 'May', 6: 'June', 7: 'July', 8: 'Aug',
+                      9: 'Sep', 10: 'Oct', 11: 'Nov', 12: 'Dec'}
 
         current_month = datetime_tz.month
         current_month = month_name[current_month]
 
-        current_hour = int(datetime_tz.strftime("%H"))  # Gets hour in 12 hour format (am/pm)
+        current_hour = int(datetime_tz.strftime("%H"))
 
+        # Gets hour in 12 hour format (am/pm)
         list_of_hours = [current_hour, current_hour + 1, current_hour + 2, current_hour + 3, current_hour + 4,
                          current_hour + 5, current_hour + 6]
 
         for i in range(len(list_of_hours)):
             if list_of_hours[i] > 24:
                 list_of_hours[i] -= 24
-
             if list_of_hours[i] > 12:
                 list_of_hours[i] -= 12
                 list_of_hours[i] = str(list_of_hours[i]) + ' pm'
-
             elif list_of_hours[i] == 0:
                 list_of_hours[i] = 12
                 list_of_hours[i] = str(list_of_hours[i]) + ' pm'
-
             else:
                 list_of_hours[i] = str(list_of_hours[i]) + ' am'
         try:
@@ -215,9 +208,9 @@ def weather():
                 if pop_num == '0%':
                     pop_num = ''
                 pop_list.append(pop_num)
-        alerts_api_key = '888c4677014d4578a511570492df67b0'
+        alerts_key = '888c4677014d4578a511570492df67b0'
         alerts_api = urllib.request.urlopen(
-            'https://api.weatherbit.io/v2.0/alerts?lat=' + lat + '&lon=' + lon + '&key=' + alerts_api_key).read()
+            'https://api.weatherbit.io/v2.0/alerts?lat=' + lat + '&lon=' + lon + '&key=' + alerts_key).read()
         alerts_store = json.loads(alerts_api)
 
         try:
@@ -227,8 +220,7 @@ def weather():
                 'description': alerts_store['alerts'][0]['description'],
                 'effective_utc': alerts_store['alerts'][0]['effective_utc'],
                 'severity': alerts_store['alerts'][0]['severity'],
-                'title': alerts_store['alerts'][0]['title'],
-                'local_expire': alerts_store['alerts'][0]['expires_local']
+                'title': alerts_store['alerts'][0]['title'], 'local_expire': alerts_store['alerts'][0]['expires_local']
             }
 
         except IndexError:
@@ -315,7 +307,7 @@ def weather():
             'hour_12_main': hourly_data['hourly'][11]['weather'][0]['main'],
             'hour_13': hourly_data['hourly'][12]['dt']
         }
-
+        #Daily weather
         data_daily = {
             'day_1_temp': int(round(hourly_data['daily'][0]['temp']['day'], 0)),
             'day_1_max': int(round(hourly_data['daily'][0]['temp']['max'], 0)),
@@ -364,12 +356,11 @@ def weather():
         for i in range(1, 13):
             hourly_images.append(verify_icon(data_hourly['hour_' + str(i) + '_id']))
             main_list.append(data_hourly['hour_' + str(i) + '_main'])
-
         for j in range(1, 9):
             daily_images.append(verify_icon(data_daily['day_' + str(j) + '_id']))
-
         id_tag = data['id']
         image = verify_icon(id_tag)
+
         return render_template('home.html', data=data, image=image, hourly_images=hourly_images,
                                data_hourly=data_hourly, data_daily=data_daily, daily_images=daily_images,
                                days=list_of_days, sun_time=sun_time, list_of_hours=list_of_hours,
