@@ -7,6 +7,7 @@ import pytz
 from flask import Flask, render_template, request
 from flask_compress import Compress
 from googletrans import Translator
+import send_email
 
 hourly_images = []
 daily_images = []
@@ -14,7 +15,6 @@ id_list = []
 main_list = []
 alerts_image = ''
 pop_list = ''
-
 
 day_name = {0: 'Monday', 1: 'Tuesday', 2: 'Wednesday', 3: 'Thursday', 4: 'Friday', 5: 'Saturday', 6: 'Sunday'}
 
@@ -73,6 +73,16 @@ alerts_data = {}
 description = ''
 description_2 = ''
 second_alert = False
+
+
+@app.route('/subscribe/', methods=['POST', 'GET'])
+def send_mail():
+    email = request.form['subscribe']
+    msg = "Thank You for subscribing to Weather Website by Program Explorers!\n\n" \
+          "https://weatherprogramexplorer.herokuapp.com"
+    send_email.send_mail(email, msg)
+
+    return render_template("subscribe.html")
 
 
 @app.route('/', methods=['POST', 'GET'])

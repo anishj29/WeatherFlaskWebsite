@@ -2,13 +2,13 @@ import smtplib
 import ssl
 
 
-def send_mail():
+def send_mail(receiver, message):
     smtp_server = "smtp.gmail.com"
     port = 587  # For starttls
     sender_email = "programexplorers@gmail.com"
     password = "python2coding"
-    receiver_email = "varunk3240@gmail.com"  # Should be changed to the user inputed email in the subscribe bar
-    msg = "Hello whatsup"
+    receiver_email = receiver  # Should be changed to the user inputed email in the subscribe bar
+    msg = message
 
     # Create a secure SSL context
     context = ssl.create_default_context()
@@ -20,10 +20,11 @@ def send_mail():
         server.starttls(context=context)  # Secure the connection
         server.ehlo()  # Can be omitted
         server.login(sender_email, password)
-        server.sendmail(sender_email, receiver_email, msg)
+        server.sendmail(sender_email,receiver_email, msg)
     except Exception as e:
         # Print any error messages to stdout
         print(e)
+        print("Email sending failed")
     finally:
         server.quit()
 
