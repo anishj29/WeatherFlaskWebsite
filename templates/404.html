@@ -1,11 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0,maximum-scale=1" name="viewport">
     <title>Error</title>
+    <link href="static/weather_icon-2.ico" rel="shortcut icon" type="image/x-icon"/>
+
+    <!-- Loading third party fonts -->
+    <link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700|" rel="stylesheet" type="text/css">
+
+    <!-- Loading main css file -->
+    <link href="{{url_for('static', filename='css/style.css')}}" rel="stylesheet" type="text/css">
+
 </head>
+
 <body>
-    <h1>That city could not be found</h1>
-    <p><a href="{{ url_for('weather') }}">Go Back</a>
+<div class="site-content">
+    <div class="site-header">
+        <div class="container-fluid">
+            <div class="logo-type">
+                <a href="{{ url_for('weather') }}"><h1 class="site-title">Weather</h1></a>
+                <small class="site-description">By Program Explorers</small>
+            </div>
+        </div>
+    </div>
+    <div class="fullwidth-block">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                     <h1>That city could not be found</h1>
+                     <p><a href="{{ url_for('weather') }}">Go Back</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="site-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <form action="/subscribe/" class="subscribe-form" method="post">
+                        <input placeholder="Enter your email to subscribe..." type="text">
+                        <input type="submit" value="Subscribe">
+                    </form>
+                </div>
+            </div>
+            <p class="colophon">Program Explorers. Designed by Themezy.</p>
+        </div>
+    </footer>
+</div>
 </body>
 </html>

@@ -76,16 +76,6 @@ description_2 = ''
 second_alert = False
 
 
-@app.route('/subscribe/', methods=['POST', 'GET'])
-def send_mail():
-    email = request.form['subscribe']
-    msg = "Thank You for subscribing to Weather Website by Program Explorers!\n\n" \
-          "https://weatherprogramexplorer.herokuapp.com"
-    send_email.send_mail(email, msg)
-
-    return render_template("subscribe.html")
-
-
 @app.route('/', methods=['POST', 'GET'])
 def weather():
     global alerts_image, description, description_2, second_alert, alerts_data, pop_list, day_name
@@ -307,7 +297,7 @@ def weather():
             'hour_12_main': hourly_data['hourly'][11]['weather'][0]['main'],
             'hour_13': hourly_data['hourly'][12]['dt']
         }
-        #Daily weather
+        # Daily weather
         data_daily = {
             'day_1_temp': int(round(hourly_data['daily'][0]['temp']['day'], 0)),
             'day_1_max': int(round(hourly_data['daily'][0]['temp']['max'], 0)),
@@ -367,6 +357,17 @@ def weather():
                                current_month=current_month, lat=lat, lon=lon, alerts_data=alerts_data,
                                alerts_image=alerts_image, new_des=description, pop_list=pop_list,
                                todays_date=today_date)
+
+
+@app.route('/subscribe/', methods=['POST', 'GET'])
+def send_mail():
+    global description, description_2, second_alert
+    email = request.form['subscribe']
+    msg = "Thank You for subscribing to Weather Website by Program Explorers!\n\n" + description + description_2 \
+          + "\n\n" + "https://weatherprogramexplorer.herokuapp.com"
+    send_email.send_mail(email, msg)
+
+    return render_template("subscribe.html")
 
 
 @app.route('/alerts')

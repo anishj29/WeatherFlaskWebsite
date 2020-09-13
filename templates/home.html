@@ -5,12 +5,9 @@
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0,maximum-scale=1" name="viewport">
     <title>Weather App by Program Explorers</title>
+
     <link href="static/weather_icon-2.ico" rel="shortcut icon" type="image/x-icon"/>
-
-    <!-- Loading third party fonts -->
     <link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700|" rel="stylesheet" type="text/css">
-
-    <!-- Loading main css file -->
     <link href="{{url_for('static', filename='css/style.css')}}" rel="stylesheet" type="text/css">
 
 </head>
@@ -20,7 +17,7 @@
     <div class="site-header">
         <div class="container-fluid">
             <div class="logo-type">
-                <a href="{{ url_for('weather') }}"><h1 class="site-title">Weather</h1></a>
+                <a href="{{url_for('weather')}}"><h1 class="site-title">Weather</h1></a>
                 <small class="site-description">By Program Explorers</small>
             </div>
         </div>
@@ -42,7 +39,7 @@
                     <div class="forecast-header">
                         <div class="day">Current</div>
                         <div class="date">{{day}} {{month}}</div>
-                    </div> <!-- .forecast-header -->
+                    </div>
                     <div class="forecast-content">
                         <div class="location">{{data.city_name}}</div>
                         <div class="degree">
@@ -51,7 +48,7 @@
                                 <img alt="" src={{image}} width=90>
                             </div>
                         </div>
-                        <span><img alt="" height="9%" src="static/icons/humiditywater.png" width="9%">{{data.humidity}}%</span>
+                        <span><img alt="" height="9%" src="static/icons/humidity-water.png" width="9%">{{data.humidity}}%</span>
                         <span><img alt="" src="static/icons/icon-wind.png">{{data.wind_speed}}mph</span>
                         {% if pop_list[0] == '' %}
                         <span><img alt="" src="static/icons/umbrella.png">{{pop_list[0]}}0%</span>
@@ -64,7 +61,7 @@
                 <div class="forecast">
                     <div class="forecast-header">
                         <div class="day">{{list_of_hours[1]}}</div>
-                    </div> <!-- .forecast-header -->
+                    </div>
                     <div class="forecast-content">
                         <div class="forecast-icon">
                             <img alt="" src={{hourly_images[1]}} width=48>
@@ -78,7 +75,7 @@
                 <div class="forecast">
                     <div class="forecast-header">
                         <div class="day">{{list_of_hours[2]}}</div>
-                    </div> <!-- .forecast-header -->
+                    </div>
                     <div class="forecast-content">
                         <div class="forecast-icon">
                             <img alt="" src={{hourly_images[2]}} width=48>
@@ -92,7 +89,7 @@
                 <div class="forecast">
                     <div class="forecast-header">
                         <div class="day">{{list_of_hours[3]}}</div>
-                    </div> <!-- .forecast-header -->
+                    </div>
                     <div class="forecast-content">
                         <div class="forecast-icon">
                             <img alt="" src={{hourly_images[3]}} width=48>
@@ -106,7 +103,7 @@
                 <div class="forecast">
                     <div class="forecast-header">
                         <div class="day">{{list_of_hours[4]}}</div>
-                    </div> <!-- .forecast-header -->
+                    </div>
                     <div class="forecast-content">
                         <div class="forecast-icon">
                             <img alt="" src={{hourly_images[4]}} width=48>
@@ -120,7 +117,7 @@
                 <div class="forecast">
                     <div class="forecast-header">
                         <div class="day">{{list_of_hours[5]}}</div>
-                    </div> <!-- .forecast-header -->
+                    </div>
                     <div class="forecast-content">
                         <div class="forecast-icon">
                             <img alt="" src={{hourly_images[5]}} width=48>
@@ -134,7 +131,7 @@
                 <div class="forecast">
                     <div class="forecast-header">
                         <div class="day">{{list_of_hours[6]}}</div>
-                    </div> <!-- .forecast-header -->
+                    </div>
                     <div class="forecast-content">
                         <div class="forecast-icon">
                             <img alt="" src={{hourly_images[6]}} width=48>
@@ -157,8 +154,8 @@
                         <div class="today forecast">
                             <div class="forecast-header">
                                 <div class="day">Today</div>
-                                <div class="date">{{todays_date}} {{days[0]}}  {{current_month}}</div>
-                            </div> <!-- .forecast-header -->
+                                <div class="date">{{days[0]}}, {{current_month}}</div>
+                            </div>
                             <div class="forecast-content">
                                 <div class="location">{{data.city_name}}</div>
                                 <div class="degree">
@@ -167,7 +164,6 @@
                                         <img alt="" src={{daily_images[0]}} width=90>
                                     </div>
                                 </div>
-                                <!--<span><img alt="" src="static/icons/umbrella.png">{{data.humidity}}%</span>-->
                                 <span><img alt="" height="7%" src="static/icons/uv.png"
                                            width="7%">{{data_daily.uv}}</span>
                                 <span><img alt="" height="8.5%" src="static/icons/sunrise.png" width="8.5%">{{sun_time[0]}}</span>
@@ -178,7 +174,7 @@
                             <div class="forecast-header">
 
                                 <div class="date">{{days[1]}}</div>
-                            </div> <!-- .forecast-header -->
+                            </div>
                             <div class="forecast-content">
                                 <div class="forecast-icon">
                                     <img alt="" src={{daily_images[1]}} width=48>
@@ -192,7 +188,7 @@
                         <div class="forecast">
                             <div class="forecast-header">
                                 <div class="date">{{days[2]}}</div>
-                            </div> <!-- .forecast-header -->
+                            </div>
                             <div class="forecast-content">
                                 <div class="forecast-icon">
                                     <img alt="" src={{daily_images[2]}} width=48>
@@ -206,7 +202,7 @@
                         <div class="forecast">
                             <div class="forecast-header">
                                 <div class="date">{{days[3]}}</div>
-                            </div> <!-- .forecast-header -->
+                            </div>
                             <div class="forecast-content">
                                 <div class="forecast-icon">
                                     <img alt="" src={{daily_images[3]}} width=48>
@@ -220,7 +216,7 @@
                         <div class="forecast">
                             <div class="forecast-header">
                                 <div class="date">{{days[4]}}</div>
-                            </div> <!-- .forecast-header -->
+                            </div>
                             <div class="forecast-content">
                                 <div class="forecast-icon">
                                     <img alt="" src={{daily_images[4]}} width=48>
@@ -234,7 +230,7 @@
                         <div class="forecast">
                             <div class="forecast-header">
                                 <div class="date">{{days[5]}}</div>
-                            </div> <!-- .forecast-header -->
+                            </div>
                             <div class="forecast-content">
                                 <div class="forecast-icon">
                                     <img alt="" src={{daily_images[5]}} width=48>
@@ -248,7 +244,7 @@
                         <div class="forecast">
                             <div class="forecast-header">
                                 <div class="date">{{days[6]}}</div>
-                            </div> <!-- .forecast-header -->
+                            </div>
                             <div class="forecast-content">
                                 <div class="forecast-icon">
                                     <img alt="" src={{daily_images[6]}} width=48>
@@ -265,48 +261,7 @@
         </div>
         <div class="fullwidth-block" data-bg-color="#262936">
             <div class="container">
-                <h2 class="section-title" style="">Maps</h2>
-
                 <div class="row">
-                    <div class="live-camera col-md-3 col-sm-6">
-                        <iframe
-                                allowfullscreen
-                                frameborder="2"
-                                height="450" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCcNwGm6OIClebIx_K824lIfJkPeDssA54
-                                        &q={{data.city_name}}}+{{data.country_code}}}&maptype=satellite"
-                                style="border:10" width="500">
-                        </iframe>
-                    </div>
-                    <div class="col-md-3 col-sm-6">
-
-                    </div>
-                    <div class="col-md-3 col-sm-6">
-                        <iframe
-                                allowfullscreen
-                                frameborder="2"
-                                height="450"
-                                src="https://www.ventusky.com/?p={{lat}};{{lon}};10&l=temperature-2m"
-                                style="border:10"
-                                width="500">
-                        </iframe>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="fullwidth-block">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-3 col-sm-6">
-                        <h2 class="section-title">News</h2>
-                        <iframe
-                                allowfullscreen
-                                frameborder="2"
-                                height="450" src="https://weather.com/news"
-                                style="border:10" width="500">
-                        </iframe>
-                    </div>
-                    <div class="col-md-3 col-sm-6">
-                    </div>
                     <div class="live-camera col-md-3 col-sm-6">
                         {% if new_des == 'No alerts in this area!' %}
                         <h2 class="section-title">Alerts</h2>
@@ -318,6 +273,44 @@
                         <a href="{{url_for('alerts')}}">See More</a>
                         {% endif %}
                     </div>
+                    <div class="col-md-3 col-sm-6"></div>
+                    <div class="live-camera col-md-3 col-sm-6">
+                        <h2 class="section-title" style="">Map</h2>
+                        <iframe
+                                allowfullscreen
+                                frameborder="2"
+                                height="450" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCcNwGm6OIClebIx_K824lIfJkPeDssA54
+                                        &q={{data.city_name}}}+{{data.country_code}}}&maptype=satellite"
+                                style="border:10" width="500">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="fullwidth-block">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3 col-sm-6">
+                        <h2 class="section-title" style="">Radar</h2>
+                        <iframe
+                                allowfullscreen
+                                frameborder="2"
+                                height="450"
+                                src="https://www.ventusky.com/?p={{lat}};{{lon}};10&l=temperature-2m"
+                                style="border:10"
+                                width="500">
+                        </iframe>
+                    </div>
+                    <div class="col-md-3 col-sm-6"></div>
+                    <div class="col-md-3 col-sm-6">
+                        <h2 class="section-title">News</h2>
+                        <iframe
+                                allowfullscreen
+                                frameborder="2"
+                                height="450" src="https://weather.com/news"
+                                style="border:10" width="500">
+                        </iframe>
+                    </div>
                 </div>
             </div>
         </div>
@@ -327,7 +320,7 @@
             <div class="row">
                 <div class="col-md-8">
                     <form action="/subscribe/" class="subscribe-form" method="post">
-                        <input type="text" name="subscribe" placeholder="Enter your email to subscribe...">
+                        <input name="subscribe" placeholder="Enter your email to subscribe..." type="text">
                         <input type="submit" value="Subscribe">
                     </form>
                 </div>
