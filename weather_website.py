@@ -263,6 +263,7 @@ def weather():
 
         # Hourly Weather stored in dictionary
         data_hourly = {
+            'feels_like': int(round(hourly_data['hourly'][0]['feels_like'], 0)),
             'hour_1_temp': int(round(hourly_data['hourly'][0]['temp'], 0)),
             'hour_1_id': hourly_data['hourly'][0]['weather'][0]['id'],
             'hour_1_main': hourly_data['hourly'][0]['weather'][0]['main'],
