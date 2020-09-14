@@ -16,7 +16,8 @@ id_list = []
 main_list = []
 alerts_image = ''
 pop_list = ''
-city=''
+city = ''
+data_daily = {'day_1_temp': 0}
 
 day_name = {0: 'Monday', 1: 'Tuesday', 2: 'Wednesday', 3: 'Thursday', 4: 'Friday', 5: 'Saturday', 6: 'Sunday'}
 
@@ -79,7 +80,7 @@ second_alert = False
 
 @app.route('/', methods=['POST', 'GET'])
 def weather():
-    global alerts_image, description, description_2, second_alert, alerts_data, pop_list, day_name, city
+    global alerts_image, description, description_2, second_alert, alerts_data, pop_list, day_name, city, data_daily
     if request.method == 'POST':
         city = request.form['city'].title()
     else:
@@ -362,11 +363,11 @@ def weather():
 
 @app.route('/subscribe/', methods=['POST', 'GET'])
 def send_mail():
-    global description, description_2, second_alert
+    global description, description_2, second_alert, data_daily
     email = request.form['subscribe']
-    msg = "Thank You for subscribing to Weather Website by Program Explorers!\n\nIN PRINCETON TODAY: " + description + \
-          description_2 + "\n\n" + "https://weatherprogramexplorer.herokuapp.com"
-    send_email.send_mail(email, msg)
+    msg = "Thank you for subscribing to Weather Website by Program Explorers!"
+    alerts_email = description + description_2
+    send_email.send_mail(email, msg, data_daily['day_1_temp'], alerts_email)
 
     return render_template("subscribe.html")
 
