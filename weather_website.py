@@ -10,16 +10,19 @@ import send_email
 
 hourly_images = []
 daily_images = []
+id_list = []
 main_list = []
 alerts_image = ''
 pop_list = ''
 city = ''
 data_daily = {'day_1_temp': 0}
+
 day_name = {0: 'Monday', 1: 'Tuesday', 2: 'Wednesday', 3: 'Thursday', 4: 'Friday', 5: 'Saturday', 6: 'Sunday'}
 
 
 def verify_icon(id_tag):
     id_tag_str = str(id_tag)
+    id_list.append(id_tag)
 
     if id_tag == 800:
         return 'static/icons/sunny.svg'
@@ -82,8 +85,6 @@ def weather():
         geoip = urllib.request.urlopen(
             'https://ip-geolocation.whoisxmlapi.com/api/v1?apiKey=at_7PwbMzdUGTjddKi5dhSUlOrzUEHhF&ipAddress').read()
         geo = json.loads(geoip)
-        print(geo)
-        # for default name Princeton
         city = geo['location']['city']
 
     new_city = city
@@ -93,8 +94,11 @@ def weather():
     api = '8a5edfd4d0e0f8953dbe82364cfc0b10'
 
     try:
+        # source contain json data from api
         source = urllib.request.urlopen(
             'http://api.openweathermap.org/data/2.5/weather?q=' + new_city + '&appid=' + api).read()
+
+        # converting JSON data to a dictionary
         list_of_data = json.loads(source)
 
     except:
@@ -136,7 +140,8 @@ def weather():
         datetime_tz = datetime.datetime.now(pytz.timezone(tz))
         today_date = datetime_tz.day
         day = datetime_tz.today().weekday()
-        # Gets day in number and converts it to the name
+
+        # Gets day in number
         day_2 = (datetime_tz + datetime.timedelta(days=1)).weekday()
         day_3 = (datetime_tz + datetime.timedelta(days=2)).weekday()
         day_4 = (datetime_tz + datetime.timedelta(days=3)).weekday()
@@ -366,10 +371,9 @@ def send_mail():
 
     if is_email_sent:
         message = "Thank You For Subscribing!"
-        message2 = "Check your email account for your Weather emails"
-
+        message2 = "Check your email account for Weather emails"
     else:
-        message = "Oops it looks like your email is invalid"
+        message = "It looks like you typed an invalid email"
         message2 = "Please try again"
 
     return render_template("subscribe.html", message=message, message2=message2)
