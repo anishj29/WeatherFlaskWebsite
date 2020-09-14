@@ -2,7 +2,6 @@
 import datetime
 import json
 import urllib.request
-
 import pytz
 from flask import Flask, render_template, request
 from flask_compress import Compress
@@ -84,8 +83,12 @@ def weather():
     if request.method == 'POST':
         city = request.form['city'].title()
     else:
+        geoip = urllib.request.urlopen(
+            'https://ip-geolocation.whoisxmlapi.com/api/v1?apiKey=at_7PwbMzdUGTjddKi5dhSUlOrzUEHhF&ipAddress').read()
+        geo = json.loads(geoip)
+        print(geo)
         # for default name Princeton
-        city = 'Princeton'
+        city = geo['location']['city']
 
     new_city = city
     if ' ' in city:
@@ -159,7 +162,6 @@ def weather():
 
         current_month = datetime_tz.month
         current_month = month_name[current_month]
-
         current_hour = int(datetime_tz.strftime("%H"))
 
         # Gets hour in 12 hour format (am/pm)
@@ -363,11 +365,11 @@ def weather():
 
 @app.route('/subscribe/', methods=['POST', 'GET'])
 def send_mail():
-    global description, description_2, second_alert, data_daily
+    global description, description_2, second_alert, data_daily, city
     email = request.form['subscribe']
     msg = "Thank you for subscribing to Weather Website by Program Explorers!"
     alerts_email = description + description_2
-    send_email.send_mail(email, msg, data_daily['day_1_temp'], alerts_email)
+    send_email.send_mail(email, city, msg, data_daily['day_1_temp'], alerts_email)
 
     return render_template("subscribe.html")
 

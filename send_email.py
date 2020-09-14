@@ -2,14 +2,14 @@ import smtplib
 import ssl
 
 
-def send_mail(receiver, message, weather, alerts):
+def send_mail(receiver, city, message, weather, alerts):
     smtp_server = "smtp.gmail.com"
     port = 587  # For starttls
     sender_email = "programexplorers@gmail.com"
     password = "python2coding"
-    message = 'Subject: Weather by Program Explorers\n{}\n\nIN PRINCETON TODAY\nAlerts  {}\nWeather  {} F' \
+    message = 'Subject: Weather by Program Explorers\n{}\n\nIn {} Today: \nAlerts:  {}\nWeather:  {} F' \
               '\n\nCheck out our website at  https://weatherprogramexplorer.herokuapp.com' \
-        .format(message, alerts, weather)
+        .format(message, city, alerts, weather)
 
     # Create a secure SSL context
     context = ssl.create_default_context()
