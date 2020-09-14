@@ -1,4 +1,3 @@
-# Import Statements
 import datetime
 import json
 import urllib.request
@@ -11,19 +10,16 @@ import send_email
 
 hourly_images = []
 daily_images = []
-id_list = []
 main_list = []
 alerts_image = ''
 pop_list = ''
 city = ''
 data_daily = {'day_1_temp': 0}
-
 day_name = {0: 'Monday', 1: 'Tuesday', 2: 'Wednesday', 3: 'Thursday', 4: 'Friday', 5: 'Saturday', 6: 'Sunday'}
 
 
 def verify_icon(id_tag):
     id_tag_str = str(id_tag)
-    id_list.append(id_tag)
 
     if id_tag == 800:
         return 'static/icons/sunny.svg'
@@ -97,11 +93,8 @@ def weather():
     api = '8a5edfd4d0e0f8953dbe82364cfc0b10'
 
     try:
-        # source contain json data from api
         source = urllib.request.urlopen(
             'http://api.openweathermap.org/data/2.5/weather?q=' + new_city + '&appid=' + api).read()
-
-        # converting JSON data to a dictionary
         list_of_data = json.loads(source)
 
     except:
@@ -143,8 +136,7 @@ def weather():
         datetime_tz = datetime.datetime.now(pytz.timezone(tz))
         today_date = datetime_tz.day
         day = datetime_tz.today().weekday()
-
-        # Gets day in number
+        # Gets day in number and converts it to the name
         day_2 = (datetime_tz + datetime.timedelta(days=1)).weekday()
         day_3 = (datetime_tz + datetime.timedelta(days=2)).weekday()
         day_4 = (datetime_tz + datetime.timedelta(days=3)).weekday()
@@ -370,9 +362,17 @@ def send_mail():
     email = request.form['subscribe']
     msg = "Thank you for subscribing to Weather Website by Program Explorers!"
     alerts_email = description + description_2
-    send_email.send_mail(email, city, msg, data_daily['day_1_temp'], alerts_email)
+    is_email_sent = send_email.send_mail(email, city, msg, data_daily['day_1_temp'], alerts_email)
 
-    return render_template("subscribe.html")
+    if is_email_sent:
+        message = "Thank You For Subscribing!"
+        message2 = "Check your email account for your Weather emails"
+
+    else:
+        message = "Oops it looks like your email is invalid"
+        message2 = "Please try again"
+
+    return render_template("subscribe.html", message=message, message2=message2)
 
 
 @app.route('/alerts')

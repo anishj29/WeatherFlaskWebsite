@@ -22,9 +22,11 @@ def send_mail(receiver, city, message, weather, alerts):
         server.ehlo()  # Can be omitted
         server.login(sender_email, password)
         server.sendmail(sender_email, receiver, message)
+        return True
     except Exception as e:
         # Print any error messages to stdout
         print(e)
         print("Email sending failed")
+        return False
     finally:
         server.quit()
