@@ -1,11 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Weather Website</title>
+    <meta content="width=device-width, initial-scale=1.0,maximum-scale=1" name="viewport">
+    <title>Weather App by Program Explorers</title>
+    <link href="static/weather_icon-2.ico" rel="shortcut icon" type="image/x-icon"/>
+
+    <!-- Loading third party fonts -->
+    <link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700|" rel="stylesheet" type="text/css">
+
+    <!-- Loading main css file -->
+    <link href="{{url_for('static', filename='css/style.css')}}" rel="stylesheet" type="text/css">
+
 </head>
+
 <body>
-    <h1>Thank you for subscribing</h1>
-    <p><a href="{{ url_for('weather') }}">Go Back</a>
+<div class="site-content">
+    <div class="site-header">
+        <div class="container-fluid">
+            <div class="logo-type">
+                <a href="{{ url_for('weather') }}"><h1 class="site-title">Weather</h1></a>
+                <small class="site-description">By Program Explorers</small>
+            </div>
+        </div>
+    </div>
+    <div class="fullwidth-block">
+        <div class="container">
+            <div class="row">
+                <h1>Thank You For Subscribing!</h1>
+                <br>
+                <br>
+                <h2>Check your email account for Weather emails</h2>
+                <br><br><br><br><br>
+            </div>
+        </div>
+    </div>
+    <footer class="site-footer">
+        <div class="container">
+            <p class="colophon">Program Explorers. Designed by Themezy.</p>
+        </div>
+    </footer>
+</div>
 </body>
 </html>

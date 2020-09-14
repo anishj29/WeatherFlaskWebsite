@@ -16,6 +16,7 @@ id_list = []
 main_list = []
 alerts_image = ''
 pop_list = ''
+city=''
 
 day_name = {0: 'Monday', 1: 'Tuesday', 2: 'Wednesday', 3: 'Thursday', 4: 'Friday', 5: 'Saturday', 6: 'Sunday'}
 
@@ -78,7 +79,7 @@ second_alert = False
 
 @app.route('/', methods=['POST', 'GET'])
 def weather():
-    global alerts_image, description, description_2, second_alert, alerts_data, pop_list, day_name
+    global alerts_image, description, description_2, second_alert, alerts_data, pop_list, day_name, city
     if request.method == 'POST':
         city = request.form['city'].title()
     else:
@@ -363,8 +364,8 @@ def weather():
 def send_mail():
     global description, description_2, second_alert
     email = request.form['subscribe']
-    msg = "Thank You for subscribing to Weather Website by Program Explorers!\n\n" + description + description_2 \
-          + "\n\n" + "https://weatherprogramexplorer.herokuapp.com"
+    msg = "Thank You for subscribing to Weather Website by Program Explorers!\n\nIN PRINCETON TODAY: " + description + \
+          description_2 + "\n\n" + "https://weatherprogramexplorer.herokuapp.com"
     send_email.send_mail(email, msg)
 
     return render_template("subscribe.html")
@@ -372,8 +373,8 @@ def send_mail():
 
 @app.route('/alerts')
 def alerts():
-    global description, description_2, second_alert
-    return render_template('alerts.html', des=description, des2=description_2, second_alert=second_alert)
+    global description, description_2, second_alert, city
+    return render_template('alerts.html', des=description, des2=description_2, second_alert=second_alert, city=city)
 
 
 if __name__ == '__main__':

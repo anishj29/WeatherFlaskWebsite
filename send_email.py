@@ -8,7 +8,7 @@ def send_mail(receiver, message):
     sender_email = "programexplorers@gmail.com"
     password = "python2coding"
     receiver_email = receiver  # Should be changed to the user inputed email in the subscribe bar
-    msg = message
+    message = 'Subject: {}\n\n{}'.format("Weather by Program Explorers", message)
 
     # Create a secure SSL context
     context = ssl.create_default_context()
@@ -20,7 +20,7 @@ def send_mail(receiver, message):
         server.starttls(context=context)  # Secure the connection
         server.ehlo()  # Can be omitted
         server.login(sender_email, password)
-        server.sendmail(sender_email,receiver_email, msg)
+        server.sendmail(sender_email,receiver_email, message)
     except Exception as e:
         # Print any error messages to stdout
         print(e)
@@ -28,5 +28,3 @@ def send_mail(receiver, message):
     finally:
         server.quit()
 
-
-print("Imported send_email.py")
