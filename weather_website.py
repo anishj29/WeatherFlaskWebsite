@@ -1,12 +1,16 @@
 import datetime
 import json
 import urllib.request
+
 import pytz
 from flask import Flask, render_template, request
 from flask_compress import Compress
 from googletrans import Translator
 
 import send_email
+from run_sql import sql
+
+my_sql = sql()
 
 hourly_images = []
 daily_images = []
@@ -352,6 +356,7 @@ def weather():
             daily_images.append(verify_icon(data_daily['day_' + str(j) + '_id']))
         id_tag = data['id']
         image = verify_icon(id_tag)
+        print(city)
 
         return render_template('home.html', data=data, image=image, hourly_images=hourly_images,
                                data_hourly=data_hourly, data_daily=data_daily, daily_images=daily_images,
@@ -363,7 +368,7 @@ def weather():
 
 @app.route('/subscribe/', methods=['POST', 'GET'])
 def send_mail():
-    global description, description_2, second_alert, data_daily, city
+    global description, description_2, second_alert, data_daily, city, my_sql
     email = request.form['subscribe']
     msg = "Thank you for subscribing to Weather Website by Program Explorers!"
     alerts_email = description + description_2
@@ -372,6 +377,9 @@ def send_mail():
     if is_email_sent:
         message = "Thank You For Subscribing!"
         message2 = "Check your email account for Weather emails"
+        my_sql.insert(email=email, location=city)
+        my_sql.commit()
+        my_sql.close()
     else:
         message = "It looks like you typed an invalid email"
         message2 = "Please try again"
@@ -383,6 +391,10 @@ def send_mail():
 def alerts():
     global description, description_2, second_alert, city
     return render_template('alerts.html', des=description, des2=description_2, second_alert=second_alert, city=city)
+
+
+# def send_from_db():
+#     sql.insert()
 
 
 if __name__ == '__main__':
