@@ -407,7 +407,6 @@ def update_mail_loc():
         pass
 
     data_base.insert(email=email, location=city)
-
     return render_template('done.html')
 
 
