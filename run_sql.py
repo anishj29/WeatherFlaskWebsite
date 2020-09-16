@@ -3,29 +3,25 @@ from firebase import firebase
 
 class firebaseEmail:
     def __init__(self):
-        self.firebase = firebase.FirebaseApplication('https://weatherwebsite-f7a81.firebaseio.com/', None)
+        self.firebase = firebase.FirebaseApplication('https://weather-flask-5973f.firebaseio.com/', None)
 
     def insert(self, email, location):
         data = {
             'Email': email,
             'Location': location
         }
-        result = self.firebase.post('/email', data)
-
-    def update_email(self, new_email, old_email):
-        firebase.put('/email' + , new_email, old_email)
-        print('Record updated')
+        self.firebase.post('/email', data)
 
     def get_all(self):
         return self.firebase.get('/email', '')
 
     def delete(self, email):
-        result = self.firebase.delete('/email', self.email)
+        self.firebase.delete('/email', email)
 
+# s = firebaseEmail()
+# # s.update_email('anishwestwindsor@gmail.com', 'a@gmail.com')
+# print(s.get_all())
 
-s = firebaseEmail()
-print(s.get_all())
-s.insert('anishwestwindsor@gmail.com', 'Hawaii')
 
 # class sql:
 #     def __init__(self):

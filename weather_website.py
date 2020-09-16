@@ -8,6 +8,9 @@ from flask_compress import Compress
 from googletrans import Translator
 
 import send_email
+from run_sql import firebaseEmail
+
+data_base = firebaseEmail()
 
 hourly_images = []
 daily_images = []
@@ -205,7 +208,6 @@ def weather():
         alerts_api = urllib.request.urlopen(
             'https://api.weatherbit.io/v2.0/alerts?lat=' + lat + '&lon=' + lon + '&key=' + alerts_key).read()
         alerts_store = json.loads(alerts_api)
-        print(alerts_store)
 
         try:
             alerts_data = {
@@ -373,7 +375,7 @@ def weather():
 
 @app.route('/subscribe/', methods=['POST', 'GET'])
 def send_mail():
-    global description, description_2, second_alert, data_daily, city, my_sql, email
+    global description, description_2, second_alert, data_daily, city, email
     email = request.form['subscribe']
     msg = "Thank you for subscribing to Weather Website by Program Explorers!"
     alerts_email = description + description_2
@@ -382,9 +384,7 @@ def send_mail():
     if is_email_sent:
         message = "Thank You For Subscribing!"
         message2 = "Check your email account for Weather emails"
-        my_sql.__init__()
-        my_sql.insert(email=email, location=city)
-        my_sql.commit()
+
     else:
         message = "It looks like you typed an invalid email"
         message2 = "Please try again"
@@ -398,14 +398,15 @@ def edit():
 
 
 @app.route('/subscribe/done', methods=['POST', 'GET'])
-def update_m_l():
+def update_mail_loc():
     global email, city
+    try:
+        email = request.form['update_email']
+        city = request.form['update_location']
+    except:
+        pass
 
-    new_email = request.form['update_email']
-    location = request.form['update_location']
-
-    my_sql.update(new_email=new_email, old_email=email, new_location=location)
-    my_sql.commit()
+    data_base.insert(email=email, location=city)
 
     return render_template('done.html')
 

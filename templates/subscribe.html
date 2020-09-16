@@ -36,7 +36,11 @@
                 <h2>{{email}}</h2>
                 <h2>{{city}}</h2>
                 <br><br>
-                <form action="/subscribe/edit" class="subscribe-form" method="post">
+                <form action="/subscribe/done" class="subscribe-form" method="post" style="float: left;">
+                    <button name="confirm" value="confirm">Confirm</button>
+                </form>
+
+                <form action="/subscribe/edit" class="subscribe-form" method="post" style="float: right;">
                     <button name="edit" value="edit">Edit</button>
                 </form>
             </div>
