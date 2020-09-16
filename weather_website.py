@@ -8,9 +8,6 @@ from flask_compress import Compress
 from googletrans import Translator
 
 import send_email
-from run_sql import sql
-
-my_sql = sql()
 
 hourly_images = []
 daily_images = []

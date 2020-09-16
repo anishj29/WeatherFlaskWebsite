@@ -8,7 +8,7 @@ def send_mail(receiver, city, message, weather, alerts):
     sender_email = "programexplorers@gmail.com"
     password = "python2coding"
     message = 'Subject: Weather by Program Explorers\n{}\n\nIn {} Today: \nAlerts:  {}\nWeather:  {} F' \
-              '\n\nCheck out our website at  https://weatherprogramexplorer.herokuapp.com' \
+              '\n\nCheck out our website at  https://weatherpe.herokuapp.com' \
         .format(message, city, alerts, weather)
 
     # Create a secure SSL context
