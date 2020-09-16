@@ -50,7 +50,8 @@ class sql:
     def close(self):
         self.conn.close()
 
-# s = sql()
+
+s = sql()
 # s.delete('varunk3249@gmail.com', 'Brooklyn')
 #
 # # # # mysql.insert('varunk3249@gmail.com', 'Princeton')
@@ -58,7 +59,7 @@ class sql:
 # s.commit()
 # s.delete('e new', 'loc new')
 # # s.commit()
-# print(s.get_all())
+print(s.get_all())
 # s.close()
 
 
