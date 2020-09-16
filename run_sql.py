@@ -27,27 +27,41 @@ class sql:
         self.c.execute("SELECT * FROM email WHERE location = ?", (location,))
         return self.c.fetchall()
 
-    def update_email(self, new_email, old_email, location):
-        self.c.execute("UPDATE email SET email = ? WHERE email = ? AND location = ?", (new_email, old_email, location))
+    def update_email(self, new_email, old_email):
+        self.c.execute("UPDATE email SET email = ? WHERE email = ?", (new_email, old_email))
 
-    def update_location(self, new_location, old_location, email):
-        self.c.execute("UPDATE email SET location = ? WHERE email = ? AND location = ?",
-                       (new_location, email, old_location))
+    def update_location(self, new_location, email):
+        self.c.execute("UPDATE email SET location = ? WHERE email = ?",
+                       (new_location, email))
+
+    def update(self, new_email, old_email, new_location):
+        self.c.execute("UPDATE email SET email = ? WHERE email = ?", (new_email, old_email))
+        self.c.execute("UPDATE email SET location = ? WHERE email = ?",
+                       (new_location, new_email))
+
+    def get_latest(self):
+        self.c.execute("SELECT * FROM email ORDER BY email DESC LIMIT 1")
+        return self.c.fetchall()
 
     def delete(self, email, location):
-        self.c.execute("DELETE email WHERE email = ? AND location = ?",
+        self.c.execute("DELETE FROM email WHERE email = ? AND location = ?",
                        (email, location))
 
     def close(self):
         self.conn.close()
 
 # s = sql()
-# print(s.get_all())
-# mysql.create_table()    No need to create again when already created
-# mysql.commit()
-# mysql.insert('varunk3249@gmail.com', 'Princeton')
-# mysql.commit()
+# s.delete('varunk3249@gmail.com', 'Brooklyn')
 #
+# # # # mysql.insert('varunk3249@gmail.com', 'Princeton')
+# # # s.update_email('john', 'pizza', 'Ocean City')
+# s.commit()
+# s.delete('e new', 'loc new')
+# # s.commit()
+# print(s.get_all())
+# s.close()
+
+
 # for i in range(0, len(x)):
 #     for j in range(0, 2):
 #         print(x[i][j])  # prints out email and city for each person in database

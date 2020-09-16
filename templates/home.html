@@ -22,7 +22,7 @@
             </div>
         </div>
     </div>
-    <div class="hero" data-bg-image="landscape.jpg" height="300px"
+    <div class="hero" data-bg-image="landscape.jpg"
          style="background-image: url('https://cdn.lynda.com/course/438407/438407-637286184088314228-16x9.jpg');">
         <div class="container">
             <form class="find-location" method="post">
@@ -48,14 +48,15 @@
                                 <img alt="" src={{image}} width=90>
                             </div>
                         </div>
-                        <span><img alt="" height="9%" src="static/icons/humidity-water.png" width="9%">{{data.humidity}}%</span>
+                        <span><img alt="" height="6%" src="static/icons/humidity1.png"
+                                   width="9%">{{data.humidity}}%</span>
                         <span><img alt="" src="static/icons/icon-wind.png">{{data.wind_speed}}mph</span>
                         {% if pop_list[0] == '' %}
                         <span><img alt="" src="static/icons/umbrella.png">{{pop_list[0]}}0%</span>
                         {% else %}
                         <span><img alt="" src="static/icons/umbrella.png">{{pop_list[0]}}</span>
                         {% endif %}
-                        <span><img alt="" src="">Feel Like {{data_hourly.feels_like}}°F</span>
+                        <span>Feel Like {{data_hourly.feels_like}}°F</span>
 
                     </div>
                 </div>

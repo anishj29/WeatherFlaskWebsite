@@ -27,7 +27,7 @@
     <div class="fullwidth-block">
         <div class="container">
             <div class="row">
-                <h1>{{message}}</h1>
+                <h1>Confirm Page</h1>
                 <br>
                 <!--                <h2>{{message2}}</h2>-->
                 <br><br><br>
@@ -36,12 +36,12 @@
                 <h2>{{email}}</h2>
                 <h2>{{city}}</h2>
                 <br><br>
-                <form action="/subscribe/confirm" class="subscribe-form" method="post">
-                    <button name="confirm" value="confirm">Confirm</button>
+                <form action="/subscribe/done" class="subscribe-form" method="post">
+                    <input name="update_email" placeholder="Update your email..." type="text">
+                    <input name="update_location" placeholder="Update your location..." type="text">
+                    <button name="done" value="done">Done</button>
                 </form>
-                <form action="/subscribe/edit" class="subscribe-form" method="post">
-                    <button name="edit" value="edit">Edit</button>
-                </form>
+                <br>
             </div>
         </div>
     </div>

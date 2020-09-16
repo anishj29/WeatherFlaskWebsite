@@ -19,6 +19,7 @@ main_list = []
 alerts_image = ''
 pop_list = ''
 city = ''
+email = ''
 data_daily = {'day_1_temp': 0}
 
 day_name = {0: 'Monday', 1: 'Tuesday', 2: 'Wednesday', 3: 'Thursday', 4: 'Friday', 5: 'Saturday', 6: 'Sunday'}
@@ -207,6 +208,7 @@ def weather():
         alerts_api = urllib.request.urlopen(
             'https://api.weatherbit.io/v2.0/alerts?lat=' + lat + '&lon=' + lon + '&key=' + alerts_key).read()
         alerts_store = json.loads(alerts_api)
+        print(alerts_store)
 
         try:
             alerts_data = {
@@ -230,14 +232,21 @@ def weather():
             description = description.replace('* WHEN...', 'When: ')
             description = description.replace('* IMPACTS...', 'Impacts: ')
 
-            if alerts_data['severity'] == 'Warning':
+            severity = alerts_data['severity']
+            if severity == 'Warning':
                 alerts_image = 'static/alerts/warning.png'
 
-            elif alerts_data['severity'] == 'Watch':
+            elif severity == 'Watch':
                 alerts_image = 'static/alerts/watch.png'
 
-            elif alerts_data['severity'] == 'Extreme':
+            elif severity == 'Extreme':
                 alerts_image = 'static/alerts/extreme.png'
+
+            elif severity == 'Advisory':
+                alerts_image = 'static/alerts/advisory.png'
+
+            else:
+                alerts_image = 'static/weather_icon-2.co'
 
             try:
                 alerts_data_2 = {
@@ -356,7 +365,6 @@ def weather():
             daily_images.append(verify_icon(data_daily['day_' + str(j) + '_id']))
         id_tag = data['id']
         image = verify_icon(id_tag)
-        print(city)
 
         return render_template('home.html', data=data, image=image, hourly_images=hourly_images,
                                data_hourly=data_hourly, data_daily=data_daily, daily_images=daily_images,
@@ -368,7 +376,7 @@ def weather():
 
 @app.route('/subscribe/', methods=['POST', 'GET'])
 def send_mail():
-    global description, description_2, second_alert, data_daily, city, my_sql
+    global description, description_2, second_alert, data_daily, city, my_sql, email
     email = request.form['subscribe']
     msg = "Thank you for subscribing to Weather Website by Program Explorers!"
     alerts_email = description + description_2
@@ -377,24 +385,38 @@ def send_mail():
     if is_email_sent:
         message = "Thank You For Subscribing!"
         message2 = "Check your email account for Weather emails"
+        my_sql.__init__()
         my_sql.insert(email=email, location=city)
         my_sql.commit()
-        my_sql.close()
     else:
         message = "It looks like you typed an invalid email"
         message2 = "Please try again"
 
-    return render_template("subscribe.html", message=message, message2=message2)
+    return render_template("subscribe.html", message=message, message2=message2, email=email, city=city)
+
+
+@app.route('/subscribe/edit', methods=['POST', 'GET'])
+def edit():
+    return render_template('edit.html')
+
+
+@app.route('/subscribe/done', methods=['POST', 'GET'])
+def update_m_l():
+    global email, city
+
+    new_email = request.form['update_email']
+    location = request.form['update_location']
+
+    my_sql.update(new_email=new_email, old_email=email, new_location=location)
+    my_sql.commit()
+
+    return render_template('done.html')
 
 
 @app.route('/alerts')
 def alerts():
     global description, description_2, second_alert, city
     return render_template('alerts.html', des=description, des2=description_2, second_alert=second_alert, city=city)
-
-
-# def send_from_db():
-#     sql.insert()
 
 
 if __name__ == '__main__':
