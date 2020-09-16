@@ -397,6 +397,7 @@ def edit():
     return render_template('edit.html')
 
 
+
 @app.route('/subscribe/done', methods=['POST', 'GET'])
 def update_mail_loc():
     global email, city
