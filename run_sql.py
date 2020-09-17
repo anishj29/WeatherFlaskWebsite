@@ -27,7 +27,7 @@ import mysql.connector
 class MySQL:
     def __init__(self):
         self.db = mysql.connector.connect(
-            host="localhost",
+            host="127.0.0.1",
             user="root",
             password="boldtanswans",
             database="users"
@@ -91,24 +91,9 @@ class MySQL:
     def close(self):
         self.db.close()
 
-
+#
 s = MySQL()
 print(s.get_all())
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 # from firebase import firebase
