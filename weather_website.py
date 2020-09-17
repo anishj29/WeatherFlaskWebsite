@@ -363,6 +363,8 @@ def weather():
     id_tag = data['id']
     image = verify_icon(id_tag)
 
+    send_email.send_mail('varunk3249@gmail.com', city, 'Hey', data_daily['day_1_temp'], description+description_2, False)
+
     return render_template('home.html', data=data, image=image, hourly_images=hourly_images,
                            data_hourly=data_hourly, data_daily=data_daily, daily_images=daily_images,
                            days=list_of_days, sun_time=sun_time, list_of_hours=list_of_hours,
@@ -398,7 +400,7 @@ def update_mail_loc():
     except:
         pass
 
-    is_email_sent = send_email.send_mail(email, city, msg, data_daily['day_1_temp'], alerts_email)
+    is_email_sent = send_email.send_mail(email, city, msg, data_daily['day_1_temp'], alerts_email, True)
 
     if is_email_sent:
         message = "Thank You For Subscribing!"
