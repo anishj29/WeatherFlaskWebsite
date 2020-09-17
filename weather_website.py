@@ -8,9 +8,7 @@ from flask_compress import Compress
 from googletrans import Translator
 
 import send_email
-from run_sql import firebaseEmail
-
-data_base = firebaseEmail()
+from run_sql import MySQL
 
 hourly_images = []
 daily_images = []
@@ -397,10 +395,11 @@ def edit():
     return render_template('edit.html')
 
 
-
 @app.route('/subscribe/done', methods=['POST', 'GET'])
 def update_mail_loc():
     global email, city
+    data_base = MySQL()
+
     try:
         email = request.form['update_email']
         city = request.form['update_location']
@@ -408,6 +407,8 @@ def update_mail_loc():
         pass
 
     data_base.insert(email=email, location=city)
+    data_base.commit()
+    data_base.close()
     return render_template('done.html')
 
 
