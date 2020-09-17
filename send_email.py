@@ -30,3 +30,4 @@ def send_mail(receiver, city, message, weather, alerts):
         return False
     finally:
         server.quit()
+

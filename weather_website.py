@@ -375,17 +375,8 @@ def weather():
 def send_mail():
     global description, description_2, second_alert, data_daily, city, email
     email = request.form['subscribe']
-    msg = "Thank you for subscribing to Weather Website by Program Explorers!"
-    alerts_email = description + description_2
-    is_email_sent = send_email.send_mail(email, city, msg, data_daily['day_1_temp'], alerts_email)
-
-    if is_email_sent:
-        message = "Thank You For Subscribing!"
-        message2 = "Check your email account for Weather emails"
-
-    else:
-        message = "It looks like you typed an invalid email"
-        message2 = "Please try again"
+    message = "Please confirm the information below, or edit"
+    message2 = ""
 
     return render_template("subscribe.html", message=message, message2=message2, email=email, city=city)
 
@@ -397,8 +388,9 @@ def edit():
 
 @app.route('/subscribe/done', methods=['POST', 'GET'])
 def update_mail_loc():
-    global email, city
-    data_base = MySQL()
+    global email, city, data_daily
+    msg = "Thank you for subscribing to Weather Website by Program Explorers!"
+    alerts_email = description + description_2
 
     try:
         email = request.form['update_email']
@@ -406,10 +398,19 @@ def update_mail_loc():
     except:
         pass
 
+    is_email_sent = send_email.send_mail(email, city, msg, data_daily['day_1_temp'], alerts_email)
+
+    if is_email_sent:
+        message = "Thank You For Subscribing!"
+
+    else:
+        message = 'Invalid email try again'
+
+    data_base = MySQL()
     data_base.insert(email=email, location=city)
     data_base.commit()
     data_base.close()
-    return render_template('done.html')
+    return render_template('done.html', message=message)
 
 
 @app.route('/alerts')
