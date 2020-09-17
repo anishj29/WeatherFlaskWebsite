@@ -27,10 +27,10 @@ import mysql.connector
 class MySQL:
     def __init__(self):
         self.db = mysql.connector.connect(
-            host="127.0.0.1",
-            user="root",
-            password="boldtanswans",
-            database="users"
+            host="us-cdbr-east-02.cleardb.com",
+            user="b0317e5f6ea3eb",
+            password="7eb9f9ac",
+            database="heroku_a0ac72f314d32a7"
         )
         self.cursor = self.db.cursor()
 
@@ -82,8 +82,8 @@ class MySQL:
 
         return self.cursor.fetchall()
 
-    def delete(self, email, location):
-        self.cursor.execute("DELETE * FROM subscribers WHERE email = ? AND location = ?", (email, location))
+    # def delete(self, email):
+    #     self.cursor.execute("DELETE FROM subscribers WHERE email = ?", (email,))
 
     def commit(self):
         self.db.commit()
@@ -91,10 +91,13 @@ class MySQL:
     def close(self):
         self.db.close()
 
-#
-s = MySQL()
-print(s.get_all())
 
+s = MySQL()
+# print(s.create_table())
+# s.insert("niranjanbk@gmail.com", "East Windsor")
+# s.commit()
+# s.delete('varunk3149@gmail.com')
+print(s.get_all())
 
 # from firebase import firebase
 #
