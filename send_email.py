@@ -1,5 +1,4 @@
 import datetime as dt
-import time
 from smtplib import SMTP
 from ssl import create_default_context
 import datetimerange
