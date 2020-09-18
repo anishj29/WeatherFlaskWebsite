@@ -44,7 +44,6 @@ def send_emails_web():
 def verify_icon(id_tag):
     id_tag_str = str(id_tag)
     id_list.append(id_tag)
-
     if id_tag == 800:
         return 'static/icons/sunny.svg'
 
@@ -118,7 +117,7 @@ def weather():
     # source contain json data from api
     try:
         source = urllib.request.urlopen(
-                'http://api.openweathermap.org/data/2.5/weather?q=' + new_city + '&appid=' + api).read()
+            'http://api.openweathermap.org/data/2.5/weather?q=' + new_city + '&appid=' + api).read()
 
         list_of_data = json.loads(source)
 
@@ -371,7 +370,15 @@ def weather():
         'day_8_id': hourly_data['daily'][7]['weather'][0]['id'],
         'uv': round(hourly_data['daily'][0]['uvi'])
     }
-
+    if data_hourly['hour_1_main'] == 'Sunny':
+        bg_images = 'https://cdn.lynda.com/course/438407/438407-637286184088314228-16x9.jpg'
+    elif data_hourly['hour_1_main'] == 'Rain':
+        bg_images = 'https://i.redd.it/2z1a5tixad121.jpg'
+    elif data_hourly['hour_1_main'] == 'Cloudy':
+        bg_images = 'https://external-preview.redd.it/aAujKcEpiVcrqCCut2biNnG63S5fcwhRYcIb81Z0UnQ.jpg?width=960&crop' \
+                    '=smart&auto=webp&s=ca1413f43c444b669bd597b272e2bc38666f7ff4'
+    elif data_hourly['hour_1_main'] == 'Snow':
+        bg_images = 'https://westernnews.media.clients.ellingtoncms.com/img/photos/2017/09/19/GC_Winter.jpg'
     # Got icon for each hour
     for i in range(1, 13):
         hourly_images.append(verify_icon(data_hourly['hour_' + str(i) + '_id']))
@@ -388,7 +395,7 @@ def weather():
                            days=list_of_days, sun_time=sun_time, list_of_hours=list_of_hours,
                            current_month=current_month, lat=lat, lon=lon, alerts_data=alerts_data,
                            alerts_image=alerts_image, new_des=description, pop_list=pop_list,
-                           todays_date=today_date)
+                           todays_date=today_date, bg_images=bg_images)
 
 
 @app.route('/subscribe/', methods=['POST', 'GET'])
