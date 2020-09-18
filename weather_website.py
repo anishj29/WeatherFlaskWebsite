@@ -18,9 +18,24 @@ alerts_image = ''
 pop_list = ''
 city = ''
 email = ''
-data_daily = {'day_1_temp': 0}
+data_daily = {'day_1_temp': 0, 'day_1_main': 'Clear'}
 
 day_name = {0: 'Monday', 1: 'Tuesday', 2: 'Wednesday', 3: 'Thursday', 4: 'Friday', 5: 'Saturday', 6: 'Sunday'}
+
+
+def send_emails_web():
+    global data_daily
+    msg = "Hello, \nToday is " + data_daily['day_1_main']
+    database = MySQL()
+    all_emails = database.get_all()
+
+    for row in all_emails:
+        print(row)
+        send_email.send_mail(row[0], row[1], msg, data_daily['day_1_temp'], description + description_2,
+                             False)
+
+    database.close()
+
 
 
 def verify_icon(id_tag):
@@ -97,17 +112,15 @@ def weather():
     api = '8a5edfd4d0e0f8953dbe82364cfc0b10'
 
     # source contain json data from api
-    source = urllib.request.urlopen(
-        'http://api.openweathermap.org/data/2.5/weather?q=' + new_city + '&appid=' + api).read()
+    try:
+        source = urllib.request.urlopen(
+                'http://api.openweathermap.org/data/2.5/weather?q=' + new_city + '&appid=' + api).read()
 
-    # converting JSON data to a dictionary
-    list_of_data = json.loads(source)
+        list_of_data = json.loads(source)
 
+    except urllib.error.HTTPError:
+        return render_template("404.html")
 
-    # return render_template('404.html')
-
-
-    # else:
     data = {
         "country_code": str(list_of_data['sys']['country']), "city_name": str(city),
         "main": list_of_data['weather'][0]['main'], "description": list_of_data['weather'][0]['description'],
@@ -363,7 +376,7 @@ def weather():
     id_tag = data['id']
     image = verify_icon(id_tag)
 
-    send_email.send_mail('varunk3249@gmail.com', city, 'Hey', data_daily['day_1_temp'], description+description_2, False)
+    send_emails_web()
 
     return render_template('home.html', data=data, image=image, hourly_images=hourly_images,
                            data_hourly=data_hourly, data_daily=data_daily, daily_images=daily_images,
@@ -412,6 +425,7 @@ def update_mail_loc():
     data_base.insert(email=email, location=city)
     data_base.commit()
     data_base.close()
+
     return render_template('done.html', message=message)
 
 

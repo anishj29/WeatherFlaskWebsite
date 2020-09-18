@@ -9,8 +9,8 @@ def back_end(receiver, city, message, weather, alerts):
     port = 587  # For starttls
     sender_email = "programexplorers@gmail.com"
     password = "python2coding"
-    message = 'Subject: Weather in {}\n{}\n\nToday: \nWeather:  {} F \nAlerts:  {}' \
-              '\n\nCheck out our website at  https://weatherpe.herokuapp.com'.format(city, message, alerts, weather)
+    message = 'Subject: Weather in {}\n{}\n\nToday: \n\nWeather:  {} F \nAlerts:  {}' \
+              '\n\nCheck out our website at  https://weatherpe.herokuapp.com'.format(city, message, weather, alerts)
 
     # Create a secure SSL context
     context = create_default_context()
@@ -38,8 +38,6 @@ def send_mail(receiver, city, message, weather, alerts, is_first):
         back_end(receiver=receiver, city=city, message=message, weather=weather, alerts=alerts)
 
 
-
 time_range = datetimerange.DateTimeRange("T5:00:00+0900", "T9:00:00+0900")
 hour = str(dt.datetime.today().hour)
-send_mail('varunk3249@gmail.com', 'Dallas', 'Hey', '912', 'None', False)
 
