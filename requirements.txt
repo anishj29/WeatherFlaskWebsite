@@ -12,6 +12,5 @@ mysql-connector-python~=8.0.21
 Brotli~=1.0.9
 lxml~=4.5.2
 jws~=0.1.3
-setuptools~=49.6.0
 DateTimeRange~=1.0.0
 flask_compress
