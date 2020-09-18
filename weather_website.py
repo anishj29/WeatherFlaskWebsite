@@ -26,19 +26,15 @@ time_range = datetimerange.DateTimeRange("T5:00:00+0900", "T9:00:00+0900")
 
 
 def send_emails_web():
-    global data_daily
-    msg = "Hello, \nToday is " + data_daily['day_1_main']
-    database = MySQL()
-    all_emails = database.get_all()
-
-    hour = str(datetime.datetime.today().hour)
-
-    if hour + ":00:00+0900" in time_range:
+    if str(datetime.datetime.today().hour) + ":00:00+0900" in time_range:
+        global data_daily
+        msg = "Hello, \nToday is " + data_daily['day_1_main']
+        database = MySQL()
+        all_emails = database.get_all()
+        database.close()
         for row in all_emails:
             send_email.send_mail(row[0], row[1], msg, data_daily['day_1_temp'], description + description_2,
                                  False)
-
-    database.close()
 
 
 def verify_icon(id_tag):
@@ -370,15 +366,21 @@ def weather():
         'day_8_id': hourly_data['daily'][7]['weather'][0]['id'],
         'uv': round(hourly_data['daily'][0]['uvi'])
     }
-    if data_hourly['hour_1_main'] == 'Sunny':
-        bg_images = 'https://cdn.lynda.com/course/438407/438407-637286184088314228-16x9.jpg'
+
+    if data_hourly['hour_1_main'] == 'Clear':
+        # bg_images = 'https://cdn.lynda.com/course/438407/438407-637286184088314228-16x9.jpg'
+        bg_images = 'https://fsguides.com/wp-content/uploads/2016/07/Grand-Canyon-Destination-Page.jpg'
     elif data_hourly['hour_1_main'] == 'Rain':
         bg_images = 'https://i.redd.it/2z1a5tixad121.jpg'
-    elif data_hourly['hour_1_main'] == 'Cloudy':
+    elif data_hourly['hour_1_main'] == 'Clouds':
         bg_images = 'https://external-preview.redd.it/aAujKcEpiVcrqCCut2biNnG63S5fcwhRYcIb81Z0UnQ.jpg?width=960&crop' \
                     '=smart&auto=webp&s=ca1413f43c444b669bd597b272e2bc38666f7ff4'
     elif data_hourly['hour_1_main'] == 'Snow':
         bg_images = 'https://westernnews.media.clients.ellingtoncms.com/img/photos/2017/09/19/GC_Winter.jpg'
+    else:
+        bg_images = 'https://cdn.lynda.com/course/438407/438407-637286184088314228-16x9.jpg'
+        print(data_hourly['hour_1_main'])
+
     # Got icon for each hour
     for i in range(1, 13):
         hourly_images.append(verify_icon(data_hourly['hour_' + str(i) + '_id']))
