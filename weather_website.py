@@ -100,6 +100,7 @@ second_alert = False
 @app.route('/', methods=['POST', 'GET'])
 def weather():
     global alerts_image, description, description_2, second_alert, alerts_data, pop_list, day_name, city, data_daily
+    city = 'princeton'
     if request.method == 'POST':
         city = request.form['city'].title()
     else:
@@ -122,6 +123,7 @@ def weather():
         list_of_data = json.loads(source)
 
     except urllib.error.HTTPError:
+        print('wrong url')
         return render_template("404.html")
 
     data = {
