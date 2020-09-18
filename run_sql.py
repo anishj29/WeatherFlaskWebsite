@@ -1,27 +1,4 @@
 import mysql.connector
-#
-# mydb = mysql.connector.connect(
-#     host="localhost",
-#     user="root",
-#     password="boldtanswans",
-#     database="users"
-# )
-#
-# print(mydb)
-# cursor = mydb.cursor()
-#
-# cursor.execute("SHOW TABLES")
-#
-# for tb in cursor:
-#     print(tb)
-#
-# sql_formula = "INSERT INTO subscribers (email, location) VALUES (%s, %s)"
-# cursor.execute("SELECT * FROM subscribers")
-# my_result = cursor.fetchall()
-# print(my_result)
-# # mydb.commit()
-# for row in my_result:
-#     print(row)
 
 
 class MySQL:

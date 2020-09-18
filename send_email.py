@@ -1,7 +1,5 @@
-import datetime as dt
 from smtplib import SMTP
 from ssl import create_default_context
-import datetimerange
 
 
 def back_end(receiver, city, message, weather, alerts):
@@ -33,11 +31,6 @@ def send_mail(receiver, city, message, weather, alerts, is_first):
     if is_first:
         back_end(receiver=receiver, city=city, message=message, weather=weather, alerts=alerts)
 
-    if hour + ":00:00+0900" in time_range:
-        print('sent')
+    else:
+        print('sending')
         back_end(receiver=receiver, city=city, message=message, weather=weather, alerts=alerts)
-
-
-time_range = datetimerange.DateTimeRange("T5:00:00+0900", "T9:00:00+0900")
-hour = str(dt.datetime.today().hour)
-

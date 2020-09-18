@@ -2,6 +2,7 @@ import datetime
 import json
 import urllib.request
 
+import datetimerange
 import pytz
 from flask import Flask, render_template, request
 from flask_compress import Compress
@@ -21,6 +22,7 @@ email = ''
 data_daily = {'day_1_temp': 0, 'day_1_main': 'Clear'}
 
 day_name = {0: 'Monday', 1: 'Tuesday', 2: 'Wednesday', 3: 'Thursday', 4: 'Friday', 5: 'Saturday', 6: 'Sunday'}
+time_range = datetimerange.DateTimeRange("T5:00:00+0900", "T9:00:00+0900")
 
 
 def send_emails_web():
@@ -29,13 +31,14 @@ def send_emails_web():
     database = MySQL()
     all_emails = database.get_all()
 
-    for row in all_emails:
-        print(row)
-        send_email.send_mail(row[0], row[1], msg, data_daily['day_1_temp'], description + description_2,
-                             False)
+    hour = str(datetime.datetime.today().hour)
+
+    if hour + ":00:00+0900" in time_range:
+        for row in all_emails:
+            send_email.send_mail(row[0], row[1], msg, data_daily['day_1_temp'], description + description_2,
+                                 False)
 
     database.close()
-
 
 
 def verify_icon(id_tag):
