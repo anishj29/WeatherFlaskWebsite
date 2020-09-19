@@ -374,16 +374,18 @@ def weather():
 
     if data_hourly['hour_1_main'] == 'Clear':
         # bg_images = 'https://cdn.lynda.com/course/438407/438407-637286184088314228-16x9.jpg'
-        bg_images = 'https://fsguides.com/wp-content/uploads/2016/07/Grand-Canyon-Destination-Page.jpg'
+        bg_images = 'https://res.cloudinary.com/program-explorers/image/upload/v1600480831/Grand-Canyon-Destination' \
+                    '-Page_mp557z.jpg '
     elif data_hourly['hour_1_main'] == 'Rain':
-        bg_images = 'https://i.redd.it/2z1a5tixad121.jpg'
+        bg_images = 'https://res.cloudinary.com/program-explorers/image/upload/v1600480866/2z1a5tixad121_ahwtn0.jpg'
     elif data_hourly['hour_1_main'] == 'Clouds':
-        bg_images = 'https://external-preview.redd.it/aAujKcEpiVcrqCCut2biNnG63S5fcwhRYcIb81Z0UnQ.jpg?width=960&crop' \
-                    '=smart&auto=webp&s=ca1413f43c444b669bd597b272e2bc38666f7ff4'
+        bg_images = 'https://res.cloudinary.com/program-explorers/image/upload/v1600480909' \
+                    '/aAujKcEpiVcrqCCut2biNnG63S5fcwhRYcIb81Z0UnQ_yqq8iy.jpg '
     elif data_hourly['hour_1_main'] == 'Snow':
-        bg_images = 'https://westernnews.media.clients.ellingtoncms.com/img/photos/2017/09/19/GC_Winter.jpg'
+        bg_images = 'https://res.cloudinary.com/program-explorers/image/upload/v1600480952/GC_Winter_oan3zl.jpg'
     else:
-        bg_images = 'https://www.smartertravel.com/uploads/2017/08/grand-canyon-sunset.jpg'
+        bg_images = 'https://res.cloudinary.com/program-explorers/image/upload/v1600480973/grand-canyon-sunset_c6yvay' \
+                    '.jpg '
         print(data_hourly['hour_1_main'])
 
     # Got icon for each hour
