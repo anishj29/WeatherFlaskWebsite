@@ -48,7 +48,7 @@ def verify_icon(id_tag):
 
     id_tag_str = str(id_tag)
     id_list.append(id_tag)
-    if not is_night:
+    if True:
         if id_tag == 200 or id_tag == 201 or id_tag == 202 or id_tag == 230 or id_tag == 231 or id_tag == 232:
             return 'static/icons/icon-11.svg'
 
@@ -76,14 +76,12 @@ def verify_icon(id_tag):
         elif id_tag == 803 or id_tag == 804:
             return 'static/icons/icon-6.svg'
 
-    else:
-        if id_tag == 800:
-            return 'static/icons/sunny.svg'
-        elif id_tag == 801:
-            return 'static/icons/cloudy&sunny.svg'
-        elif id_tag == 500 or id_tag == 501 or id_tag == 502 or id_tag == 503 or id_tag == 504:
-            return 'static/icons/rain&sunny.svg'
-    return 'error'
+    if id_tag == 800:
+        return 'static/icons/sunny.svg'
+    elif id_tag == 801:
+        return 'static/icons/cloudy&sunny.svg'
+    elif id_tag == 500 or id_tag == 501 or id_tag == 502 or id_tag == 503 or id_tag == 504:
+        return 'static/icons/rain&sunny.svg'
 
 
 app = Flask(__name__)
