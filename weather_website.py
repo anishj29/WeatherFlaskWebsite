@@ -7,6 +7,7 @@ import pytz
 from flask import Flask, render_template, request
 from flask_compress import Compress
 from googletrans import Translator
+import ephem
 
 import send_email
 from run_sql import MySQL
@@ -28,7 +29,7 @@ time_range = datetimerange.DateTimeRange("T5:00:00+0900", "T9:00:00+0900")
 def send_emails_web():
     if str(datetime.datetime.today().hour) + ":00:00+0900" in time_range:
         global data_daily
-        msg = "Hello, \nToday is " + data_daily['day_1_main']
+        msg = "Hello, \nToday is " + data_daily['day_1_main'].lower()
         database = MySQL()
         all_emails = database.get_all()
         database.close()
@@ -37,51 +38,53 @@ def send_emails_web():
                                  False)
 
 
-def verify_icon(id_tag):
-    global city
-    is_night = False
-    # city = a[city]  # Replace with your city
-    # now = datetime.datetime.now(pytz.utc)
-    # sun = city.sun(date=now, local=True)
-    # if now >= sun['dusk'] or now <= sun['dawn']:
-    #     is_night = True
+def verify_icon(id_tag, it_is_day):
+    global city, lat, lon
 
     id_tag_str = str(id_tag)
     id_list.append(id_tag)
-    if True:
-        if id_tag == 200 or id_tag == 201 or id_tag == 202 or id_tag == 230 or id_tag == 231 or id_tag == 232:
-            return 'static/icons/icon-11.svg'
+    if id_tag == 200 or id_tag == 201 or id_tag == 202 or id_tag == 230 or id_tag == 231 or id_tag == 232:
+        return 'static/icons/icon-11.svg'
 
-        elif id_tag == 210 or id_tag == 211 or id_tag == 212 or id_tag == 221:
-            return 'static/icons/icon-12.svg'
+    elif id_tag == 210 or id_tag == 211 or id_tag == 212 or id_tag == 221:
+        return 'static/icons/icon-12.svg'
 
-        elif id_tag_str[0] == '3':
-            return 'static/icons/light_rain.svg'
+    elif id_tag_str[0] == '3':
+        return 'static/icons/light_rain.svg'
 
-        elif id_tag == 511 or id_tag == 520 or id_tag == 521 or id_tag == 522 or id_tag == 531:
-            return 'static/icons/heavy_rain.svg'
+    elif id_tag == 511 or id_tag == 520 or id_tag == 521 or id_tag == 522 or id_tag == 531:
+        return 'static/icons/heavy_rain.svg'
 
-        elif id_tag_str[0] == '6':
-            return 'static/icons/icon-13.svg '
+    elif id_tag_str[0] == '6':
+        return 'static/icons/icon-13.svg '
 
-        elif id_tag_str[0] == '7':
-            return 'static/icons/fog_2.svg'
+    elif id_tag_str[0] == '7':
+        return 'static/icons/fog_2.svg'
 
-        elif id_tag == 802:
-            return 'static/icons/cloudy.svg'
+    elif id_tag == 802:
+        return 'static/icons/cloudy.svg'
 
-        elif id_tag == 803:
-            return 'static/icons/icon-6.svg'
+    elif id_tag == 803:
+        return 'static/icons/icon-6.svg'
+    elif id_tag == 803 or id_tag == 804:
+        return 'static/icons/icon-6.svg'
 
-        elif id_tag == 803 or id_tag == 804:
-            return 'static/icons/icon-6.svg'
 
-    if id_tag == 800:
-        return 'static/icons/sunny.svg'
-    elif id_tag == 801:
-        return 'static/icons/cloudy&sunny.svg'
-    elif id_tag == 500 or id_tag == 501 or id_tag == 502 or id_tag == 503 or id_tag == 504:
-        return 'static/icons/rain&sunny.svg'
+    if it_is_day:
+        if id_tag == 800:
+            return 'static/icons/sunny.svg'
+        elif id_tag == 801:
+            return 'static/icons/cloudy&sunny.svg'
+        elif id_tag == 500 or id_tag == 501 or id_tag == 502 or id_tag == 503 or id_tag == 504:
+            return 'static/icons/rain&sunny.svg'
+
+    else:
+        if id_tag == 800:
+            return 'static/icons/clear_moon.png'
+        elif id_tag == 801:
+            return 'static/icons/clouds_moon.png'
+        elif id_tag == 500 or id_tag == 501 or id_tag == 502 or id_tag == 503 or id_tag == 504:
+            return 'static/icons/rain_moon.png'
 
 
 app = Flask(__name__)
@@ -99,6 +102,7 @@ second_alert = False
 @app.route('/', methods=['POST', 'GET'])
 def weather():
     global alerts_image, description, description_2, second_alert, alerts_data, pop_list, day_name, city, data_daily
+    global lat, lon
     city = 'princeton'
     if request.method == 'POST':
         city = request.form['city'].title()
@@ -371,7 +375,7 @@ def weather():
         'day_8_id': hourly_data['daily'][7]['weather'][0]['id'],
         'uv': round(hourly_data['daily'][0]['uvi'])
     }
-
+    print(data_hourly['hour_1_main'])
     if data_hourly['hour_1_main'] == 'Clear':
         # bg_images = 'https://cdn.lynda.com/course/438407/438407-637286184088314228-16x9.jpg'
         bg_images = 'https://res.cloudinary.com/program-explorers/image/upload/v1600480831/Grand-Canyon-Destination' \
@@ -386,16 +390,22 @@ def weather():
     else:
         bg_images = 'https://res.cloudinary.com/program-explorers/image/upload/v1600480973/grand-canyon-sunset_c6yvay' \
                     '.jpg '
-        print(data_hourly['hour_1_main'])
 
+    user = ephem.Observer()
+    user.lat = lat
+    user.lon = lon
+    next_sunrise_datetime = user.next_rising(ephem.Sun()).datetime()
+    next_sunset_datetime = user.next_setting(ephem.Sun()).datetime()
+    it_is_day = next_sunset_datetime < next_sunrise_datetime
     # Got icon for each hour
     for i in range(1, 13):
-        hourly_images.append(verify_icon(data_hourly['hour_' + str(i) + '_id']))
+        hourly_images.append(verify_icon(data_hourly['hour_' + str(i) + '_id'], it_is_day))
         main_list.append(data_hourly['hour_' + str(i) + '_main'])
     for j in range(1, 9):
-        daily_images.append(verify_icon(data_daily['day_' + str(j) + '_id']))
+        daily_images.append(verify_icon(data_daily['day_' + str(j) + '_id'], True))
+
     id_tag = data['id']
-    image = verify_icon(id_tag)
+    image = verify_icon(id_tag, it_is_day)
 
     send_emails_web()
 

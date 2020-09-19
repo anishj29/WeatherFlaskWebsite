@@ -11,4 +11,6 @@ mysql-connector-python~=8.0.21
 lxml~=4.5.2
 jws~=0.1.3
 DateTimeRange~=1.0.0
-flask_compress
+Brotli~=1.0.9
+itsdangerous~=1.1.0
+ephem~=3.7.7.1
