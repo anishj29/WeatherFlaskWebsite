@@ -38,46 +38,52 @@ def send_emails_web():
 
 
 def verify_icon(id_tag):
+    global city
+    is_night = False
+    # city = a[city]  # Replace with your city
+    # now = datetime.datetime.now(pytz.utc)
+    # sun = city.sun(date=now, local=True)
+    # if now >= sun['dusk'] or now <= sun['dawn']:
+    #     is_night = True
+
     id_tag_str = str(id_tag)
     id_list.append(id_tag)
-    if id_tag == 800:
-        return 'static/icons/sunny.svg'
+    if not is_night:
+        if id_tag == 200 or id_tag == 201 or id_tag == 202 or id_tag == 230 or id_tag == 231 or id_tag == 232:
+            return 'static/icons/icon-11.svg'
 
-    elif id_tag == 200 or id_tag == 201 or id_tag == 202 or id_tag == 230 or id_tag == 231 or id_tag == 232:
-        return 'static/icons/icon-11.svg'
+        elif id_tag == 210 or id_tag == 211 or id_tag == 212 or id_tag == 221:
+            return 'static/icons/icon-12.svg'
 
-    elif id_tag == 210 or id_tag == 211 or id_tag == 212 or id_tag == 221:
-        return 'static/icons/icon-12.svg'
+        elif id_tag_str[0] == '3':
+            return 'static/icons/light_rain.svg'
 
-    elif id_tag_str[0] == '3':
-        return 'static/icons/light_rain.svg'
+        elif id_tag == 511 or id_tag == 520 or id_tag == 521 or id_tag == 522 or id_tag == 531:
+            return 'static/icons/heavy_rain.svg'
 
-    elif id_tag == 500 or id_tag == 501 or id_tag == 502 or id_tag == 503 or id_tag == 504:
-        return 'static/icons/rain&sunny.svg'
+        elif id_tag_str[0] == '6':
+            return 'static/icons/icon-13.svg '
 
-    elif id_tag == 511 or id_tag == 520 or id_tag == 521 or id_tag == 522 or id_tag == 531:
-        return 'static/icons/heavy_rain.svg'
+        elif id_tag_str[0] == '7':
+            return 'static/icons/fog_2.svg'
 
-    elif id_tag_str[0] == '6':
-        return 'static/icons/icon-13.svg '
+        elif id_tag == 802:
+            return 'static/icons/cloudy.svg'
 
-    elif id_tag_str[0] == '7':
-        return 'static/icons/fog_2.svg'
+        elif id_tag == 803:
+            return 'static/icons/icon-6.svg'
 
-    elif id_tag == 801:
-        return 'static/icons/cloudy&sunny.svg'
-
-    elif id_tag == 802:
-        return 'static/icons/cloudy.svg'
-
-    elif id_tag == 803:
-        return 'static/icons/icon-6.svg'
-
-    elif id_tag == 803 or id_tag == 804:
-        return 'static/icons/icon-6.svg'
+        elif id_tag == 803 or id_tag == 804:
+            return 'static/icons/icon-6.svg'
 
     else:
-        return 'error'
+        if id_tag == 800:
+            return 'static/icons/sunny.svg'
+        elif id_tag == 801:
+            return 'static/icons/cloudy&sunny.svg'
+        elif id_tag == 500 or id_tag == 501 or id_tag == 502 or id_tag == 503 or id_tag == 504:
+            return 'static/icons/rain&sunny.svg'
+    return 'error'
 
 
 app = Flask(__name__)
@@ -378,7 +384,7 @@ def weather():
     elif data_hourly['hour_1_main'] == 'Snow':
         bg_images = 'https://westernnews.media.clients.ellingtoncms.com/img/photos/2017/09/19/GC_Winter.jpg'
     else:
-        bg_images = 'https://cdn.lynda.com/course/438407/438407-637286184088314228-16x9.jpg'
+        bg_images = 'https://www.smartertravel.com/uploads/2017/08/grand-canyon-sunset.jpg'
         print(data_hourly['hour_1_main'])
 
     # Got icon for each hour
