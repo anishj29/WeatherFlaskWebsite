@@ -122,7 +122,8 @@ def weather():
         list_of_data = json.loads(source)
 
     except urllib.error.HTTPError:
-        print('wrong url')
+        is_fail = True
+        print('WHY FAIL')
         return render_template("404.html")
 
     data = {
