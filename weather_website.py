@@ -4,7 +4,7 @@ import urllib.request
 
 import datetimerange
 import pytz
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 from flask_compress import Compress
 from googletrans import Translator
 import ephem
@@ -37,7 +37,6 @@ def send_emails_web():
             send_email.send_mail(row[0], row[1], msg, data_daily['day_1_temp'], description + description_2,
                                  False)
 
-
 def verify_icon(id_tag, it_is_day):
     global city, lat, lon
 
@@ -68,7 +67,6 @@ def verify_icon(id_tag, it_is_day):
         return 'static/icons/icon-6.svg'
     elif id_tag == 803 or id_tag == 804:
         return 'static/icons/icon-6.svg'
-
 
     if it_is_day:
         if id_tag == 800:
@@ -102,7 +100,7 @@ second_alert = False
 @app.route('/', methods=['POST', 'GET'])
 def weather():
     global alerts_image, description, description_2, second_alert, alerts_data, pop_list, day_name, city, data_daily
-    global lat, lon
+    global lat, lon, state
     city = 'princeton'
     if request.method == 'POST':
         city = request.form['city'].title()
@@ -111,6 +109,7 @@ def weather():
             'https://ip-geolocation.whoisxmlapi.com/api/v1?apiKey=at_7PwbMzdUGTjddKi5dhSUlOrzUEHhF&ipAddress').read()
         geo = json.loads(geoip)
         city = geo['location']['city']
+        state = geo['location']['region']
 
     new_city = city
     if ' ' in city:
@@ -121,7 +120,7 @@ def weather():
     # source contain json data from api
     try:
         source = urllib.request.urlopen(
-            'http://api.openweathermap.org/data/2.5/weather?q=' + new_city + '&appid=' + api).read()
+             'http://api.openweathermap.org/data/2.5/weather?q=' + new_city + '&appid=' + api).read()
 
         list_of_data = json.loads(source)
 
