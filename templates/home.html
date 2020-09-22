@@ -25,10 +25,9 @@
         <div class="hero" data-bg-image="landscape.jpg"
              style="background-image: url({{bg_images}});">
             <div class="container">
-                <form autocomplete="off" class="find-location" method="post">
-                    <div autocomplete="on">
-                        <input id="city" name="city" placeholder="Find your location..." type="text">
-                    </div>
+                <form class="find-location" method="post">
+                    <div id="cy"></div>
+                    <input id="hello" name="city" placeholder="Find your location..." type="text">
                     <input type="submit" value="Find">
                 </form>
 
@@ -335,9 +334,13 @@
     </footer>
 </div>
 <script>
-var city_name = document.getElementById("city").value;
-console.log(city_name);
+var inputBox = document.getElementById('hello');
 
+inputBox.onkeyup = function(){
+    document.getElementById('cy').innerHTML = inputBox.value;
+    console.log(inputBox.value);
+
+}
 <!--autocomplete(document.getElementById("myInput"), countries);-->
 <!--$.getJSON('"http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=4zrGVjvJENvvA6SvIPA6hW1qUmtKqCcd&q='-->
 <!--+ new_city,-->
