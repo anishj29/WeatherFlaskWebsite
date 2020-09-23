@@ -27,7 +27,7 @@
             <div class="container">
                 <form class="find-location" method="post">
                     <div id="cy"></div>
-                    <input id="hello" name="city" placeholder="Find your location..." type="text">
+                    <input id="search" name="city" placeholder="Find your location..." type="text">
                     <input type="submit" value="Find">
                 </form>
 
@@ -334,11 +334,16 @@
     </footer>
 </div>
 <script>
-var inputBox = document.getElementById('hello');
+var inputBox = document.getElementById('search');
 
 inputBox.onkeyup = function(){
     document.getElementById('cy').innerHTML = inputBox.value;
+<!--    $.getJSON("http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=4zrGVjvJENvvA6SvIPA6hW1qUmtKqCcd&q=" + new_city,-->
+    function(data, textStatus, jqXHR) {
+        alert(data);
+    }
     console.log(inputBox.value);
+
 
 }
 <!--autocomplete(document.getElementById("myInput"), countries);-->

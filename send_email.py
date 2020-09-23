@@ -19,18 +19,20 @@ def back_end(receiver, city, message, weather, alerts):
         server.starttls(context=context)  # Secure the connection
         server.login(sender_email, password)
         server.sendmail(sender_email, receiver, message)
+        server.quit()
+        return True
     except Exception as e:
         # Print any error messages to stdout
         print(e)
         print("Email sending failed")
-    finally:
         server.quit()
+        return False
 
 
 def send_mail(receiver, city, message, weather, alerts, is_first):
     if is_first:
-        back_end(receiver=receiver, city=city, message=message, weather=weather, alerts=alerts)
+        return back_end(receiver=receiver, city=city, message=message, weather=weather, alerts=alerts)
 
     else:
         print('sending')
-        back_end(receiver=receiver, city=city, message=message, weather=weather, alerts=alerts)
+        return back_end(receiver=receiver, city=city, message=message, weather=weather, alerts=alerts)

@@ -1,13 +1,14 @@
+# Imports
 import datetime
 import json
 import urllib.request
 
 import datetimerange
+import ephem
 import pytz
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request
 from flask_compress import Compress
 from googletrans import Translator
-import ephem
 
 import send_email
 from run_sql import MySQL
@@ -34,24 +35,24 @@ def send_emails_web():
         all_emails = database.get_all()
         database.close()
         for row in all_emails:
-            send_email.send_mail(row[0], row[1], msg, data_daily['day_1_temp'], description + description_2,
-                                 False)
+            send_email.send_mail(row[0], row[1], msg, data_daily['day_1_temp'], description + description_2, False)
+
 
 def verify_icon(id_tag, it_is_day):
     global city, lat, lon
 
     id_tag_str = str(id_tag)
     id_list.append(id_tag)
-    if id_tag == 200 or id_tag == 201 or id_tag == 202 or id_tag == 230 or id_tag == 231 or id_tag == 232:
+    if id_tag in (200, 201, 202, 230, 231, 232):
         return 'static/icons/icon-11.svg'
 
-    elif id_tag == 210 or id_tag == 211 or id_tag == 212 or id_tag == 221:
+    elif id_tag in (210, 211, 212, 221):
         return 'static/icons/icon-12.svg'
 
     elif id_tag_str[0] == '3':
         return 'static/icons/light_rain.svg'
 
-    elif id_tag == 511 or id_tag == 520 or id_tag == 521 or id_tag == 522 or id_tag == 531:
+    elif id_tag in (511, 520, 521, 522, 531):
         return 'static/icons/heavy_rain.svg'
 
     elif id_tag_str[0] == '6':
@@ -65,7 +66,7 @@ def verify_icon(id_tag, it_is_day):
 
     elif id_tag == 803:
         return 'static/icons/icon-6.svg'
-    elif id_tag == 803 or id_tag == 804:
+    elif id_tag in (803, 804):
         return 'static/icons/icon-6.svg'
 
     if it_is_day:
@@ -73,7 +74,7 @@ def verify_icon(id_tag, it_is_day):
             return 'static/icons/sunny.svg'
         elif id_tag == 801:
             return 'static/icons/cloudy&sunny.svg'
-        elif id_tag == 500 or id_tag == 501 or id_tag == 502 or id_tag == 503 or id_tag == 504:
+        elif id_tag in (500, 501, 502, 503, 504):
             return 'static/icons/rain&sunny.svg'
 
     else:
@@ -81,8 +82,10 @@ def verify_icon(id_tag, it_is_day):
             return 'static/icons/clear_moon.png'
         elif id_tag == 801:
             return 'static/icons/clouds_moon.png'
-        elif id_tag == 500 or id_tag == 501 or id_tag == 502 or id_tag == 503 or id_tag == 504:
+        elif id_tag in (500, 501, 502, 503, 504):
             return 'static/icons/rain_moon.png'
+
+    return 'error'
 
 
 app = Flask(__name__)
@@ -125,8 +128,6 @@ def weather():
         list_of_data = json.loads(source)
 
     except urllib.error.HTTPError:
-        is_fail = True
-        print('WHY FAIL')
         return render_template("404.html")
 
     data = {
@@ -175,7 +176,7 @@ def weather():
 
     list_of_days = [day, day_2, day_3, day_4, day_5, day_6, day_7]
 
-    for i in range(len(list_of_days)):  # Converts number to day ( 1 = Monday 2 = Tuesday etc)
+    for i, val in enumerate(list_of_days):  # Converts number to day ( 1 = Monday 2 = Tuesday etc)
         list_of_days[i] = day_name[list_of_days[i]]
 
     month_name = {1: 'Jan', 2: 'Feb', 3: 'Mar', 4: 'Apr', 5: 'May', 6: 'June', 7: 'July', 8: 'Aug',
@@ -189,7 +190,7 @@ def weather():
     list_of_hours = [current_hour, current_hour + 1, current_hour + 2, current_hour + 3, current_hour + 4,
                      current_hour + 5, current_hour + 6]
 
-    for i in range(len(list_of_hours)):
+    for i, val in enumerate(list_of_hours):
         if list_of_hours[i] > 24:
             list_of_hours[i] -= 24
         if list_of_hours[i] > 12:
@@ -206,8 +207,7 @@ def weather():
                                         'apikey=4zrGVjvJENvvA6SvIPA6hW1qUmtKqCcd&q=' + new_city.lower() +
                                         '&details=false').read()
     except:
-        for i in range(0, 8):
-            pop_list.append('N/A')
+        pop_list = ['N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'N/A']
 
     else:
         city_id = json.loads(get_id)
