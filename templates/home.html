@@ -10,6 +10,8 @@
     <link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700|" rel="stylesheet" type="text/css">
     <link href="{{url_for('static', filename='css/style.css')}}" rel="stylesheet" type="text/css">
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 </head>
 
 <body>
@@ -337,22 +339,11 @@
 var inputBox = document.getElementById('search');
 
 inputBox.onkeyup = function(){
-    document.getElementById('cy').innerHTML = inputBox.value;
-<!--    $.getJSON("http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=4zrGVjvJENvvA6SvIPA6hW1qUmtKqCcd&q=" + new_city,-->
-    function(data, textStatus, jqXHR) {
-        alert(data);
-    }
-    console.log(inputBox.value);
-
-
-}
-<!--autocomplete(document.getElementById("myInput"), countries);-->
-<!--$.getJSON('"http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=4zrGVjvJENvvA6SvIPA6hW1qUmtKqCcd&q='-->
-<!--+ new_city,-->
-<!--    function(data, textStatus, jqXHR) {-->
-<!--        alert(data);-->
-<!--    }-->
-<!--)-->
+    $.getJSON("http://dataservice.accuweather.com/locations/v1/cities/autocomplete?"
+    +"apikey=4zrGVjvJENvvA6SvIPA6hW1qUmtKqCcd&q=" + inputBox.value, function(data) {
+        document.getElementById('cy').innerHTML = alert(data[0]);
+    });
+};
 </script>
 </body>
 </html>
