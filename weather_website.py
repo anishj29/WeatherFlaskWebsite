@@ -21,6 +21,8 @@ alerts_image = ''
 pop_list = ''
 city = ''
 email = ''
+lat = 0
+lon = 0
 data_daily = {'day_1_temp': 0, 'day_1_main': 'Clear'}
 
 day_name = {0: 'Monday', 1: 'Tuesday', 2: 'Wednesday', 3: 'Thursday', 4: 'Friday', 5: 'Saturday', 6: 'Sunday'}
@@ -29,16 +31,16 @@ time_range = datetimerange.DateTimeRange("T5:00:00+0900", "T9:00:00+0900")
 
 def auto_complete(city_typed):
     try:
-        corrections = json.loads(urllib.request.urlopen('http://dataservice.accuweather.com/locations/v1/cities/'
-                                                        'autocomplete?apikey=4zrGVjvJENvvA6SvIPA6hW1qUmtKqCcd&q='
-                                                        + city_typed).read())
-        c1 = corrections[0]['LocalizedName']
-        c2 = corrections[1]['LocalizedName']
-        c3 = corrections[2]['LocalizedName']
-        c4 = corrections[3]['LocalizedName']
-        c5 = corrections[4]['LocalizedName']
+        items_auto = ['http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey='
+                      '4zrGVjvJENvvA6SvIPA6hW1qUmtKqCcd&q=', city_typed]
+        corrections = json.loads(urllib.request.urlopen(''.join(items_auto)).read())
 
-        city_list = [c1, c2, c3, c4, c5]
+        city_list = []
+        for i in range(5):
+            city_list.append(corrections[i]['LocalizedName'])
+
+        city_list = [corrections[0]['LocalizedName'], corrections[0]['LocalizedName'], corrections[0]['LocalizedName'],
+                     corrections[0]['LocalizedName'], corrections[0]['LocalizedName']]
 
         print(city_list)
 
@@ -60,10 +62,9 @@ def send_emails_web():
 
 
 def verify_icon(id_tag, it_is_day):
-    global city, lat, lon
-
     id_tag_str = str(id_tag)
     id_list.append(id_tag)
+
     if id_tag in (200, 201, 202, 230, 231, 232):
         return 'static/icons/icon-11.svg'
 
@@ -123,8 +124,8 @@ second_alert = False
 
 @app.route('/', methods=['POST', 'GET'])
 def weather():
-    global alerts_image, description, description_2, second_alert, alerts_data, pop_list, day_name, city, data_daily
-    global lat, lon, state
+    # global alerts_image, description, description_2, second_alert, alerts_data, pop_list, day_name, city, data_daily
+    global alerts_data, city, alerts_image, second_alert
     city = 'princeton'
     if request.method == 'POST':
         city = request.form['city'].title()
@@ -133,18 +134,17 @@ def weather():
             'https://ip-geolocation.whoisxmlapi.com/api/v1?apiKey=at_7PwbMzdUGTjddKi5dhSUlOrzUEHhF&ipAddress').read()
         geo = json.loads(geoip)
         city = geo['location']['city']
-        state = geo['location']['region']
+        # state = geo['location']['region']
 
     new_city = city
     if ' ' in city:
         new_city = city.replace(' ', '+')
 
-    api = '8a5edfd4d0e0f8953dbe82364cfc0b10'
-
     # source contain json data from api
     try:
-        source = urllib.request.urlopen(
-             'http://api.openweathermap.org/data/2.5/weather?q=' + new_city + '&appid=' + api).read()
+        items = ['http://api.openweathermap.org/data/2.5/weather?q=', new_city,
+                 '&appid=8a5edfd4d0e0f8953dbe82364cfc0b10']
+        source = urllib.request.urlopen(''.join(items)).read()
 
         list_of_data = json.loads(source)
 
@@ -175,10 +175,10 @@ def weather():
     sunset = datetime.datetime.fromtimestamp(sunset_time, datetime.timezone.utc).strftime('%I:%M %p')
     sun_time = [sunrise, sunset]
 
+    items_hourly = ['https://api.openweathermap.org/data/2.5/onecall?lat=', lat, '&lon=', lon, '&units=', temp,
+                    '&exclude=minutely,current&appid=8a5edfd4d0e0f8953dbe82364cfc0b10']
     # Hourly Weather
-    hourly_source = urllib.request.urlopen(
-        'https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon +
-        '&units=' + temp + '&exclude=minutely,current&appid=' + api).read()
+    hourly_source = urllib.request.urlopen(''.join(items_hourly)).read()
     hourly_data = json.loads(hourly_source)
 
     # Gets accurate hour, day and month for searched location
@@ -224,9 +224,9 @@ def weather():
             list_of_hours[i] = str(list_of_hours[i]) + ' am'
     try:
         pop_list = []
-        get_id = urllib.request.urlopen('http://dataservice.accuweather.com/locations/v1/cities/search?' +
-                                        'apikey=4zrGVjvJENvvA6SvIPA6hW1qUmtKqCcd&q=' + new_city.lower() +
-                                        '&details=false').read()
+        items_pop = ['http://dataservice.accuweather.com/locations/v1/cities/search?apikey='
+                     '4zrGVjvJENvvA6SvIPA6hW1qUmtKqCcd&q=', new_city.lower(), '&details=false']
+        get_id = urllib.request.urlopen(''.join(items_pop)).read()
     except:
         pop_list = ['N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'N/A', 'N/A']
 
@@ -244,9 +244,11 @@ def weather():
             if pop_num == '0%':
                 pop_num = ''
             pop_list.append(pop_num)
-    alerts_key = '888c4677014d4578a511570492df67b0'
-    alerts_api = urllib.request.urlopen(
-        'https://api.weatherbit.io/v2.0/alerts?lat=' + lat + '&lon=' + lon + '&key=' + alerts_key).read()
+
+    item_alerts = ['https://api.weatherbit.io/v2.0/alerts?lat=', lat, '&lon=', lon, '&key=',
+                   '888c4677014d4578a511570492df67b0']
+    # alerts_key = '888c4677014d4578a511570492df67b0'
+    alerts_api = urllib.request.urlopen(''.join(item_alerts)).read()
     alerts_store = json.loads(alerts_api)
 
     try:
@@ -260,16 +262,16 @@ def weather():
         }
 
     except IndexError:
-        description = 'No alerts in this area!'
+        alerts_description = 'No alerts in this area!'
 
     else:
         translator = Translator()
-        description = translator.translate(alerts_data['description'])
-        description = description.text.replace('English: ', '')
-        description = description.replace('* WHAT...', 'What: ')
-        description = description.replace('* WHERE...', 'Where: ')
-        description = description.replace('* WHEN...', 'When: ')
-        description = description.replace('* IMPACTS...', 'Impacts: ')
+        alerts_description = translator.translate(alerts_data['description'])
+        alerts_description = alerts_description.text.replace('English: ', '')
+        alerts_description = alerts_description.replace('* WHAT...', 'What: ')
+        alerts_description = alerts_description.replace('* WHERE...', 'Where: ')
+        alerts_description = alerts_description.replace('* WHEN...', 'When: ')
+        alerts_description = alerts_description.replace('* IMPACTS...', 'Impacts: ')
 
         severity = alerts_data['severity']
         if severity == 'Warning':
@@ -303,12 +305,12 @@ def weather():
             second_alert = False
 
         else:
-            description_2 = translator.translate(alerts_data_2['description'])
-            description_2 = description_2.text.replace('English: ', '')
-            description_2 = description_2.replace('* WHAT...', 'What: ')
-            description_2 = description_2.replace('* WHERE...', 'Where: ')
-            description_2 = description_2.replace('* WHEN...', 'When: ')
-            description_2 = description_2.replace('* IMPACTS...', 'Impacts: ')
+            alerts_description_2 = translator.translate(alerts_data_2['description'])
+            alerts_description_2 = alerts_description_2.text.replace('English: ', '')
+            alerts_description_2 = alerts_description_2.replace('* WHAT...', 'What: ')
+            alerts_description_2 = alerts_description_2.replace('* WHERE...', 'Where: ')
+            alerts_description_2 = alerts_description_2.replace('* WHEN...', 'When: ')
+            alerts_description_2 = alerts_description_2.replace('* IMPACTS...', 'Impacts: ')
 
     # Hourly Weather stored in dictionary
     data_hourly = {
@@ -395,7 +397,7 @@ def weather():
         'day_8_id': hourly_data['daily'][7]['weather'][0]['id'],
         'uv': round(hourly_data['daily'][0]['uvi'])
     }
-    print(data_hourly['hour_1_main'])
+
     if data_hourly['hour_1_main'] == 'Clear':
         # bg_images = 'https://cdn.lynda.com/course/438407/438407-637286184088314228-16x9.jpg'
         bg_images = 'https://res.cloudinary.com/program-explorers/image/upload/v1600480831/Grand-Canyon-Destination' \
@@ -433,7 +435,7 @@ def weather():
                            data_hourly=data_hourly, data_daily=data_daily, daily_images=daily_images,
                            days=list_of_days, sun_time=sun_time, list_of_hours=list_of_hours,
                            current_month=current_month, lat=lat, lon=lon, alerts_data=alerts_data,
-                           alerts_image=alerts_image, new_des=description, pop_list=pop_list,
+                           alerts_image=alerts_image, new_des=alerts_description, pop_list=pop_list,
                            todays_date=today_date, bg_images=bg_images)
 
 
