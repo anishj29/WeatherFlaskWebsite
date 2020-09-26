@@ -39,8 +39,8 @@ def auto_complete(city_typed):
         for i in range(5):
             city_list.append(corrections[i]['LocalizedName'])
 
-        city_list = [corrections[0]['LocalizedName'], corrections[0]['LocalizedName'], corrections[0]['LocalizedName'],
-                     corrections[0]['LocalizedName'], corrections[0]['LocalizedName']]
+        city_list = [corrections[0]['LocalizedName'], corrections[1]['LocalizedName'], corrections[2]['LocalizedName'],
+                     corrections[3]['LocalizedName'], corrections[4]['LocalizedName']]
 
         print(city_list)
 
