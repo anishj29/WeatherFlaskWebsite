@@ -44,6 +44,7 @@ def auto_complete(city_typed):
 
         print(city_list)
 
+
     except urllib.error.HTTPError:
         city_list = ['N/A', 'N/A', 'N/A', 'N/A', 'N/A']
 
