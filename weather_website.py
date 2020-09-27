@@ -29,26 +29,25 @@ day_name = {0: 'Monday', 1: 'Tuesday', 2: 'Wednesday', 3: 'Thursday', 4: 'Friday
 time_range = datetimerange.DateTimeRange("T5:00:00+0900", "T9:00:00+0900")
 
 
-def auto_complete(city_typed):
-    try:
-        items_auto = ['http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey='
-                      '4zrGVjvJENvvA6SvIPA6hW1qUmtKqCcd&q=', city_typed]
-        corrections = json.loads(urllib.request.urlopen(''.join(items_auto)).read())
-
-        city_list = []
-        for i in range(5):
-            city_list.append(corrections[i]['LocalizedName'])
-
-        city_list = [corrections[0]['LocalizedName'], corrections[1]['LocalizedName'], corrections[2]['LocalizedName'],
-                     corrections[3]['LocalizedName'], corrections[4]['LocalizedName']]
-
-        print(city_list)
-
-
-    except urllib.error.HTTPError:
-        city_list = ['N/A', 'N/A', 'N/A', 'N/A', 'N/A']
-
-    return city_list
+# def auto_complete(city_typed):
+#     try:
+#         items_auto = ['http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey='
+#                       '4zrGVjvJENvvA6SvIPA6hW1qUmtKqCcd&q=', city_typed]
+#         corrections = json.loads(urllib.request.urlopen(''.join(items_auto)).read())
+#
+#         city_list = []
+#         for i in range(5):
+#             city_list.append(corrections[i]['LocalizedName'])
+#
+#         city_list = [corrections[0]['LocalizedName'], corrections[1]['LocalizedName'], corrections[2]['LocalizedName']
+#                      ,corrections[3]['LocalizedName'], corrections[4]['LocalizedName']]
+#
+#         print(city_list)
+#
+#     except urllib.error.HTTPError:
+#         city_list = ['N/A', 'N/A', 'N/A', 'N/A', 'N/A']
+#
+#     return city_list
 
 
 def send_emails_web():

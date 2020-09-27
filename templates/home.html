@@ -6,7 +6,7 @@
     <meta content="width=device-width, initial-scale=1.0,maximum-scale=1" name="viewport">
     <title>Weather App by Program Explorers</title>
 
-    <link href="static/weather_icon-2.ico" rel="shortcut icon" type="image/x-icon"/>
+    <link href="static/weather_icon-2.ico" rel="prefetch" type="image/x-icon"/>
     <link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700|" rel="stylesheet" type="text/css">
     <link href="{{url_for('static', filename='css/style.css')}}" rel="stylesheet" type="text/css">
 
@@ -285,8 +285,9 @@
                         <iframe
                                 allowfullscreen
                                 frameborder="2"
-                                height="450" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCcNwGm6OIClebIx_K824lIfJkPeDssA54
-                                        &q={{data.city_name}}}+{{data.country_code}}}&maptype=satellite"
+                                height="450" src="https://www.google.com/maps/embed/v1/place?key=
+                                AIzaSyCcNwGm6OIClebIx_K824lIfJkPeDssA54&q={{data.city_name}}}+{{data.country_code}}}&
+                                maptype=satellite"
                                 style="border:10" width="500">
                         </iframe>
                     </div>
@@ -339,8 +340,9 @@
 var inputBox = document.getElementById('search');
 
 inputBox.onkeyup = function(){
-    $.getJSON("http://dataservice.accuweather.com/locations/v1/cities/autocomplete?"
-    +"apikey=4zrGVjvJENvvA6SvIPA6hW1qUmtKqCcd&q=" + inputBox.value, function(data) {
+    console.log(inputBox.value);
+    $.getJSON("http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=" +
+    "4zrGVjvJENvvA6SvIPA6hW1qUmtKqCcd&q=" + inputBox.value, function(data) {
         document.getElementById('cy').innerHTML = alert(data[0]);
     });
 };
