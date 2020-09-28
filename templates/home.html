@@ -24,17 +24,22 @@
             </div>
         </div>
     </div>
-        <div class="hero" data-bg-image="landscape.jpg"
-             style="background-image: url({{bg_images}});">
-            <div class="container">
-                <form class="find-location" method="post">
-                    <div id="cy"></div>
-                    <input id="search" name="city" placeholder="Find your location..." type="text">
-                    <input type="submit" value="Find">
-                </form>
+    <div class="hero" data-bg-image="landscape.jpg"
+         style="background-image: url({{bg_images}});">
+        <div class="container">
+            <form class="find-location" method="post">
+                <button type="submit" id="cy1"></button>
+                <button type="submit" id="cy2"></button>
+                <button type="submit" id="cy3"></button>
+                <button type="submit" id="cy4"></button>
+                <button type="submit" id="cy5"></button>
 
-            </div>
+                <input id="search" name="city" placeholder="Find your location..." type="text">
+                <input type="submit" value="Find">
+            </form>
+
         </div>
+    </div>
     <div class="forecast-table">
         <div class="container">
             <div class="forecast-container">
@@ -343,9 +348,23 @@ inputBox.onkeyup = function(){
     console.log(inputBox.value);
     $.getJSON("http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=" +
     "4zrGVjvJENvvA6SvIPA6hW1qUmtKqCcd&q=" + inputBox.value, function(data) {
-        document.getElementById('cy').innerHTML = alert(data[0]);
+        var city_list = [];
+        for (var i = 0; i < 4; i++){
+            city_list.push(data[i]['LocalizedName']);
+        }
+        city_list = [data[0]['LocalizedName'], data[1]['LocalizedName'], data[2]['LocalizedName']
+                     ,data[3]['LocalizedName'], data[4]['LocalizedName']];
+
+        document.getElementById('cy1').innerHTML = city_list[0];
+        document.getElementById('cy2').innerHTML = city_list[1];
+        document.getElementById('cy3').innerHTML = city_list[2];
+        document.getElementById('cy4').innerHTML = city_list[3];
+        document.getElementById('cy5').innerHTML = city_list[4];
+
+        console.log(city_list);
     });
 };
+
 </script>
 </body>
 </html>
