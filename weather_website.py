@@ -1,4 +1,3 @@
-
 import datetime
 import json
 import urllib.request
@@ -18,12 +17,11 @@ daily_images = []
 id_list = []
 main_list = []
 alerts_image = ''
-pop_list = ''
+pop_list = []
 city = ''
 email = ''
 lat = 0
 lon = 0
-data_daily = {'day_1_temp': 0, 'day_1_main': 'Clear'}
 
 day_name = {0: 'Monday', 1: 'Tuesday', 2: 'Wednesday', 3: 'Thursday', 4: 'Friday', 5: 'Saturday', 6: 'Sunday'}
 time_range = datetimerange.DateTimeRange("T5:00:00+0900", "T9:00:00+0900")
@@ -121,11 +119,12 @@ description = ''
 description_2 = ''
 second_alert = False
 
+data_daily = {}
+
 
 @app.route('/', methods=['POST', 'GET'])
 def weather():
-    # global alerts_image, description, description_2, second_alert, alerts_data, pop_list, day_name, city, data_daily
-    global alerts_data, city, alerts_image, second_alert
+    global alerts_data, city, alerts_image, second_alert, pop_list, lat, lon, data_daily
     city = 'princeton'
     if request.method == 'POST':
         city = request.form['city'].title()
@@ -399,7 +398,6 @@ def weather():
     }
 
     if data_hourly['hour_1_main'] == 'Clear':
-        # bg_images = 'https://cdn.lynda.com/course/438407/438407-637286184088314228-16x9.jpg'
         bg_images = 'https://res.cloudinary.com/program-explorers/image/upload/v1600480831/Grand-Canyon-Destination' \
                     '-Page_mp557z.jpg '
     elif data_hourly['hour_1_main'] == 'Rain':
@@ -465,7 +463,7 @@ def update_mail_loc():
         city = request.form['update_location']
     except:
         pass
-
+    print(data_daily['day_1_temp'])
     is_email_sent = send_email.send_mail(email, city, msg, data_daily['day_1_temp'], alerts_email, True)
 
     if is_email_sent:
