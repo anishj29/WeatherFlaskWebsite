@@ -1096,8 +1096,7 @@ form textarea {
     .visible-print-block {
       display: block !important; } }
 .autocomplete {
-  position: relative;
-  display: inline-block;
+
 }
 .autocomplete-items {
   position: absolute;
@@ -1114,7 +1113,7 @@ form textarea {
 .autocomplete-items div {
   padding: 10px;
   cursor: pointer;
-  background-color: #fff;
+  background-color:#000000;
   border-bottom: 1px solid #d4d4d4;
 }
 
