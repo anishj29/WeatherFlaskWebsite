@@ -22,12 +22,10 @@ city = ''
 email = ''
 lat = 0
 lon = 0
+data = {'city_name': 'princeton', 'country_code': 'US'}
 
 day_name = {0: 'Monday', 1: 'Tuesday', 2: 'Wednesday', 3: 'Thursday', 4: 'Friday', 5: 'Saturday', 6: 'Sunday'}
 time_range = datetimerange.DateTimeRange("T5:00:00+0900", "T9:00:00+0900")
-
-
-
 
 
 def send_emails_web():
@@ -135,7 +133,7 @@ def weather():
     data = {
         "country_code": str(list_of_data['sys']['country']), "city_name": str(city),
         "main": list_of_data['weather'][0]['main'], "description": list_of_data['weather'][0]['description'],
-        "coordinate": str(list_of_data['coord']['lon']) + ' ' + str(list_of_data['coord']['lat']),
+        "coordinate": str(list_of_data['coord']['lat']) + ',' + str(list_of_data['coord']['lon']),
         "temp": int(round(1.8 * (list_of_data['main']['temp'] - 273) + 32, 0)),
         "temp_min": int(round(1.8 * (list_of_data['main']['temp_min'] - 273) + 32, 0)),
         "temp_max": int(round(1.8 * (list_of_data['main']['temp_max'] - 273) + 32, 0)),
@@ -144,6 +142,7 @@ def weather():
         'id': list_of_data['weather'][0]['id'], 'sunrise': list_of_data['sys']['sunrise'],
         'sunset': list_of_data['sys']['sunset'], 'offset': list_of_data['timezone']
     }
+    print(data['coordinate'])
     lat = str(list_of_data['coord']['lat'])
     lon = str(list_of_data['coord']['lon'])
     temp = 'imperial'

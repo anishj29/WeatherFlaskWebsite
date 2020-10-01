@@ -60,7 +60,7 @@ class MySQL:
         return self.cursor.fetchall()
 
     def delete_row(self, email):
-        self.cursor.execute("DELETE FROM subscribers WHERE email = %s", email)
+        self.cursor.execute("DELETE FROM subscribers WHERE email = %s LIMIT 1", (email,))
 
     def __delete_table__(self):
         self.cursor.execute("DROP TABLE IF EXISTS subscribers")
@@ -71,7 +71,8 @@ class MySQL:
     def close(self):
         self.db.close()
 
-
 # s = MySQL()
+# s.delete_row('23vk0352@wwprsd.org')
+# s.commit()
 # print(s.get_all())
 # s.close()

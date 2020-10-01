@@ -177,8 +177,10 @@
                                 </div>
                                 <span><img alt="" height="7%" src="static/icons/uv.png"
                                            width="7%">{{data_daily.uv}}</span>
-                                <span><img alt="" height="8.5%" src="static/icons/sunrise.png" width="8.5%">{{sun_time[0]}}</span>
-                                <span><img alt="" height="8.5%" src="static/icons/sunset.png" width="8.5%">{{sun_time[1]}}</span>
+                                <span><img alt="" height="8.5%" src="static/icons/sunrise.png" width="8.5%">
+                                    {{sun_time[0]}}</span>
+                                <span><img alt="" height="8.5%" src="static/icons/sunset.png" width="8.5%">
+                                    {{sun_time[1]}}</span>
                                 <span><img alt="" height="" src="g" width="8.5%">{{data_daily.day_1_main}}</span>
                             </div>
                         </div>
@@ -291,9 +293,8 @@
                         <iframe
                                 allowfullscreen
                                 frameborder="2"
-                                height="450" src="https://www.google.com/maps/embed/v1/place?key=
-                                AIzaSyCcNwGm6OIClebIx_K824lIfJkPeDssA54&q={{data.city_name}}}+{{data.country_code}}}&
-                                maptype=satellite"
+                                height="450" src="https://www.google.com/maps/embed/v1/view?key=
+                                AIzaSyCOfFczdNM4s-x_0dCLkFef1bh5l1oBG6U&center={{data['coordinate']}}&zoom=14&maptype=satellite"
                                 style="border:10" width="500">
                         </iframe>
                     </div>
