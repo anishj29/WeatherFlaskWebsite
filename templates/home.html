@@ -340,12 +340,13 @@
 </div>
 <script>
 var inputBox = document.getElementById('search');
-
+var apiKey1 = "4zrGVjvJENvvA6SvIPA6hW1qUmtKqCcd";
+var apiKey2 = "87BhuOqKbdVq8lsMOlu2FeUmECbQfuEx";
 inputBox.onkeyup = function(){
     console.log(inputBox.value);
-    try {
-        $.getJSON("http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=" +
-        "87BhuOqKbdVq8lsMOlu2FeUmECbQfuEx&q=" + inputBox.value, function(data) {
+        $.getJSON("http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=" + apiKey2 +
+        "&q=" + inputBox.value, function(data)
+        {
             var city_list = [];
             for (var i = 0; i < 4; i++){
                 city_list.push(data[i]['LocalizedName']);
@@ -452,13 +453,13 @@ inputBox.onkeyup = function(){
             /*An array containing all the country names in the world:*/
             /*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
             autocomplete(document.getElementById("search"), city_list);
+        })
+        .fail(function()
+        {
+            apiKey2 = apiKey1;
         });
     }
-    catch(err){
-        var apiKey = "87BhuOqKbdVq8lsMOlu2FeUmECbQfuEx";
-        console.log(apiKey);
-    }
-};
+
 
 
 
