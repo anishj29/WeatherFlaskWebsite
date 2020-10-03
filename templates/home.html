@@ -49,7 +49,7 @@
                         <div class="degree">
                             <div class="num">{{data.temp}}<sup>o</sup>F</div>
                             <div class="forecast-icon">
-                                <img alt="" src={{image}} width=90>
+                                <img alt="" height="95" src={{image}} width="80">
                             </div>
                         </div>
                         <span><img alt="" height="8%" src="static/icons/humidity1.png" width="8%">
@@ -451,7 +451,8 @@ inputBox.onkeyup = function(){
                 }
 
             /*An array containing all the country names in the world:*/
-            /*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
+            /*initiate the autocomplete function on the "myInput" element, and pass along the countries array as
+            possible autocomplete values:*/
             autocomplete(document.getElementById("search"), city_list);
         })
         .fail(function()
