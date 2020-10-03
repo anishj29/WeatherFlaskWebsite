@@ -340,13 +340,14 @@
 </div>
 <script>
 var inputBox = document.getElementById('search');
-var apiKey1 = "4zrGVjvJENvvA6SvIPA6hW1qUmtKqCcd";
-var apiKey2 = "87BhuOqKbdVq8lsMOlu2FeUmECbQfuEx";
+var apiKey1 = "tPCm5yySwcnGKxPMHhkGZMYajP7B9Zm4";
+var apiKey2 = "4zrGVjvJENvvA6SvIPA6hW1qUmtKqCcd";
+var apiKey3 = "87BhuOqKbdVq8lsMOlu2FeUmECbQfuEx";
 inputBox.onkeyup = function(){
-    console.log(inputBox.value);
-        $.getJSON("http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=" + apiKey2 +
+        $.getJSON("http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=" + apiKey1 +
         "&q=" + inputBox.value, function(data)
         {
+
             var city_list = [];
             for (var i = 0; i < 4; i++){
                 city_list.push(data[i]['LocalizedName']);
@@ -455,9 +456,17 @@ inputBox.onkeyup = function(){
             possible autocomplete values:*/
             autocomplete(document.getElementById("search"), city_list);
         })
+        document.getElementById('search').addEventListener("keydown", function (event) {
+                if (event.keyCode == 8) {
+                    console.log('BACKSPACE was pressed');
+                }
+                if (event.keyCode == 46) {
+                    console.log('DELETE was pressed');
+                }
+        })
         .fail(function()
         {
-            apiKey2 = apiKey1;
+           console.log("rrr");
         });
     }
 
