@@ -36,7 +36,8 @@ def send_emails_web():
         all_emails = database.get_all()
         database.close()
         for row in all_emails:
-            send_email.send_mail(row[0], row[1], msg, data_daily['day_1_temp'], description + description_2, False)
+            send_email.send_mail(row[0], row[1], msg, data_daily['day_1_temp'], ''.join([alerts_description,
+                                                                                         alerts_description_2]), False)
 
 
 def verify_icon(id_tag, it_is_day):
@@ -95,8 +96,8 @@ COMPRESS_MIN_SIZE = 500
 Compress(app)
 
 alerts_data = {}
-description = ''
-description_2 = ''
+alerts_description = ''
+alerts_description_2 = ''
 second_alert = False
 
 data_daily = {}
@@ -104,7 +105,8 @@ data_daily = {}
 
 @app.route('/', methods=['POST', 'GET'])
 def weather():
-    global alerts_data, city, alerts_image, second_alert, pop_list, lat, lon, data_daily
+    global alerts_data, city, alerts_image, second_alert, pop_list, lat, lon, data_daily, alerts_description, \
+        alerts_description_2
     city = 'princeton'
     if request.method == 'POST':
         city = request.form['city'].title()
@@ -130,7 +132,7 @@ def weather():
     except urllib.error.HTTPError:
         return render_template("404.html")
 
-    data = {
+    main_data = {
         "country_code": str(list_of_data['sys']['country']), "city_name": str(city),
         "main": list_of_data['weather'][0]['main'], "description": list_of_data['weather'][0]['description'],
         "coordinate": str(list_of_data['coord']['lat']) + ',' + str(list_of_data['coord']['lon']),
@@ -142,14 +144,14 @@ def weather():
         'id': list_of_data['weather'][0]['id'], 'sunrise': list_of_data['sys']['sunrise'],
         'sunset': list_of_data['sys']['sunset'], 'offset': list_of_data['timezone']
     }
-    print(data['coordinate'])
+
     lat = str(list_of_data['coord']['lat'])
     lon = str(list_of_data['coord']['lon'])
     temp = 'imperial'
 
     # Sunrise and Sunset
-    sunrise_time = data['sunrise'] + data['offset']
-    sunset_time = data['sunset'] + data['offset']
+    sunrise_time = main_data['sunrise'] + main_data['offset']
+    sunset_time = main_data['sunset'] + main_data['offset']
 
     sunrise = datetime.datetime.fromtimestamp(sunrise_time, datetime.timezone.utc).strftime('%I:%M %p')
     sunset = datetime.datetime.fromtimestamp(sunset_time, datetime.timezone.utc).strftime('%I:%M %p')
@@ -167,7 +169,7 @@ def weather():
     today_date = datetime_tz.day
     day = datetime_tz.today().weekday()
 
-    # Gets day in number
+    # Gets day as a number
     day_2 = (datetime_tz + datetime.timedelta(days=1)).weekday()
     day_3 = (datetime_tz + datetime.timedelta(days=2)).weekday()
     day_4 = (datetime_tz + datetime.timedelta(days=3)).weekday()
@@ -254,20 +256,10 @@ def weather():
         alerts_description = alerts_description.replace('* IMPACTS...', 'Impacts: ')
 
         severity = alerts_data['severity']
-        if severity == 'Warning':
-            alerts_image = 'static/alerts/warning.png'
+        severity_switch = {'Warning': 'static/alerts/warning.png', 'Watch': 'static/alerts/watch.png',
+                           'Extreme': 'static/alerts/extreme.png', 'Advisory': 'static/alerts/advisory.png'}
 
-        elif severity == 'Watch':
-            alerts_image = 'static/alerts/watch.png'
-
-        elif severity == 'Extreme':
-            alerts_image = 'static/alerts/extreme.png'
-
-        elif severity == 'Advisory':
-            alerts_image = 'static/alerts/advisory.png'
-
-        else:
-            alerts_image = 'static/weather_icon-2.co'
+        alerts_image = severity_switch.get(severity, 'static/weather_icon-2.co')
 
         try:
             alerts_data_2 = {
@@ -405,12 +397,15 @@ def weather():
     for j in range(1, 9):
         daily_images.append(verify_icon(data_daily['day_' + str(j) + '_id'], True))
 
-    id_tag = data['id']
+    id_tag = main_data['id']
     image = verify_icon(id_tag, it_is_day)
 
     send_emails_web()
 
-    return render_template('home.html', data=data, image=image, hourly_images=hourly_images,
+    if alerts_description == alerts_description_2:
+        alerts_description_2 = ''
+
+    return render_template('home.html', data=main_data, image=image, hourly_images=hourly_images,
                            data_hourly=data_hourly, data_daily=data_daily, daily_images=daily_images,
                            days=list_of_days, sun_time=sun_time, list_of_hours=list_of_hours,
                            current_month=current_month, lat=lat, lon=lon, alerts_data=alerts_data,
@@ -420,7 +415,8 @@ def weather():
 
 @app.route('/subscribe/', methods=['POST', 'GET'])
 def send_mail():
-    global description, description_2, second_alert, data_daily, city, email
+    # global description, description_2, second_alert, data_daily, city
+    global email
     email = request.form['subscribe']
     message = "Please confirm the information below, or edit"
     message2 = ""
@@ -437,14 +433,14 @@ def edit():
 def update_mail_loc():
     global email, city, data_daily
     msg = "Thank you for subscribing to Weather Website by Program Explorers!"
-    alerts_email = description + description_2
+    alerts_email = alerts_description + alerts_description_2
 
     try:
         email = request.form['update_email']
         city = request.form['update_location']
     except:
         pass
-    print(data_daily['day_1_temp'])
+    # print(data_daily['day_1_temp'])
     is_email_sent = send_email.send_mail(email, city, msg, data_daily['day_1_temp'], alerts_email, True)
 
     if is_email_sent:
@@ -463,8 +459,7 @@ def update_mail_loc():
 
 @app.route('/alerts')
 def alerts():
-    global description, description_2, second_alert, city
-    return render_template('alerts.html', des=description, des2=description_2, second_alert=second_alert, city=city)
+    return render_template('alerts.html', des=alerts_description, des2=alerts_description, city=city)
 
 
 if __name__ == '__main__':
