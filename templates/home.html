@@ -455,7 +455,20 @@ inputBox.onkeyup = function(){
             autocomplete(document.getElementById("search"), city_list);
         })
         .catch(function(error) {
-            console.log("Hello" + error);
+            console.log(error);
+            console.log(apiKey3);
+            if(error == "TypeError: Failed to fetch"){
+                apiKey3 = apiKey1;
+                console.log(apiKey3);
+                if(error == "TypeError: Failed to fetch"){
+                    apiKey3 = apiKey2;
+                    console.log(apiKey3);
+                    if(error == "TypeError: Failed to fetch"){
+                        apiKey3 = apiKey4;
+                        console.log(apiKey3);
+                    }
+                }
+            }
         });
     }
 
