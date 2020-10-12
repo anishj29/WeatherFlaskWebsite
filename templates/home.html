@@ -344,6 +344,8 @@ var apiKey1 = "tPCm5yySwcnGKxPMHhkGZMYajP7B9Zm4";
 var apiKey2 = "4zrGVjvJENvvA6SvIPA6hW1qUmtKqCcd";
 var apiKey3 = "87BhuOqKbdVq8lsMOlu2FeUmECbQfuEx";
 var apiKey4 = "aHGcaLSALJCuldcAIAGLSxucftOGUZd4";
+
+var apiList = [apiKey1, apiKey2, apiKey4];
 inputBox.onkeyup = function(){
         fetch("http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=" + apiKey3 +
         "&q=" + inputBox.value)
@@ -457,15 +459,13 @@ inputBox.onkeyup = function(){
         .catch(function(error) {
             console.log(error);
             console.log(apiKey3);
-            if(error == "TypeError: Failed to fetch"){
-                apiKey3 = apiKey1;
-                console.log(apiKey3);
-                if(error == "TypeError: Failed to fetch"){
-                    apiKey3 = apiKey2;
+            if (error == "TypeError: Failed to fetch") {
+                var i;
+                for(i = 0; i <= apiList.length; i++) {
+                    apiKey3 = apiList[i];
                     console.log(apiKey3);
-                    if(error == "TypeError: Failed to fetch"){
-                        apiKey3 = apiKey4;
-                        console.log(apiKey3);
+                    if(error != "TypeError: Failed to fetch") {
+                        break;
                     }
                 }
             }
