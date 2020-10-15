@@ -108,14 +108,18 @@ def weather():
     global alerts_data, city, alerts_image, second_alert, pop_list, lat, lon, data_daily, alerts_description, \
         alerts_description_2
     city = 'princeton'
+    state = 'newjersey'
+    country = 'us'
     if request.method == 'POST':
         city = request.form['city'].title()
     else:
         geoip = urllib.request.urlopen(
             'https://ip-geolocation.whoisxmlapi.com/api/v1?apiKey=at_7PwbMzdUGTjddKi5dhSUlOrzUEHhF&ipAddress').read()
         geo = json.loads(geoip)
+        print(geo)
         city = geo['location']['city']
-        # state = geo['location']['region']
+        state = (geo['location']['region']).lower()
+        state = state.replace(" ", "")
 
     new_city = city
     if ' ' in city:
@@ -123,8 +127,9 @@ def weather():
 
     # source contain json data from api
     try:
-        items = ['http://api.openweathermap.org/data/2.5/weather?q=', new_city,
+        items = ['http://api.openweathermap.org/data/2.5/weather?q=', new_city, ",", state, ",", country,
                  '&appid=8a5edfd4d0e0f8953dbe82364cfc0b10']
+        print(''.join(items))
         source = urllib.request.urlopen(''.join(items)).read()
 
         list_of_data = json.loads(source)

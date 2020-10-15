@@ -31,9 +31,7 @@
                     <input id="search" name="city" placeholder="Find your location..." type="text">
                 </div>
                 <input type="submit" value="Find">
-
             </form>
-
         </div>
     </div>
     <div class="forecast-table">
@@ -345,19 +343,27 @@ var apiKey2 = "4zrGVjvJENvvA6SvIPA6hW1qUmtKqCcd";
 var apiKey3 = "87BhuOqKbdVq8lsMOlu2FeUmECbQfuEx";
 var apiKey4 = "aHGcaLSALJCuldcAIAGLSxucftOGUZd4";
 
-var apiList = [apiKey1, apiKey2, apiKey4];
+var apiList = [apiKey1, apiKey2, apiKey3, apiKey4];
+var numApi = 0;
+var currentApi = apiList[2];
 inputBox.onkeyup = function(){
-        fetch("http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=" + apiKey3 +
-        "&q=" + inputBox.value)
+        fetch("http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=" + apiKey2 + "&q=" + inputBox.value)
         .then((resp) => resp.json()) // Transform the data into json
         .then(function(data) {
             var city_list = [];
-            console.log(data.results);
+            var state_list = []
             for (var i = 0; i < 4; i++){
                 city_list.push(data[i]['LocalizedName']);
             }
-            city_list = [data[0]['LocalizedName'], data[1]['LocalizedName'], data[2]['LocalizedName']
-                         ,data[3]['LocalizedName'], data[4]['LocalizedName']];
+            console.log(city_list);
+            for (var j = 0; j < 4; j++){
+                state_list.push(data[j]['AdministrativeArea']['ID']);
+            }
+            // city_list = [data[0]['LocalizedName'], data[1]['LocalizedName'], data[2]['LocalizedName']
+            //              ,data[3]['LocalizedName'], data[4]['LocalizedName']];
+            // state_list = [data[0]['AdministrativeArea']['ID'], data[1]['AdministrativeArea']['ID'],
+            //                 data[2]['AdministrativeArea']['ID'], data[3]['AdministrativeArea']['ID'],
+            //                 date[4]['AdministrativeArea']['ID']]
                 function autocomplete(inp, arr) {
                   /*the autocomplete function takes two arguments,
                   the text field element and an array of possible autocompleted values:*/
@@ -454,16 +460,15 @@ inputBox.onkeyup = function(){
                       closeAllLists(e.target);
                   });
                 }
-            autocomplete(document.getElementById("search"), city_list);
+            autocomplete(document.getElementById("search"), city_list, state_list);
         })
         .catch(function(error) {
             console.log(error);
-            console.log(apiKey3);
             if (error == "TypeError: Failed to fetch") {
                 var i;
                 for(i = 0; i <= apiList.length; i++) {
-                    apiKey3 = apiList[i];
-                    console.log(apiKey3);
+                    currentApi = apiList[numApi];
+                    console.log(currentApi);
                     if(error != "TypeError: Failed to fetch") {
                         break;
                     }
@@ -471,9 +476,6 @@ inputBox.onkeyup = function(){
             }
         });
     }
-
-
-
 
 </script>
 </body>
