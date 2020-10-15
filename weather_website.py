@@ -12,6 +12,8 @@ from googletrans import Translator
 import send_email
 from run_sql import MySQL
 
+# from FandC import convert_to_c
+
 hourly_images = []
 daily_images = []
 id_list = []
@@ -107,6 +109,7 @@ data_daily = {}
 def weather():
     global alerts_data, city, alerts_image, second_alert, pop_list, lat, lon, data_daily, alerts_description, \
         alerts_description_2
+    # global alerts_description, alerts_description_2, lat, lon, city
     city = 'princeton'
     state = 'newjersey'
     country = 'us'
@@ -133,21 +136,27 @@ def weather():
         source = urllib.request.urlopen(''.join(items)).read()
 
         list_of_data = json.loads(source)
+        print(list_of_data)
 
     except urllib.error.HTTPError:
         return render_template("404.html")
 
     main_data = {
-        "country_code": str(list_of_data['sys']['country']), "city_name": str(city),
-        "main": list_of_data['weather'][0]['main'], "description": list_of_data['weather'][0]['description'],
+        "country_code": str(list_of_data['sys']['country']),
+        "city_name": str(city),
+        "main": list_of_data['weather'][0]['main'],
+        "description": list_of_data['weather'][0]['description'],
         "coordinate": str(list_of_data['coord']['lat']) + ',' + str(list_of_data['coord']['lon']),
         "temp": int(round(1.8 * (list_of_data['main']['temp'] - 273) + 32, 0)),
         "temp_min": int(round(1.8 * (list_of_data['main']['temp_min'] - 273) + 32, 0)),
         "temp_max": int(round(1.8 * (list_of_data['main']['temp_max'] - 273) + 32, 0)),
         "feels_like": int(round(1.8 * (list_of_data['main']['feels_like'] - 273) + 32, 0)),
-        "humidity": str(list_of_data['main']['humidity']), "wind_speed": list_of_data['wind']['speed'],
-        'id': list_of_data['weather'][0]['id'], 'sunrise': list_of_data['sys']['sunrise'],
-        'sunset': list_of_data['sys']['sunset'], 'offset': list_of_data['timezone']
+        "humidity": str(list_of_data['main']['humidity']),
+        "wind_speed": list_of_data['wind']['speed'],
+        'id': list_of_data['weather'][0]['id'],
+        'sunrise': list_of_data['sys']['sunrise'],
+        'sunset': list_of_data['sys']['sunset'],
+        'offset': list_of_data['timezone']
     }
 
     lat = str(list_of_data['coord']['lat'])
@@ -232,9 +241,8 @@ def weather():
                 pop_num = ''
             pop_list.append(pop_num)
 
-    item_alerts = ['https://api.weatherbit.io/v2.0/alerts?lat=', lat, '&lon=', lon, '&key=',
-                   '888c4677014d4578a511570492df67b0']
-    # alerts_key = '888c4677014d4578a511570492df67b0'
+    item_alerts = ['https://api.weatherbit.io/v2.0/alerts?lat=', lat, '&lon=', lon,
+                   '&key=888c4677014d4578a511570492df67b0']
     alerts_api = urllib.request.urlopen(''.join(item_alerts)).read()
     alerts_store = json.loads(alerts_api)
 
@@ -328,7 +336,6 @@ def weather():
         'hour_12_temp': int(round(hourly_data['hourly'][11]['temp'], 0)),
         'hour_12_id': hourly_data['hourly'][11]['weather'][0]['id'],
         'hour_12_main': hourly_data['hourly'][11]['weather'][0]['main'],
-        'hour_13': hourly_data['hourly'][12]['dt']
     }
     # Daily weather
     data_daily = {
@@ -367,11 +374,6 @@ def weather():
         'day_7_min': int(round(hourly_data['daily'][6]['temp']['min'], 0)),
         'day_7_main': hourly_data['daily'][6]['weather'][0]['main'],
         'day_7_id': hourly_data['daily'][6]['weather'][0]['id'],
-        'day_8_temp': int(round(hourly_data['daily'][7]['temp']['day'], 0)),
-        'day_8_max': int(round(hourly_data['daily'][7]['temp']['max'], 0)),
-        'day_8_min': int(round(hourly_data['daily'][7]['temp']['min'], 0)),
-        'day_8_main': hourly_data['daily'][7]['weather'][0]['main'],
-        'day_8_id': hourly_data['daily'][7]['weather'][0]['id'],
         'uv': round(hourly_data['daily'][0]['uvi'])
     }
 
@@ -399,7 +401,7 @@ def weather():
     for i in range(1, 13):
         hourly_images.append(verify_icon(data_hourly['hour_' + str(i) + '_id'], it_is_day))
         main_list.append(data_hourly['hour_' + str(i) + '_main'])
-    for j in range(1, 9):
+    for j in range(1, 8):
         daily_images.append(verify_icon(data_daily['day_' + str(j) + '_id'], True))
 
     id_tag = main_data['id']
