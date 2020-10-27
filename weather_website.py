@@ -119,14 +119,15 @@ def weather():
         geoip = urllib.request.urlopen(
             'https://ip-geolocation.whoisxmlapi.com/api/v1?apiKey=at_7PwbMzdUGTjddKi5dhSUlOrzUEHhF&ipAddress').read()
         geo = json.loads(geoip)
-        print(geo)
         city = geo['location']['city']
-        state = (geo['location']['region']).lower()
+        state = geo['location']['region']
+        state = state.lower()
         state = state.replace(" ", "")
 
-    new_city = city
-    if ' ' in city:
-        new_city = city.replace(' ', '+')
+    new_city = city.strip()
+
+    if ' ' in new_city:
+        new_city = new_city.replace(' ', '+')
 
     # source contain json data from api
     try:
