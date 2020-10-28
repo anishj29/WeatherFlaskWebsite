@@ -5,14 +5,12 @@ import urllib.request
 import datetimerange
 import ephem
 import pytz
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 from flask_compress import Compress
 from googletrans import Translator
 
 import send_email
 from run_sql import MySQL
-
-# from FandC import convert_to_c
 
 hourly_images = []
 daily_images = []
@@ -162,8 +160,12 @@ def weather():
 
     lat = str(list_of_data['coord']['lat'])
     lon = str(list_of_data['coord']['lon'])
-    temp = 'imperial'
-
+    if request.method == 'POST':
+        print('Incoming..')
+        print(request.get_json())  # parse as JSON
+        # GET request
+    else:
+        temp = "imperial"
     # Sunrise and Sunset
     sunrise_time = main_data['sunrise'] + main_data['offset']
     sunset_time = main_data['sunset'] + main_data['offset']
@@ -238,8 +240,6 @@ def weather():
         for i in range(0, 8):
             pop_num = pop_info[i]['PrecipitationProbability']
             pop_num = str(int(round(pop_num + 0.1, -1))) + '%'
-            if pop_num == '0%':
-                pop_num = ''
             pop_list.append(pop_num)
 
     item_alerts = ['https://api.weatherbit.io/v2.0/alerts?lat=', lat, '&lon=', lon,

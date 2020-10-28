@@ -19,8 +19,10 @@
         <div class="container-fluid">
             <div class="logo-type">
                 <a href="{{url_for('weather')}}"><h1 class="site-title">Weather</h1></a>
-                <small class="site-description">By Program Explorers</small>
+                <small class="site-description mr-5">By Program Explorers</small>
             </div>
+            <button class="" onclick="changeToC()">°C</button>
+            <button class="" onclick="changeToC()">°F</button>
         </div>
     </div>
     <div class="hero" data-bg-image="landscape.jpg"
@@ -314,7 +316,8 @@
                         <iframe
                                 allowfullscreen
                                 frameborder="2"
-                                height="450" src="https://weather.com/news"
+                                height="450"
+                                src=""
                                 style="border:10" width="500">
                         </iframe>
                     </div>
@@ -337,6 +340,29 @@
     </footer>
 </div>
 <script>
+function changeToC() {
+    // POST
+    fetch('/', {
+        // Declare what type of data we're sending
+        headers: {
+          'Content-Type': 'application/json'
+        },
+
+        // Specify the method
+        method: 'POST',
+
+        // A JSON payload
+        body: JSON.stringify(temp="metric")
+    }).then(function (response) { // At this point, Flask has printed our JSON
+        return response.text();
+    }).then(function(text) {
+
+        console.log('POST response: ');
+
+        // Should be 'OK' if everything was successful
+        console.log(text);
+    });
+}
 var inputBox = document.getElementById('search');
 var apiKey1 = "tPCm5yySwcnGKxPMHhkGZMYajP7B9Zm4";
 var apiKey2 = "4zrGVjvJENvvA6SvIPA6hW1qUmtKqCcd";
@@ -496,6 +522,7 @@ inputBox.onkeyup = function(){
             }
         });
     }
+
 
 
 </script>
