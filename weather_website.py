@@ -5,11 +5,12 @@ import urllib.request
 import datetimerange
 import ephem
 import pytz
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request
 from flask_compress import Compress
 from googletrans import Translator
 
 import send_email
+from FandC import convert_to_c
 from run_sql import MySQL
 
 hourly_images = []
@@ -131,11 +132,9 @@ def weather():
     try:
         items = ['http://api.openweathermap.org/data/2.5/weather?q=', new_city, ",", state, ",", country,
                  '&appid=8a5edfd4d0e0f8953dbe82364cfc0b10']
-        print(''.join(items))
         source = urllib.request.urlopen(''.join(items)).read()
 
         list_of_data = json.loads(source)
-        print(list_of_data)
 
     except urllib.error.HTTPError:
         return render_template("404.html")
@@ -413,12 +412,19 @@ def weather():
     if alerts_description == alerts_description_2:
         alerts_description_2 = ''
 
+    symbol = 'F'
+    isCelsius = True
+    if isCelsius:
+        main_data, data_hourly, data_daily = convert_to_c(main_data, data_hourly, data_daily)
+        symbol = 'C'
+    # print(main_data, data_hourly, data_daily)
+
     return render_template('home.html', data=main_data, image=image, hourly_images=hourly_images,
                            data_hourly=data_hourly, data_daily=data_daily, daily_images=daily_images,
                            days=list_of_days, sun_time=sun_time, list_of_hours=list_of_hours,
                            current_month=current_month, lat=lat, lon=lon, alerts_data=alerts_data,
                            alerts_image=alerts_image, new_des=alerts_description, pop_list=pop_list,
-                           todays_date=today_date, bg_images=bg_images)
+                           todays_date=today_date, bg_images=bg_images, symbol=symbol)
 
 
 @app.route('/subscribe/', methods=['POST', 'GET'])
