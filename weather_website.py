@@ -413,7 +413,7 @@ def weather():
         alerts_description_2 = ''
 
     symbol = 'F'
-    isCelsius = True
+    isCelsius = False
     if isCelsius:
         main_data, data_hourly, data_daily = convert_to_c(main_data, data_hourly, data_daily)
         symbol = 'C'
