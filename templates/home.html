@@ -5,8 +5,19 @@
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0,maximum-scale=1" name="viewport">
     <title>Weather App by Program Explorers</title>
-
-    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    {% if data_hourly['hour_1_main'] == 'Sunny' %}
+        <link rel="shortcut icon" href="{{ url_for('static', filename='sunny.ico') }}">
+    {% elif data_hourly['hour_1_main'] == 'Rain' %}
+        <link rel="shortcut icon" href="{{ url_for('static', filename='rain.ico') }}">
+    {% elif data_hourly['hour_1_main'] == 'Cloudy' %}
+        <link rel="shortcut icon" href="{{ url_for('static', filename='rain.ico') }}">
+    {% elif data_hourly['hour_1_main'] == 'Snow' %}
+        <link rel="shortcut icon" href="{{ url_for('static', filename='snow.ico') }}">
+    {% elif data_hourly['hour_1_main'] == 'Thunderstorm' %}
+        <link rel="shortcut icon" href="{{ url_for('static', filename='thunderstorm.ico') }}">
+    {% elif data_hourly['hour_1_main'] == 'Clear' %}
+        <link rel="shortcut icon" href="{{ url_for('static', filename='clear_night.ico') }}">
+    {% endif %}
     <link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700|" rel="stylesheet" type="text/css">
     <link href="{{url_for('static', filename='css/style.css')}}" rel="stylesheet" type="text/css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -51,13 +62,13 @@
                                 <img alt="" height="90" src={{image}} width="80">
                             </div>
                         </div>
-                        <span><img alt="" height="8%" src="static/icons/humidity1.png" width="8%">
+                        <span><img alt="" height="8%" src="static/icons/humidity1.webp" width="8%">
                             {{data.humidity}}%</span>
-                        <span><img alt="" src="static/icons/icon-wind.png">{{data.wind_speed}}mph</span>
+                        <span><img alt="" src="static/icons/icon-wind.webp">{{data.wind_speed}}mph</span>
                         {% if pop_list[0] == '' %}
-                        <span><img alt="" src="static/icons/umbrella.png">{{pop_list[0]}}0%</span>
+                        <span><img alt="" src="static/icons/umbrella.webp">{{pop_list[0]}}0%</span>
                         {% else %}
-                        <span><img alt="" src="static/icons/umbrella.png">{{pop_list[0]}}</span>
+                        <span><img alt="" src="static/icons/umbrella.webp">{{pop_list[0]}}</span>
                         {% endif %}
                         <span>Feel Like {{data_hourly.feels_like}}°{{symbol}}</span>
 
@@ -171,9 +182,9 @@
                                 </div>
                                 <span><img alt="" height="7%" src="static/icons/uvicon.png"
                                            width="7%">{{data_daily.uv}}</span>
-                                <span><img alt="" height="8.5%" src="static/icons/sunrise.png" width="8.5%">
+                                <span><img alt="" height="8.5%" src="static/icons/sunrise.webp" width="8.5%">
                                     {{sun_time[0]}}</span>
-                                <span><img alt="" height="8.5%" src="static/icons/sunset.png" width="8.5%">
+                                <span><img alt="" height="8.5%" src="static/icons/sunset.webp" width="8.5%">
                                     {{sun_time[1]}}</span>
                                 <span><img alt="" height="" src="g" width="8.5%">{{data_daily.day_1_main}}</span>
                             </div>

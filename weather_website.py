@@ -1,17 +1,16 @@
 import datetime
 import json
 import urllib.request
-
 import datetimerange
 import ephem
 import pytz
 from flask import Flask, render_template, request
 from flask_compress import Compress
 from googletrans import Translator
-
+from run_sql import MySQL
 import send_email
 from FandC import convert_to_c
-from run_sql import MySQL
+
 
 hourly_images = []
 daily_images = []
@@ -23,7 +22,7 @@ city = ''
 email = ''
 lat = 0
 lon = 0
-data = {'city_name': 'princeton', 'country_code': 'US'}
+data = {'city_name': 'Princeton', 'country_code': 'US'}
 
 day_name = {0: 'Monday', 1: 'Tuesday', 2: 'Wednesday', 3: 'Thursday', 4: 'Friday', 5: 'Saturday', 6: 'Sunday'}
 time_range = datetimerange.DateTimeRange("T5:00:00+0900", "T9:00:00+0900")
@@ -81,11 +80,11 @@ def verify_icon(id_tag, it_is_day):
 
     else:
         if id_tag == 800:
-            return 'static/icons/clear_moon.png'
+            return 'static/icons/clear_moon.webp'
         elif id_tag == 801:
-            return 'static/icons/clouds_moon.png'
+            return 'static/icons/clouds_moon.webp'
         elif id_tag in (500, 501, 502, 503, 504):
-            return 'static/icons/rain_moon.png'
+            return 'static/icons/rain_moon.webp'
 
     return 'error'
 
@@ -417,7 +416,6 @@ def weather():
     if isCelsius:
         main_data, data_hourly, data_daily = convert_to_c(main_data, data_hourly, data_daily)
         symbol = 'C'
-    # print(main_data, data_hourly, data_daily)
 
     return render_template('home.html', data=main_data, image=image, hourly_images=hourly_images,
                            data_hourly=data_hourly, data_daily=data_daily, daily_images=daily_images,
@@ -429,7 +427,6 @@ def weather():
 
 @app.route('/subscribe/', methods=['POST', 'GET'])
 def send_mail():
-    # global description, description_2, second_alert, data_daily, city
     global email
     email = request.form['subscribe']
     message = "Please confirm the information below, or edit"
@@ -454,7 +451,6 @@ def update_mail_loc():
         city = request.form['update_location']
     except:
         pass
-    # print(data_daily['day_1_temp'])
     is_email_sent = send_email.send_mail(email, city, msg, data_daily['day_1_temp'], alerts_email, True)
 
     if is_email_sent:
