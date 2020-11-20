@@ -3,6 +3,7 @@ import json
 import urllib.request
 import datetimerange
 import ephem
+import datanews
 import pytz
 from flask import Flask, render_template, request
 from flask_compress import Compress
@@ -15,6 +16,7 @@ from FandC import convert_to_c
 hourly_images = []
 daily_images = []
 id_list = []
+temp = ''
 main_list = []
 alerts_image = ''
 pop_list = []
@@ -107,8 +109,7 @@ data_daily = {}
 @app.route('/', methods=['POST', 'GET'])
 def weather():
     global alerts_data, city, alerts_image, second_alert, pop_list, lat, lon, data_daily, alerts_description, \
-        alerts_description_2
-    # global alerts_description, alerts_description_2, lat, lon, city
+        alerts_description_2, temp
     city = 'princeton'
     state = 'newjersey'
     country = 'us'
@@ -159,12 +160,8 @@ def weather():
 
     lat = str(list_of_data['coord']['lat'])
     lon = str(list_of_data['coord']['lon'])
-    if request.method == 'POST':
-        print('Incoming..')
-        print(request.get_json())  # parse as JSON
-        # GET request
-    else:
-        temp = "imperial"
+
+    temp = "imperial"
     # Sunrise and Sunset
     sunrise_time = main_data['sunrise'] + main_data['offset']
     sunset_time = main_data['sunset'] + main_data['offset']
@@ -184,6 +181,12 @@ def weather():
     datetime_tz = datetime.datetime.now(pytz.timezone(tz))
     today_date = datetime_tz.day
     day = datetime_tz.today().weekday()
+
+    datanews.api_key = '04loc6feus33veq8swg615d7w'
+
+    response = datanews.headlines(q="earthquakes, rain, showers, snow, sunny, thunderstorm, clear", country=country, language=['en'])
+    articles = response['hits']
+    print(articles[0]['content'])
 
     # Gets day as a number
     day_2 = (datetime_tz + datetime.timedelta(days=1)).weekday()
@@ -414,6 +417,11 @@ def weather():
 
     symbol = 'F'
     isCelsius = False
+    # if request.form['isCelsius'].title() == "":
+    #     pass
+    # else:
+    #     isCelsius = request.form['isCelsius'].title()
+
     if isCelsius:
         main_data, data_hourly, data_daily = convert_to_c(main_data, data_hourly, data_daily)
         symbol = 'C'
