@@ -17,6 +17,7 @@ hourly_images = []
 daily_images = []
 id_list = []
 temp = ''
+country = ''
 main_list = []
 alerts_image = ''
 pop_list = []
@@ -109,7 +110,7 @@ data_daily = {}
 @app.route('/', methods=['POST', 'GET'])
 def weather():
     global alerts_data, city, alerts_image, second_alert, pop_list, lat, lon, data_daily, alerts_description, \
-        alerts_description_2, temp
+        alerts_description_2, temp, country
     city = 'princeton'
     state = 'newjersey'
     country = 'us'
@@ -181,12 +182,6 @@ def weather():
     datetime_tz = datetime.datetime.now(pytz.timezone(tz))
     today_date = datetime_tz.day
     day = datetime_tz.today().weekday()
-
-    datanews.api_key = '04loc6feus33veq8swg615d7w'
-
-    response = datanews.headlines(q="earthquakes, rain, showers, snow, sunny, thunderstorm, clear", country=country, language=['en'])
-    articles = response['hits']
-    print(articles[0]['content'])
 
     # Gets day as a number
     day_2 = (datetime_tz + datetime.timedelta(days=1)).weekday()
@@ -431,7 +426,32 @@ def weather():
                            days=list_of_days, sun_time=sun_time, list_of_hours=list_of_hours,
                            current_month=current_month, lat=lat, lon=lon, alerts_data=alerts_data,
                            alerts_image=alerts_image, new_des=alerts_description, pop_list=pop_list,
-                           todays_date=today_date, bg_images=bg_images, symbol=symbol)
+                           todays_date=today_date, bg_images=bg_images, symbol=symbol, article_data=article_data)
+
+
+@app.route('/news', method=['POST', 'GET'])
+def news():
+    global country
+    datanews.api_key = '04loc6feus33veq8swg615d7w'
+
+    response = datanews.headlines(q="earthquakes, rain, showers, snow, sunny, thunderstorm, clear, night, day," +
+                                    " morning, evening, raining, wind, cold"
+                                  , country=country,
+                                  language=['en'])
+    articles = response['hits']
+    article_data = {
+        'article1_title': articles[0]['title'],
+        'article1_content': articles[0]['content'],
+        'article2_title': articles[1]['title'],
+        'article2_content': articles[1]['content'],
+        'article3_title': articles[2]['title'],
+        'article3_content': articles[2]['content'],
+        'article4_title': articles[3]['title'],
+        'article4_content': articles[3]['content'],
+        'article5_title': articles[4]['title'],
+        'article5_content': articles[4]['content'],
+    }
+    print(article_data)
 
 
 @app.route('/subscribe/', methods=['POST', 'GET'])
