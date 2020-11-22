@@ -426,10 +426,10 @@ def weather():
                            days=list_of_days, sun_time=sun_time, list_of_hours=list_of_hours,
                            current_month=current_month, lat=lat, lon=lon, alerts_data=alerts_data,
                            alerts_image=alerts_image, new_des=alerts_description, pop_list=pop_list,
-                           todays_date=today_date, bg_images=bg_images, symbol=symbol, article_data=article_data)
+                           todays_date=today_date, bg_images=bg_images, symbol=symbol)
 
 
-@app.route('/news', method=['POST', 'GET'])
+@app.route('/news/')
 def news():
     global country
     datanews.api_key = '04loc6feus33veq8swg615d7w'
@@ -442,16 +442,26 @@ def news():
     article_data = {
         'article1_title': articles[0]['title'],
         'article1_content': articles[0]['content'],
+        'article1_img': articles[0]['imageUrl'],
+        'article1_url': articles[0]['url'],
         'article2_title': articles[1]['title'],
         'article2_content': articles[1]['content'],
+        'article2_img': articles[1]['imageUrl'],
+        'article2_url': articles[1]['url'],
         'article3_title': articles[2]['title'],
         'article3_content': articles[2]['content'],
+        'article3_img': articles[2]['imageUrl'],
+        'article3_url': articles[2]['url'],
         'article4_title': articles[3]['title'],
         'article4_content': articles[3]['content'],
+        'article4_img': articles[3]['imageUrl'],
+        'article4_url': articles[3]['url'],
         'article5_title': articles[4]['title'],
         'article5_content': articles[4]['content'],
+        'article5_img': articles[4]['imageUrl'],
+        'article5_url': articles[4]['url'],
     }
-    print(article_data)
+    return render_template("news.html", article_data=article_data)
 
 
 @app.route('/subscribe/', methods=['POST', 'GET'])
