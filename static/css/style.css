@@ -1335,6 +1335,29 @@ form textarea {
    -webkit-line-clamp: 8;
    -webkit-box-orient: vertical;
 }
+.blogs{
+  display: flex;
+  flex: row;
+}
+.blog-card-image {
+  flex: column;
+  width: 8rem;
+  height: 6rem;
+  margin-bottom: 2rem;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.blog-card-title {
+  margin-left: 1rem;
+  flex: column;
+}
+.blog-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+.blog-subtitle {
+  margin-top: 0.5rem;
+}
 .filter-control {
   border: 2px solid #262936;
   padding: 5px 5px 5px 20px;

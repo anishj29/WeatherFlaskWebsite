@@ -437,7 +437,7 @@ def news():
     response = datanews.headlines(q="earthquakes, rain, showers, snow, sunny, thunderstorm, clear, night, day," +
                                     " morning, evening, raining, wind, cold"
                                   , country=country,
-                                  language=['en'])
+                                  language=['en'], sortBy="relevance")
     articles = response['hits']
     article_data = {
         'article1_title': articles[0]['title'],
