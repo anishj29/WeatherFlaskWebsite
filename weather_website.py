@@ -1,17 +1,18 @@
 import datetime
 import json
 import urllib.request
+
+import datanews
 import datetimerange
 import ephem
-import datanews
 import pytz
 from flask import Flask, render_template, request
 from flask_compress import Compress
 from googletrans import Translator
-from run_sql import MySQL
+
 import send_email
 from FandC import convert_to_c
-
+from run_sql import MySQL
 
 hourly_images = []
 daily_images = []
@@ -228,7 +229,10 @@ def weather():
 
     else:
         city_id = json.loads(get_id)
-        key = city_id[0]["Key"]
+        try:
+            key = city_id[0]["Key"]
+        except IndexError:
+            return render_template("404.html")
 
         get_pop = urllib.request.urlopen('http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/' + key +
                                          '?apikey=4zrGVjvJENvvA6SvIPA6hW1qUmtKqCcd&details=false').read()
