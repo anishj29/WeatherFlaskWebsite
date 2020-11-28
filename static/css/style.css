@@ -1271,7 +1271,8 @@ form textarea {
         font-weight: 400; }
       .forecast-container .forecast.today .degree .num, .forecast-container .forecast.today .degree .forecast-icon {
         display: inline-block;
-        vertical-align: middle; }
+        vertical-align: middle;
+        }
       .forecast-container .forecast.today .degree .num {
         font-size: 90px;
         font-size: 6.4285714286rem;
@@ -1328,6 +1329,10 @@ form textarea {
   padding: 14px 16px;
   text-decoration: none;
 }
+.forecast-img{
+    height: 90px;
+    width: 80px;
+}
 .frame{
     height: 400px;
     width: 500px;
@@ -1337,11 +1342,25 @@ form textarea {
         height: 300px;
         width: 350px;
     }
+    .forecast-img{
+        height: 60px;
+        width: 50px;
+    }
+    .forecast-icon{
+        display: inline-block;
+        vertical-align: middle;
+        height: 60px;
+        width: 50px;
+    }
 }
 @media (max-width: 320px) {
     .frame{
         height: 250px;
         width: 300px;
+    }
+    .forecast-icon{
+        height: 50px;
+        width: 40px;
     }
 }
 .text {

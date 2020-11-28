@@ -53,7 +53,6 @@
                 <div class="today forecast">
                     <div class="forecast-header">
                         <div class="day">Current</div>
-                        <div class="date">{{day}} {{month}}</div>
                     </div>
                     <div class="forecast-content">
                         <div class="location">{{data.city_name}}</div>
@@ -287,7 +286,7 @@
         <div class="fullwidth-block" data-bg-color="#262936">
             <div class="container">
                 <div class="row">
-                    <div class="live-camera col-md-3 col-sm-6">
+                    <div class="live-camera col-md-3 col-sm-6 frame">
                         {% if new_des == 'No alerts in this area!' %}
                         <h2 class="section-title">Alerts</h2>
                         <h3>No alerts in this area!</h3>
@@ -344,7 +343,7 @@
             <div class="row">
                 <div class="col-md-8">
                     <form action="/subscribe/" class="subscribe-form" method="post">
-                        <input name="subscribe" placeholder="Enter your email to subscribe..." type="text">
+                        <input name="subscribe" placeholder="Enter your email..." type="text">
                         <input type="submit" value="Subscribe">
                     </form>
                 </div>
