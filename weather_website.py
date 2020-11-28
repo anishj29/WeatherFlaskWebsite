@@ -416,11 +416,6 @@ def weather():
 
     symbol = 'F'
     isCelsius = False
-    # if request.form['isCelsius'].title() == "":
-    #     pass
-    # else:
-    #     isCelsius = request.form['isCelsius'].title()
-
     if isCelsius:
         main_data, data_hourly, data_daily = convert_to_c(main_data, data_hourly, data_daily)
         symbol = 'C'

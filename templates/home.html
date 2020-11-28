@@ -40,7 +40,7 @@
         <div class="container">
             <form autocomplete="off" class="find-location" method="post">
                 <div class="autocomplete">
-                    <input id="search" name="city" placeholder="Find weather info for your location..." type="text">
+                    <input id="search" name="city" placeholder="Enter your location..." type="text">
                 </div>
                 <input type="submit" value="Find">
             </form>
@@ -303,9 +303,10 @@
                         <iframe
                                 allowfullscreen
                                 frameborder="0"
-                                height="450" src="https://www.google.com/maps/embed/v1/view?key=
+                                class="frame"
+                                src="https://www.google.com/maps/embed/v1/view?key=
                                 AIzaSyCOfFczdNM4s-x_0dCLkFef1bh5l1oBG6U&center={{data['coordinate']}}&zoom=14&maptype=satellite"
-                                width="500">
+                                >
                         </iframe>
                     </div>
                 </div>
@@ -319,9 +320,9 @@
                         <iframe
                                 allowfullscreen
                                 frameborder="0"
-                                height="450"
+                                class="frame"
                                 src="https://www.ventusky.com/?p={{lat}};{{lon}};10&l=temperature-2m"
-                                width="500">
+                                >
                         </iframe>
                     </div>
                     <div class="live-camera col-md-3 col-sm-6">
@@ -329,9 +330,9 @@
                         <iframe
                                 allowfullscreen
                                 frameborder="0"
-                                height="450"
+                                class="frame"
                                 src="{{url_for('news')}}"
-                                width="500">
+                                >
                         </iframe>
                     </div>
                 </div>
@@ -353,16 +354,15 @@
     </footer>
 </div>
 <script>
-<!--function changeToF() {-->
-<!--    $.post('/', {-->
-<!--        isCelsius: False-->
-<!--    });-->
-<!--}-->
-<!--function changeToC() {-->
-<!--    $.post('/', {-->
-<!--        isCelsius: True-->
-<!--    });-->
-<!--}-->
+var isC = false;
+var cityName = "hello";
+console.log(cityName);
+function changeToF() {
+    isC = false;
+}
+function changeToC() {
+    isC =  true;
+}
 var inputBox = document.getElementById('search');
 var apiKey1 = "tPCm5yySwcnGKxPMHhkGZMYajP7B9Zm4";
 var apiKey2 = "4zrGVjvJENvvA6SvIPA6hW1qUmtKqCcd";
