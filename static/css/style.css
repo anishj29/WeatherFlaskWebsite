@@ -1207,12 +1207,14 @@ form textarea {
 .search-form {
   background-size: cover;
   padding: 70px 0;
-  height: 25rem;
+  height: 20rem;
 }
 
 .find-location {
   position: relative;
-  margin-bottom: 1rem; }
+  margin-top: auto;
+  margin-bottom: auto;
+  }
   .find-location input[type="text"] {
     width: 100%;
     padding: 20px 50px 20px 20px;
@@ -1225,7 +1227,7 @@ form textarea {
     bottom: 5px;
     padding: 0 40px; }
 .divider{
-    margin-top: 150px;
+    margin-top: 3rem;
 }
 .forecast-container {
   width: 100%;
@@ -1275,8 +1277,8 @@ form textarea {
         }
       .forecast-container .forecast.today .degree .num {
         font-size: 90px;
-        font-size: 6.4285714286rem;
-        margin-right: 30px; }
+        margin-right: 1rem;
+        }
       .forecast-container .forecast.today span {
         margin-right: 20px; }
         .forecast-container .forecast.today span img {
@@ -1292,7 +1294,8 @@ form textarea {
       text-align: center;
       font-weight: 400; }
     .forecast-container .forecast .forecast-icon {
-      height: 50px; }
+      height: 50px;
+      }
     .forecast-container .forecast .forecast-content {
       padding: 50px 20px 10px;
       text-align: center; }
@@ -1330,27 +1333,39 @@ form textarea {
   text-decoration: none;
 }
 .forecast-img{
-    height: 90px;
-    width: 80px;
+    display: inline-block;
+    vertical-align: middle;
+    height: 100px;
+    width: 100px;
 }
 .frame{
     height: 400px;
     width: 500px;
 }
-@media (max-width: 400px) {
+.num-main{
+    font-size: 90px;
+    margin-right: 1rem;
+}
+.div-frame{
+    height: 400px;
+    width: 500px;
+}
+@media (max-width: 500px) {
     .frame{
         height: 300px;
         width: 350px;
     }
-    .forecast-img{
-        height: 60px;
-        width: 50px;
+    .div-frame{
+        height: 300px;
+        width: 500px;
     }
-    .forecast-icon{
-        display: inline-block;
-        vertical-align: middle;
-        height: 60px;
-        width: 50px;
+    .forecast-img{
+        float: right;
+        height: 70px;
+        width: 70px;
+    }
+    .num-main{
+        font-size: 50px;
     }
 }
 @media (max-width: 320px) {
@@ -1358,9 +1373,17 @@ form textarea {
         height: 250px;
         width: 300px;
     }
-    .forecast-icon{
-        height: 50px;
-        width: 40px;
+    .div-frame{
+        height: 250px;
+        width: 500px;
+    }
+    .forecast-img{
+        float: right;
+        height: 65px;
+        width: 65px;
+    }
+    .num-main{
+        font-size: 50px;
     }
 }
 .text {

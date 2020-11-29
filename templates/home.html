@@ -35,7 +35,7 @@
             <button @click="changeToF()" name="f" class="weatherB">°F</button>
         </div>
     </div>
-    <div class="search-form" data-bg-image="landscape.jpg"
+    <div class="search-form"
          style="background-image: url({{bg_images}});">
         <div class="container">
             <form autocomplete="off" class="find-location" method="post">
@@ -57,9 +57,8 @@
                     <div class="forecast-content">
                         <div class="location">{{data.city_name}}</div>
                         <div class="degree">
-                            <div class="num">{{data.temp}}<sup>o</sup>{{symbol}}</div>
-                            <div class="forecast-icon">
-                                <img alt="" height="90" src={{image}} width="80">
+                            <div class="num-main">{{data.temp}}<sup>o</sup>{{symbol}}
+                                <img class="forecast-img" alt="" src={{image}}>
                             </div>
                         </div>
                         <span><img alt="" height="8%" src="static/icons/humidity1.webp" width="8%">
@@ -174,9 +173,8 @@
                             <div class="forecast-content">
                                 <div class="location">{{data.city_name}}</div>
                                 <div class="degree">
-                                    <div class="num">{{data_daily.day_1_temp}}<sup>o</sup>{{symbol}}</div>
-                                    <div class="forecast-icon">
-                                        <img alt="" src={{daily_images[0]}} width=90>
+                                    <div class="num-main">{{data_daily.day_1_temp}}<sup>o</sup>{{symbol}}
+                                        <img class="forecast-img" alt="" src={{daily_images[0]}}>
                                     </div>
                                 </div>
                                 <span><img alt="" height="7%" src="static/icons/uvicon.png"
@@ -283,22 +281,24 @@
                 </div>
             </div>
         </div>
-        <div class="fullwidth-block" data-bg-color="#262936">
+        <div class="fullwidth-block">
             <div class="container">
                 <div class="row">
-                    <div class="live-camera col-md-3 col-sm-6 frame">
-                        {% if new_des == 'No alerts in this area!' %}
-                        <h2 class="section-title">Alerts</h2>
-                        <h3>No alerts in this area!</h3>
-                        {% else %}
-                        <h2 class="section-title">Alerts <img height="15%" src={{alerts_image}} width="15%"></h2>
-                        <h2>{{alerts_data['title']}}</h2>
-                        <pre class="text">{{new_des}}</pre>
-                        <a href="{{url_for('alerts')}}">See More</a>
-                        {% endif %}
+                    <div class="live-camera col-md-3 col-sm-6">
+                        <div class="div-frame">
+                            {% if new_des == 'No alerts in this area!' %}
+                            <h2 class="section-title">Alerts</h2>
+                            <h3>No alerts in this area!</h3>
+                            {% else %}
+                            <h2 class="section-title">Alerts <img height="15%" src={{alerts_image}} width="15%"></h2>
+                            <h2>{{alerts_data['title']}}</h2>
+                            <pre class="text">{{new_des}}</pre>
+                            <a href="{{url_for('alerts')}}">See More</a>
+                            {% endif %}
+                        </div>
                     </div>
                     <div class="live-camera col-md-3 col-sm-6">
-                        <h2 class="section-title" style="">Map</h2>
+                        <h2 class="section-title">Map</h2>
                         <iframe
                                 allowfullscreen
                                 frameborder="0"
