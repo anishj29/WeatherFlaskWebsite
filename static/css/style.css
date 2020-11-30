@@ -1267,6 +1267,10 @@ form textarea {
         text-align: left;
         padding-top: 30px;
         padding-bottom: 30px; }
+      .forecast-container .forecast.today .forecast-content1 {
+        text-align: left;
+        padding-top: 30px;
+        padding-bottom: 30px; }
       .forecast-container .forecast.today .location {
         font-size: 18px;
         font-size: 1.2857142857em;
@@ -1294,21 +1298,27 @@ form textarea {
       text-align: center;
       font-weight: 400; }
     .forecast-container .forecast .forecast-icon {
-      height: 50px;
+      height: 40px;
       }
     .forecast-container .forecast .forecast-content {
-      padding: 50px 20px 10px;
+      padding: 50px 20px 5px;
+      text-align: center; }
+    .forecast-container .forecast .forecast-content1 {
+      padding: 50px 20px 5px;
       text-align: center; }
       .forecast-container .forecast .forecast-content .forecast-icon {
         margin-bottom: 20px; }
       .forecast-container .forecast .forecast-content .degree {
         font-size: 24px;
-        font-size: 1.7142857143em;
         color: white;
         font-weight: 700; }
       .forecast-container .forecast .forecast-content small {
         font-size: 16px;
         font-size: 1.1428571429em;
+      .forecast-container .forecast .forecast-content .degree {
+        font-size: 24px;
+        color: white;
+        font-weight: 700; }
 }
 .fullwidth-block {
   padding: 70px 0; }
@@ -1338,6 +1348,10 @@ form textarea {
     height: 100px;
     width: 100px;
 }
+.forecast-img1{
+    height: 50px;
+    width: 50px;
+}
 .frame{
     height: 400px;
     width: 500px;
@@ -1345,6 +1359,10 @@ form textarea {
 .num-main{
     font-size: 90px;
     margin-right: 1rem;
+    font-family: sans serif;
+}
+.nums{
+    font-family: sans serif;
 }
 .div-frame{
     height: 400px;
@@ -1356,19 +1374,36 @@ form textarea {
         width: 350px;
     }
     .div-frame{
-        height: 300px;
+        height: 250px;
         width: 500px;
     }
     .forecast-img{
         float: right;
-        height: 70px;
-        width: 70px;
+        height: 65px;
+        width: 65px;
+    }
+    .forecast-container .forecast .forecast-content {
+        padding: 20px 0px 5px;
+        text-align: center;
+    }
+    .date1{
+        font-size: 10px;
     }
     .num-main{
-        font-size: 50px;
+        font-size: 60px;
+    }
+    .nums{
+        font-size: 20px;
+    }
+    .forecast-container .forecast .forecast-content small {
+        font-size: 15px;
+    }
+    .forecast-img1{
+        height: 30px;
+        width: 30px;
     }
 }
-@media (max-width: 320px) {
+@media (max-width: 330px) {
     .frame{
         height: 250px;
         width: 300px;
@@ -1382,8 +1417,25 @@ form textarea {
         height: 65px;
         width: 65px;
     }
+    .forecast-container .forecast .forecast-content {
+        padding: 20px 0px 5px;
+        text-align: center;
+    }
+    .date1{
+        font-size: 7px;
+    }
     .num-main{
         font-size: 50px;
+    }
+    .nums{
+        font-size: 14px;
+    }
+    .forecast-container .forecast .forecast-content small {
+        font-size: 12px;
+    }
+    .forecast-img1{
+        height: 30px;
+        width: 30px;
     }
 }
 .text {
