@@ -112,28 +112,28 @@ data_daily = {}
 def weather():
     global alerts_data, city, alerts_image, second_alert, pop_list, lat, lon, data_daily, alerts_description, \
         alerts_description_2, temp, country
-    city = 'princeton'
+    city = 'Princeton'
     state = 'newjersey'
     country = 'us'
     if request.method == 'POST':
         city = request.form['city'].title()
-    else:
-        geoip = urllib.request.urlopen(
-            'https://ip-geolocation.whoisxmlapi.com/api/v1?apiKey=at_7PwbMzdUGTjddKi5dhSUlOrzUEHhF&ipAddress').read()
-        geo = json.loads(geoip)
-        city = geo['location']['city']
-        state = geo['location']['region']
-        state = state.lower()
-        state = state.replace(" ", "")
-
-    new_city = city.strip()
-
-    if ' ' in new_city:
-        new_city = new_city.replace(' ', '+')
+    # else:
+    #     geoip = urllib.request.urlopen(
+    #         'https://ip-geolocation.whoisxmlapi.com/api/v1?apiKey=at_7PwbMzdUGTjddKi5dhSUlOrzUEHhF&ipAddress').read()
+    #     geo = json.loads(geoip)
+    #     city = geo['location']['city']
+    #     state = geo['location']['region']
+    #     state = state.lower()
+    #     state = state.replace(" ", "")
+    #     print(city, state)
+    # new_city = city.strip()
+    #
+    # if ' ' in new_city:
+    #     new_city = new_city.replace(' ', '+')
 
     # source contain json data from api
     try:
-        items = ['http://api.openweathermap.org/data/2.5/weather?q=', new_city, ",", state, ",", country,
+        items = ['http://api.openweathermap.org/data/2.5/weather?q=', city, ",", state, ",", country,
                  '&appid=8a5edfd4d0e0f8953dbe82364cfc0b10']
         source = urllib.request.urlopen(''.join(items)).read()
 
