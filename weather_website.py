@@ -11,7 +11,6 @@ from flask_compress import Compress
 from googletrans import Translator
 
 import send_email
-from FandC import convert_to_c
 from run_sql import MySQL
 
 hourly_images = []
@@ -126,17 +125,23 @@ def weather():
     #     state = state.lower()
     #     state = state.replace(" ", "")
     #     print(city, state)
-    # new_city = city.strip()
+    new_city = city.strip()
     #
     # if ' ' in new_city:
     #     new_city = new_city.replace(' ', '+')
 
     # source contain json data from api
+    temp = "imperial"
+    symbol = 'F'
+    isCelsius = False
+    if isCelsius:
+        temp = "metric"
+        symbol = 'C'
     try:
-        items = ['http://api.openweathermap.org/data/2.5/weather?q=', city, ",", state, ",", country,
-                 '&appid=8a5edfd4d0e0f8953dbe82364cfc0b10']
-        source = urllib.request.urlopen(''.join(items)).read()
 
+        items = ['http://api.openweathermap.org/data/2.5/weather?q=', city, ",", state, ",", country,
+                 '&units=', temp, '&appid=8a5edfd4d0e0f8953dbe82364cfc0b10']
+        source = urllib.request.urlopen(''.join(items)).read()
         list_of_data = json.loads(source)
 
     except urllib.error.HTTPError:
@@ -148,10 +153,10 @@ def weather():
         "main": list_of_data['weather'][0]['main'],
         "description": list_of_data['weather'][0]['description'],
         "coordinate": str(list_of_data['coord']['lat']) + ',' + str(list_of_data['coord']['lon']),
-        "temp": int(round(1.8 * (list_of_data['main']['temp'] - 273) + 32, 0)),
-        "temp_min": int(round(1.8 * (list_of_data['main']['temp_min'] - 273) + 32, 0)),
-        "temp_max": int(round(1.8 * (list_of_data['main']['temp_max'] - 273) + 32, 0)),
-        "feels_like": int(round(1.8 * (list_of_data['main']['feels_like'] - 273) + 32, 0)),
+        "temp": int(round(list_of_data['main']['temp'], 0)),
+        "temp_min": int(round(list_of_data['main']['temp_min'])),
+        "temp_max": int(round(list_of_data['main']['temp_max'])),
+        "feels_like": int(round(list_of_data['main']['feels_like'])),
         "humidity": str(list_of_data['main']['humidity']),
         "wind_speed": list_of_data['wind']['speed'],
         'id': list_of_data['weather'][0]['id'],
@@ -159,11 +164,9 @@ def weather():
         'sunset': list_of_data['sys']['sunset'],
         'offset': list_of_data['timezone']
     }
-
     lat = str(list_of_data['coord']['lat'])
     lon = str(list_of_data['coord']['lon'])
 
-    temp = "imperial"
     # Sunrise and Sunset
     sunrise_time = main_data['sunrise'] + main_data['offset']
     sunset_time = main_data['sunset'] + main_data['offset']
@@ -339,6 +342,7 @@ def weather():
         'hour_12_id': hourly_data['hourly'][11]['weather'][0]['id'],
         'hour_12_main': hourly_data['hourly'][11]['weather'][0]['main'],
     }
+
     # Daily weather
     data_daily = {
         'day_1_temp': int(round(hourly_data['daily'][0]['temp']['day'], 0)),
@@ -378,16 +382,16 @@ def weather():
         'day_7_id': hourly_data['daily'][6]['weather'][0]['id'],
         'uv': round(hourly_data['daily'][0]['uvi'])
     }
-
-    if data_hourly['hour_1_main'] == 'Clear':
+    first_hour = data_hourly['hour_1_main']
+    if first_hour == 'Clear':
         bg_images = 'https://res.cloudinary.com/program-explorers/image/upload/v1600480831/Grand-Canyon-Destination' \
                     '-Page_mp557z.jpg '
-    elif data_hourly['hour_1_main'] == 'Rain':
+    elif first_hour == 'Rain':
         bg_images = 'https://res.cloudinary.com/program-explorers/image/upload/v1600480866/2z1a5tixad121_ahwtn0.jpg'
-    elif data_hourly['hour_1_main'] == 'Clouds':
+    elif first_hour == 'Clouds':
         bg_images = 'https://res.cloudinary.com/program-explorers/image/upload/v1600480909' \
                     '/aAujKcEpiVcrqCCut2biNnG63S5fcwhRYcIb81Z0UnQ_yqq8iy.jpg '
-    elif data_hourly['hour_1_main'] == 'Snow':
+    elif first_hour == 'Snow':
         bg_images = 'https://res.cloudinary.com/program-explorers/image/upload/v1600480952/GC_Winter_oan3zl.jpg'
     else:
         bg_images = 'https://res.cloudinary.com/program-explorers/image/upload/v1600480973/grand-canyon-sunset_c6yvay' \
@@ -399,7 +403,8 @@ def weather():
     next_sunrise_datetime = user.next_rising(ephem.Sun()).datetime()
     next_sunset_datetime = user.next_setting(ephem.Sun()).datetime()
     it_is_day = next_sunset_datetime < next_sunrise_datetime
-    # Got icon for each hour
+
+    # Get icon for each hour
     for i in range(1, 13):
         hourly_images.append(verify_icon(data_hourly['hour_' + str(i) + '_id'], it_is_day))
         main_list.append(data_hourly['hour_' + str(i) + '_main'])
@@ -414,11 +419,11 @@ def weather():
     if alerts_description == alerts_description_2:
         alerts_description_2 = ''
 
-    symbol = 'F'
-    isCelsius = False
-    if isCelsius:
-        main_data, data_hourly, data_daily = convert_to_c(main_data, data_hourly, data_daily)
-        symbol = 'C'
+    # symbol = 'F'
+    # isCelsius = False
+    # if isCelsius:
+    #     main_data, data_hourly, data_daily = convert_to_c(main_data, data_hourly, data_daily)
+    #     symbol = 'C'
 
     return render_template('home.html', data=main_data, image=image, hourly_images=hourly_images,
                            data_hourly=data_hourly, data_daily=data_daily, daily_images=daily_images,
