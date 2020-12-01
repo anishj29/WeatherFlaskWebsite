@@ -237,20 +237,19 @@ def weather():
         except IndexError:
             return render_template("404.html")
 
-        get_pop = urllib.request.urlopen('http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/' + key +
-                                         '?apikey=4zrGVjvJENvvA6SvIPA6hW1qUmtKqCcd&details=false').read()
-        pop_info = json.loads(get_pop)
-
-        for i in range(0, 8):
-            pop_num = pop_info[i]['PrecipitationProbability']
-            pop_num = str(int(round(pop_num + 0.1, -1))) + '%'
-            pop_list.append(pop_num)
+        # get_pop = urllib.request.urlopen('http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/' + key +
+        #                                  '?apikey=4zrGVjvJENvvA6SvIPA6hW1qUmtKqCcd&details=false').read()
+        # pop_info = json.loads(get_pop)
+        #
+        # for i in range(0, 8):
+        #     pop_num = pop_info[i]['PrecipitationProbability']
+        #     pop_num = str(int(round(pop_num + 0.1, -1))) + '%'
+        #     pop_list.append(pop_num)
 
     item_alerts = ['https://api.weatherbit.io/v2.0/alerts?lat=', lat, '&lon=', lon,
                    '&key=888c4677014d4578a511570492df67b0']
     alerts_api = urllib.request.urlopen(''.join(item_alerts)).read()
     alerts_store = json.loads(alerts_api)
-
     try:
         alerts_data = {
             'expires': alerts_store['alerts'][0]['expires_utc'],
@@ -265,14 +264,13 @@ def weather():
         alerts_description = 'No alerts in this area!'
 
     else:
-        translator = Translator()
-        alerts_description = translator.translate(alerts_data['description'])
-        alerts_description = alerts_description.text.replace('English: ', '')
-        alerts_description = alerts_description.replace('* WHAT...', 'What: ')
-        alerts_description = alerts_description.replace('* WHERE...', 'Where: ')
-        alerts_description = alerts_description.replace('* WHEN...', 'When: ')
-        alerts_description = alerts_description.replace('* IMPACTS...', 'Impacts: ')
-
+        # translator = Translator()
+        # alerts_description = translator.translate(alerts_data['description'])
+        # alerts_description = alerts_description.text.replace('English: ', '')
+        # alerts_description = alerts_description.replace('* WHAT...', 'What: ')
+        # alerts_description = alerts_description.replace('* WHERE...', 'Where: ')
+        # alerts_description = alerts_description.replace('* WHEN...', 'When: ')
+        # alerts_description = alerts_description.replace('* IMPACTS...', 'Impacts: ')
         severity = alerts_data['severity']
         severity_switch = {'Warning': 'static/alerts/warning.png', 'Watch': 'static/alerts/watch.png',
                            'Extreme': 'static/alerts/extreme.png', 'Advisory': 'static/alerts/advisory.png'}
@@ -295,12 +293,13 @@ def weather():
             second_alert = False
 
         else:
-            alerts_description_2 = translator.translate(alerts_data_2['description'])
-            alerts_description_2 = alerts_description_2.text.replace('English: ', '')
-            alerts_description_2 = alerts_description_2.replace('* WHAT...', 'What: ')
-            alerts_description_2 = alerts_description_2.replace('* WHERE...', 'Where: ')
-            alerts_description_2 = alerts_description_2.replace('* WHEN...', 'When: ')
-            alerts_description_2 = alerts_description_2.replace('* IMPACTS...', 'Impacts: ')
+            pass
+            # alerts_description_2 = translator.translate(alerts_data_2['description'])
+            # alerts_description_2 = alerts_description_2.text.replace('English: ', '')
+            # alerts_description_2 = alerts_description_2.replace('* WHAT...', 'What: ')
+            # alerts_description_2 = alerts_description_2.replace('* WHERE...', 'Where: ')
+            # alerts_description_2 = alerts_description_2.replace('* WHEN...', 'When: ')
+            # alerts_description_2 = alerts_description_2.replace('* IMPACTS...', 'Impacts: ')
 
     # Hourly Weather stored in dictionary
     data_hourly = {

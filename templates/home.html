@@ -53,9 +53,9 @@
                 <div class="today forecast">
                     <div class="forecast-header">
                         <div class="day">Current</div>
+                        <div class="location">{{data.city_name}}</div>
                     </div>
                     <div class="forecast-content1" style="color: white">
-                        <div class="location">{{data.city_name}}</div>
                         <div class="degree">
                             <div class="num-main">
                                 {{data.temp}}<sup>o</sup>{{symbol}}
@@ -189,7 +189,6 @@
                                 <div class="date">{{days[0]}}, {{current_month}}</div>
                             </div>
                             <div class="forecast-content1" style="color: white">
-                                <div class="location">{{data.city_name}}</div>
                                 <div class="degree">
                                     <div class="num-main">{{data_daily.day_1_temp}}<sup>o</sup>{{symbol}}
                                         <img alt="" class="forecast-img" src={{daily_images[0]}}>
@@ -320,7 +319,7 @@
                             <h2 class="section-title">Alerts</h2>
                             <h3>No alerts in this area!</h3>
                             {% else %}
-                            <h2 class="section-title">Alerts <img height="15%" src={{alerts_image}} width="15%"></h2>
+                            <h2 class="section-title">Alerts <img height="5%" src={{alerts_image}} width="5%"></h2>
                             <h2>{{alerts_data['title']}}</h2>
                             <pre class="text">{{new_des}}</pre>
                             <a href="{{url_for('alerts')}}">See More</a>
