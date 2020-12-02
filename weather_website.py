@@ -6,7 +6,7 @@ import datanews
 import datetimerange
 import ephem
 import pytz
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 from flask_compress import Compress
 from googletrans import Translator
 
@@ -18,6 +18,7 @@ daily_images = []
 id_list = []
 temp = ''
 country = ''
+isCelsius = False
 main_list = []
 alerts_image = ''
 pop_list = []
@@ -109,7 +110,7 @@ data_daily = {}
 
 @app.route('/', methods=['POST', 'GET'])
 def weather():
-    global alerts_data, city, alerts_image, second_alert, pop_list, lat, lon, data_daily, alerts_description, \
+    global isCelsius, alerts_data, city, alerts_image, second_alert, pop_list, lat, lon, data_daily, alerts_description, \
         alerts_description_2, temp, country
     city = 'Princeton'
     state = 'newjersey'
@@ -133,7 +134,6 @@ def weather():
     # source contain json data from api
     temp = "imperial"
     symbol = 'F'
-    isCelsius = False
     if isCelsius:
         temp = "metric"
         symbol = 'C'
@@ -237,14 +237,14 @@ def weather():
         except IndexError:
             return render_template("404.html")
 
-        # get_pop = urllib.request.urlopen('http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/' + key +
-        #                                  '?apikey=4zrGVjvJENvvA6SvIPA6hW1qUmtKqCcd&details=false').read()
-        # pop_info = json.loads(get_pop)
-        #
-        # for i in range(0, 8):
-        #     pop_num = pop_info[i]['PrecipitationProbability']
-        #     pop_num = str(int(round(pop_num + 0.1, -1))) + '%'
-        #     pop_list.append(pop_num)
+        get_pop = urllib.request.urlopen('http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/' + key +
+                                         '?apikey=4zrGVjvJENvvA6SvIPA6hW1qUmtKqCcd&details=false').read()
+        pop_info = json.loads(get_pop)
+
+        for i in range(0, 8):
+            pop_num = pop_info[i]['PrecipitationProbability']
+            pop_num = str(int(round(pop_num + 0.1, -1))) + '%'
+            pop_list.append(pop_num)
 
     item_alerts = ['https://api.weatherbit.io/v2.0/alerts?lat=', lat, '&lon=', lon,
                    '&key=888c4677014d4578a511570492df67b0']
@@ -264,13 +264,13 @@ def weather():
         alerts_description = 'No alerts in this area!'
 
     else:
-        # translator = Translator()
-        # alerts_description = translator.translate(alerts_data['description'])
-        # alerts_description = alerts_description.text.replace('English: ', '')
-        # alerts_description = alerts_description.replace('* WHAT...', 'What: ')
-        # alerts_description = alerts_description.replace('* WHERE...', 'Where: ')
-        # alerts_description = alerts_description.replace('* WHEN...', 'When: ')
-        # alerts_description = alerts_description.replace('* IMPACTS...', 'Impacts: ')
+        translator = Translator()
+        alerts_description = translator.translate(alerts_data['description'])
+        alerts_description = alerts_description.text.replace('English: ', '')
+        alerts_description = alerts_description.replace('* WHAT...', 'What: ')
+        alerts_description = alerts_description.replace('* WHERE...', 'Where: ')
+        alerts_description = alerts_description.replace('* WHEN...', 'When: ')
+        alerts_description = alerts_description.replace('* IMPACTS...', 'Impacts: ')
         severity = alerts_data['severity']
         severity_switch = {'Warning': 'static/alerts/warning.png', 'Watch': 'static/alerts/watch.png',
                            'Extreme': 'static/alerts/extreme.png', 'Advisory': 'static/alerts/advisory.png'}
@@ -294,12 +294,12 @@ def weather():
 
         else:
             pass
-            # alerts_description_2 = translator.translate(alerts_data_2['description'])
-            # alerts_description_2 = alerts_description_2.text.replace('English: ', '')
-            # alerts_description_2 = alerts_description_2.replace('* WHAT...', 'What: ')
-            # alerts_description_2 = alerts_description_2.replace('* WHERE...', 'Where: ')
-            # alerts_description_2 = alerts_description_2.replace('* WHEN...', 'When: ')
-            # alerts_description_2 = alerts_description_2.replace('* IMPACTS...', 'Impacts: ')
+            alerts_description_2 = translator.translate(alerts_data_2['description'])
+            alerts_description_2 = alerts_description_2.text.replace('English: ', '')
+            alerts_description_2 = alerts_description_2.replace('* WHAT...', 'What: ')
+            alerts_description_2 = alerts_description_2.replace('* WHERE...', 'Where: ')
+            alerts_description_2 = alerts_description_2.replace('* WHEN...', 'When: ')
+            alerts_description_2 = alerts_description_2.replace('* IMPACTS...', 'Impacts: ')
 
     # Hourly Weather stored in dictionary
     data_hourly = {
@@ -417,7 +417,7 @@ def weather():
 
     if alerts_description == alerts_description_2:
         alerts_description_2 = ''
-
+    print(isCelsius)
     # symbol = 'F'
     # isCelsius = False
     # if isCelsius:
@@ -432,11 +432,18 @@ def weather():
                            todays_date=today_date, bg_images=bg_images, symbol=symbol)
 
 
-@app.route('/news/')
+@app.route('/buttons', methods=['GET', 'POST'])
+def buttons():
+    global isCelsius
+    if request.method == 'POST':
+        isCelsius = request.json['isCelsius']
+    return render_template('buttons.html', isCelsius=isCelsius)
+
+print(isCelsius)
+@app.route('/news')
 def news():
     global country
     datanews.api_key = '04loc6feus33veq8swg615d7w'
-
     response = datanews.headlines(q="earthquakes, rain, showers, snow, sunny, thunderstorm, clear, night, day," +
                                     " morning, evening, raining, wind, cold"
                                   , country=country,

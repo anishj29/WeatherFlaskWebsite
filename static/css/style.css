@@ -1113,24 +1113,38 @@ form textarea {
  * Header Styles
  */
 .site-header {
-  padding: 50px 0; }
-  .site-header .branding {
-    float: left; }
-    .site-header .branding .logo, .site-header .branding .logo-type {
-      display: inline-block;
-      vertical-align: middle; }
-    .site-header .branding .logo {
-      margin-right: 1rem; }
-    .site-header .branding .site-title {
-      margin-bottom: 1rem;
-      font-size: 16px;
-      font-size: 1.1428571429em;
-      color: white; }
-    .site-header .branding .site-description {
-      font-size: 10px;
-      font-size: 0.7142857143em;
-      display: block;
-      color: #bfc1c8; }
+  padding: 40px 0;
+}
+.logo-type {
+    display: inline-block;
+    vertical-align: middle;
+}
+.weatherC {
+    display: block;
+    margin-top: 1.5rem;
+    float: left;
+    border-radius: 25px;
+    background: #3F7FFF;
+    color: white;
+}
+.weatherF {
+    display: block;
+    margin-top: 1.5rem;
+    float: right;
+    margin-right: 3.5rem;
+    border-radius: 25px;
+    background: #3F7FFF;
+    color: white;
+}
+.site-title {
+    margin-bottom: 0.8rem;
+    font-size: 25px;
+}
+.site-description {
+    font-size: 12px;
+    display: block;
+    color: #bfc1c8;
+}
 
 .main-navigation {
   float: right; }
@@ -1283,12 +1297,13 @@ form textarea {
       .forecast-container .forecast.today .degree .num {
         font-size: 90px;
         margin-right: 1rem;
-        font-family: inherit;
+        font-family: 'Open Sans', sans-serif;
         }
       .forecast-container .forecast.today span {
-        margin-right: 20px; }
+        margin-right: 5px;
+        font-family: 'Open Sans', sans-serif;}
         .forecast-container .forecast.today span img {
-          margin-right: 5px;
+          margin-right: 3px;
           vertical-align: middle; }
       @media screen and (max-width: 990px) {
         .forecast-container .forecast.today {
@@ -1326,14 +1341,9 @@ form textarea {
   padding: 70px 0; }
   .fullwidth-block .section-title {
     font-size: 36px;
-    font-size: 2.5714285714em;
     font-weight: 300;
+    font-family: 'Open Sans', sans-serif;
     color: white; }
-.weatherB {
-    border-radius: 25px;
-    background: #3F7FFF;
-    color: white;
-}
 .filter {
   margin-bottom: 30px; }
 .a {
@@ -1360,7 +1370,7 @@ form textarea {
 }
 .num-main{
     font-weight: 600;
-    font-family: Roboto;
+    font-family: 'Open Sans', sans-serif;
     font-size: 90px;
     margin-right: 1rem;
 }
@@ -1466,10 +1476,12 @@ form textarea {
 .blog-title {
   font-size: 1.2rem;
   font-weight: 600;
+  font-family: 'Open Sans', sans-serif;
+  color: white;
 }
 .blog-subtitle {
   margin-top: 0.5rem;
-  font-family: sans-serif;
+   font-family: 'Open Sans', sans-serif;
 }
 .filter-control {
   border: 2px solid #262936;
@@ -1512,7 +1524,7 @@ form textarea {
     font-weight: 300; }
 .site-footer {
   background: #262936;
-  padding: 50px 0; }
+  padding: 40px 0; }
   .site-footer .subscribe-form {
     position: relative;
     margin-bottom: 30px; }

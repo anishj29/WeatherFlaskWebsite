@@ -20,7 +20,6 @@
     {% endif %}
     <link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700|" rel="stylesheet" type="text/css">
     <link href="{{url_for('static', filename='css/style.css')}}" rel="stylesheet" type="text/css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -29,10 +28,10 @@
         <div class="container-fluid">
             <div class="logo-type">
                 <a href="{{url_for('weather')}}"><h1 class="site-title">Weather</h1></a>
-                <small class="site-description mr-5">By Program Explorers</small>
+                <small class="site-description">By Program Explorers</small>
+                <button @click="changeToC()" class="weatherC" name="c">°C</button>
+                <button @click="changeToF()" class="weatherF" name="f">°F</button>
             </div>
-            <button @click="changeToC()" class="weatherB" name="c">°C</button>
-            <button @click="changeToF()" class="weatherB" name="f">°F</button>
         </div>
     </div>
     <div class="search-form"
@@ -62,15 +61,17 @@
                                 <img alt="" class="forecast-img" src={{image}}>
                             </div>
                         </div>
-                        <span><img alt="" height="8%" src="static/icons/humidity1.webp" width="8%">
-                            {{data.humidity}}%</span>
+                        <span>
+                            <img alt="" height="8%" src="static/icons/humidity1.webp" width="8%">
+                            {{data.humidity}}%
+                        </span>
                         <span><img alt="" src="static/icons/icon-wind.png">{{data.wind_speed}}mph</span>
                         {% if pop_list[0] == '' %}
                         <span><img alt="" src="static/icons/umbrella.webp">{{pop_list[0]}}0%</span>
                         {% else %}
                         <span><img alt="" src="static/icons/umbrella.webp">{{pop_list[0]}}</span>
                         {% endif %}
-                        <span>Feel Like {{data_hourly.feels_like}}°{{symbol}}</span>
+                        <span>Feels Like {{data_hourly.feels_like}}°{{symbol}}</span>
 
                     </div>
                 </div>
@@ -381,15 +382,23 @@
         </div>
     </footer>
 </div>
-<script>
-var isC = false;
-var cityName = "hello";
-console.log(cityName);
+<script src="https://unpkg.com/axios/dist/axios.min.js" type="text/javascript">
+const axios = require('axios')
 function changeToF() {
-    isC = false;
+    axios.post('http://127.0.0.1:5000/buttons', {
+      isCelsius: 'False'
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
 }
 function changeToC() {
-    isC =  true;
+    axios.post('http://127.0.0.1:5000/buttons', {
+      isCelsius: 'True'
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
 }
 var inputBox = document.getElementById('search');
 var apiKey1 = "tPCm5yySwcnGKxPMHhkGZMYajP7B9Zm4";
@@ -538,15 +547,6 @@ inputBox.onkeyup = function(){
                         }
                     }
                 }
-<!--                var i = 1;-->
-<!--                for(i = 0; i <= apiList.length; i++) {-->
-<!--                    currentApi = apiList[i];-->
-<!--                    console.log(currentApi);-->
-<!--                    if(error != "TypeError: Failed to fetch") {-->
-<!--                        break;-->
-<!--                    }-->
-<!--                }-->
-
             }
         });
     }
